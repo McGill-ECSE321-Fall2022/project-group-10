@@ -1,5 +1,5 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+/*This code was generated using the UMPLE 1.31.0.5692.1a9e80997 modeling language!*/
 
 package ca.mcgill.ecse321.museum.model;
 import javax.persistence.*;
@@ -7,7 +7,7 @@ import java.util.*;
 import java.sql.Date;
 
 @Entity
-// line 4 "../../../../../MuseumSystem.ump"
+// line 4 "../../../../..//MuseumSystem.ump"
 public class MuseumSystem
 {
 
@@ -16,6 +16,7 @@ public class MuseumSystem
   //------------------------
 
   //MuseumSystem Attributes
+  private int id;
   private String name;
 
   //MuseumSystem Associations
@@ -30,8 +31,9 @@ public class MuseumSystem
   // CONSTRUCTOR
   //------------------------
 
-  public MuseumSystem(String aName, Calendar aCalendar)
+  public MuseumSystem(int aId, String aName, Calendar aCalendar)
   {
+    id = aId;
     name = aName;
     if (aCalendar == null || aCalendar.getMuseum() != null)
     {
@@ -45,10 +47,11 @@ public class MuseumSystem
     rooms = new ArrayList<Room>();
   }
 
-  public MuseumSystem(String aName, boolean aIsMuseumOpenForCalendar)
+  public MuseumSystem(int aId, String aName, int aIdForCalendar, boolean aIsMuseumOpenForCalendar)
   {
+    id = aId;
     name = aName;
-    calendar = new Calendar(aIsMuseumOpenForCalendar, this);
+    calendar = new Calendar(aIdForCalendar, aIsMuseumOpenForCalendar, this);
     users = new ArrayList<Person>();
     donations = new ArrayList<Donation>();
     loans = new ArrayList<Loan>();
@@ -66,6 +69,12 @@ public class MuseumSystem
     name = aName;
     wasSet = true;
     return wasSet;
+  }
+
+  @Id
+  public int getId()
+  {
+    return id;
   }
 
   public String getName()
@@ -302,9 +311,9 @@ public class MuseumSystem
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Donation addDonation(boolean aValidated, Visitor aDonor, Artwork... allArtworks)
+  public Donation addDonation(int aId, boolean aValidated, Visitor aDonor, Artwork... allArtworks)
   {
-    return new Donation(aValidated, this, aDonor, allArtworks);
+    return new Donation(aId, aValidated, this, aDonor, allArtworks);
   }
 
   public boolean addDonation(Donation aDonation)
@@ -374,9 +383,9 @@ public class MuseumSystem
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Loan addLoan(float aPrice, boolean aValidated, Date aStartDate, Date aEndDate, Visitor aCustomer, Artwork... allArtworks)
+  public Loan addLoan(int aId, float aPrice, boolean aValidated, Date aStartDate, Date aEndDate, Visitor aCustomer, Artwork... allArtworks)
   {
-    return new Loan(aPrice, aValidated, aStartDate, aEndDate, this, aCustomer, allArtworks);
+    return new Loan(aId, aPrice, aValidated, aStartDate, aEndDate, this, aCustomer, allArtworks);
   }
 
   public boolean addLoan(Loan aLoan)
@@ -446,9 +455,9 @@ public class MuseumSystem
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Artwork addArtwork(String aTitle, String aAuthor, Date aCreationDate, String aDescription, String aImageLink, float aPrice, boolean aIsAvailable, Room aStorage)
+  public Artwork addArtwork(int aId, String aTitle, String aAuthor, Date aCreationDate, String aDescription, String aImageLink, float aPrice, boolean aIsAvailable, Room aStorage)
   {
-    return new Artwork(aTitle, aAuthor, aCreationDate, aDescription, aImageLink, aPrice, aIsAvailable, this, aStorage);
+    return new Artwork(aId, aTitle, aAuthor, aCreationDate, aDescription, aImageLink, aPrice, aIsAvailable, this, aStorage);
   }
 
   public boolean addArtwork(Artwork aArtwork)
@@ -628,9 +637,52 @@ public class MuseumSystem
   }
 
 
+  @OneToMany(mappedBy="museum")
+  // line 9 "../../../../..//MuseumSystem.ump"
+  public List<Person> getUsersJPA(){
+    return getUsers();
+  }
+
+
+  @OneToMany(mappedBy="museum")
+  // line 10 "../../../../..//MuseumSystem.ump"
+  public List<Artwork> getArtworksJPA(){
+    return getArtworks();
+  }
+
+
+  @OneToMany(mappedBy="museum")
+  // line 11 "../../../../..//MuseumSystem.ump"
+  public List<Room> getRoomsJPA(){
+    return getRooms();
+  }
+
+
+  @OneToMany(mappedBy="museum")
+  // line 12 "../../../../..//MuseumSystem.ump"
+  public List<Loan> getLoansJPA(){
+    return getLoans();
+  }
+
+
+  @OneToMany(mappedBy="museum")
+  // line 13 "../../../../..//MuseumSystem.ump"
+  public List<Donation> getDonationsJPA(){
+    return getDonations();
+  }
+
+
+  // @OneToOne(mappedBy="museum")
+  // // line 14 "../../../../..//MuseumSystem.ump"
+  // public Calendar getCalendarJPA(){
+  //   return getCalendar();
+  // }
+
+
   public String toString()
   {
     return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
             "name" + ":" + getName()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "calendar = "+(getCalendar()!=null?Integer.toHexString(System.identityHashCode(getCalendar())):"null");
   }

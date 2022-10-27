@@ -1,9 +1,12 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+/*This code was generated using the UMPLE 1.31.0.5692.1a9e80997 modeling language!*/
 
 package ca.mcgill.ecse321.museum.model;
+import javax.persistence.*;
 
-// line 29 "../../../../../MuseumSystem.ump"
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+// line 45 "../../../../..//MuseumSystem.ump"
 public abstract class Person
 {
 
@@ -57,14 +60,6 @@ public abstract class Person
     return wasSet;
   }
 
-  public boolean setEmail(String aEmail)
-  {
-    boolean wasSet = false;
-    email = aEmail;
-    wasSet = true;
-    return wasSet;
-  }
-
   public boolean setPassword(String aPassword)
   {
     boolean wasSet = false;
@@ -83,6 +78,7 @@ public abstract class Person
     return lastName;
   }
 
+  @Id
   public String getEmail()
   {
     return email;
@@ -125,6 +121,13 @@ public abstract class Person
     {
       placeholderMuseum.removeUser(this);
     }
+  }
+
+
+  @ManyToOne(optional=false)
+  // line 52 "../../../../..//MuseumSystem.ump"
+  public MuseumSystem getMuseumJPA(){
+    return getMuseum();
   }
 
 

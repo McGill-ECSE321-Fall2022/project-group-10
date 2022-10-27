@@ -1,5 +1,5 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+/*This code was generated using the UMPLE 1.31.0.5692.1a9e80997 modeling language!*/
 
 package ca.mcgill.ecse321.museum.model;
 import javax.persistence.*;
@@ -7,7 +7,7 @@ import java.util.*;
 import java.sql.Date;
 
 @Entity
-// line 65 "../../../../../MuseumSystem.ump"
+// line 95 "../../../../..//MuseumSystem.ump"
 public class Visitor extends Person
 {
 
@@ -19,6 +19,7 @@ public class Visitor extends Person
   private boolean isActive;
 
   //Visitor Associations
+  private List<ScheduleBlock> tickets;
   private List<Donation> donations;
   private List<Loan> loans;
   private ShoppingCart shoppingCart;
@@ -31,6 +32,7 @@ public class Visitor extends Person
   {
     super(aFirstName, aLastName, aEmail, aPassword, aMuseum);
     isActive = aIsActive;
+    tickets = new ArrayList<ScheduleBlock>();
     donations = new ArrayList<Donation>();
     loans = new ArrayList<Loan>();
   }
@@ -50,6 +52,36 @@ public class Visitor extends Person
   public boolean getIsActive()
   {
     return isActive;
+  }
+  /* Code from template association_GetMany */
+  public ScheduleBlock getTicket(int index)
+  {
+    ScheduleBlock aTicket = tickets.get(index);
+    return aTicket;
+  }
+
+  public List<ScheduleBlock> getTickets()
+  {
+    List<ScheduleBlock> newTickets = Collections.unmodifiableList(tickets);
+    return newTickets;
+  }
+
+  public int numberOfTickets()
+  {
+    int number = tickets.size();
+    return number;
+  }
+
+  public boolean hasTickets()
+  {
+    boolean has = tickets.size() > 0;
+    return has;
+  }
+
+  public int indexOfTicket(ScheduleBlock aTicket)
+  {
+    int index = tickets.indexOf(aTicket);
+    return index;
   }
   /* Code from template association_GetMany */
   public Donation getDonation(int index)
@@ -123,14 +155,96 @@ public class Visitor extends Person
     return has;
   }
   /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfTickets()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToManyMethod */
+  public boolean addTicket(ScheduleBlock aTicket)
+  {
+    boolean wasAdded = false;
+    if (tickets.contains(aTicket)) { return false; }
+    tickets.add(aTicket);
+    if (aTicket.indexOfVisitor(this) != -1)
+    {
+      wasAdded = true;
+    }
+    else
+    {
+      wasAdded = aTicket.addVisitor(this);
+      if (!wasAdded)
+      {
+        tickets.remove(aTicket);
+      }
+    }
+    return wasAdded;
+  }
+  /* Code from template association_RemoveMany */
+  public boolean removeTicket(ScheduleBlock aTicket)
+  {
+    boolean wasRemoved = false;
+    if (!tickets.contains(aTicket))
+    {
+      return wasRemoved;
+    }
+
+    int oldIndex = tickets.indexOf(aTicket);
+    tickets.remove(oldIndex);
+    if (aTicket.indexOfVisitor(this) == -1)
+    {
+      wasRemoved = true;
+    }
+    else
+    {
+      wasRemoved = aTicket.removeVisitor(this);
+      if (!wasRemoved)
+      {
+        tickets.add(oldIndex,aTicket);
+      }
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addTicketAt(ScheduleBlock aTicket, int index)
+  {  
+    boolean wasAdded = false;
+    if(addTicket(aTicket))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfTickets()) { index = numberOfTickets() - 1; }
+      tickets.remove(aTicket);
+      tickets.add(index, aTicket);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveTicketAt(ScheduleBlock aTicket, int index)
+  {
+    boolean wasAdded = false;
+    if(tickets.contains(aTicket))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfTickets()) { index = numberOfTickets() - 1; }
+      tickets.remove(aTicket);
+      tickets.add(index, aTicket);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addTicketAt(aTicket, index);
+    }
+    return wasAdded;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfDonations()
   {
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Donation addDonation(boolean aValidated, MuseumSystem aMuseum, Artwork... allArtworks)
+  public Donation addDonation(int aId, boolean aValidated, MuseumSystem aMuseum, Artwork... allArtworks)
   {
-    return new Donation(aValidated, aMuseum, this, allArtworks);
+    return new Donation(aId, aValidated, aMuseum, this, allArtworks);
   }
 
   public boolean addDonation(Donation aDonation)
@@ -200,9 +314,9 @@ public class Visitor extends Person
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Loan addLoan(float aPrice, boolean aValidated, Date aStartDate, Date aEndDate, MuseumSystem aMuseum, Artwork... allArtworks)
+  public Loan addLoan(int aId, float aPrice, boolean aValidated, Date aStartDate, Date aEndDate, MuseumSystem aMuseum, Artwork... allArtworks)
   {
-    return new Loan(aPrice, aValidated, aStartDate, aEndDate, aMuseum, this, allArtworks);
+    return new Loan(aId, aPrice, aValidated, aStartDate, aEndDate, aMuseum, this, allArtworks);
   }
 
   public boolean addLoan(Loan aLoan)
@@ -286,6 +400,12 @@ public class Visitor extends Person
 
   public void delete()
   {
+    ArrayList<ScheduleBlock> copyOfTickets = new ArrayList<ScheduleBlock>(tickets);
+    tickets.clear();
+    for(ScheduleBlock aTicket : copyOfTickets)
+    {
+      aTicket.removeVisitor(this);
+    }
     for(int i=donations.size(); i > 0; i--)
     {
       Donation aDonation = donations.get(i - 1);
@@ -303,6 +423,34 @@ public class Visitor extends Person
       placeholderShoppingCart.removeCustomer(this);
     }
     super.delete();
+  }
+
+
+  @ManyToMany(mappedBy="visitors")
+  // line 97 "../../../../..//MuseumSystem.ump"
+  public List<ScheduleBlock> getTicketsJPA(){
+    return getTickets();
+  }
+
+
+  @OneToMany(mappedBy="customer")
+  // line 98 "../../../../..//MuseumSystem.ump"
+  public List<Loan> getLoansJPA(){
+    return getLoans();
+  }
+
+
+  @ManyToOne(optional=false)
+  // line 99 "../../../../..//MuseumSystem.ump"
+  public ShoppingCart getShoppingCartJPA(){
+    return getShoppingCart();
+  }
+
+
+  @OneToMany(mappedBy="donor")
+  // line 100 "../../../../..//MuseumSystem.ump"
+  public List<Donation> getDonationsJPA(){
+    return getDonations();
   }
 
 

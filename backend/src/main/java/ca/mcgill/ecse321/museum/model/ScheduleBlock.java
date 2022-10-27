@@ -1,5 +1,5 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+/*This code was generated using the UMPLE 1.31.0.5692.1a9e80997 modeling language!*/
 
 package ca.mcgill.ecse321.museum.model;
 import javax.persistence.*;
@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.util.*;
 
 @Entity
-// line 18 "../../../../../MuseumSystem.ump"
+// line 28 "../../../../..//MuseumSystem.ump"
 public class ScheduleBlock
 {
 
@@ -22,6 +22,7 @@ public class ScheduleBlock
   //------------------------
 
   //ScheduleBlock Attributes
+  private int id;
   private Date startDate;
   private Date endDate;
   private float visitFees;
@@ -30,14 +31,16 @@ public class ScheduleBlock
 
   //ScheduleBlock Associations
   private List<Administrator> admins;
+  private List<Visitor> visitors;
   private Calendar calendar;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public ScheduleBlock(Date aStartDate, Date aEndDate, float aVisitFees, int aVisitCapacity, ScheduleEvent aEvent, Calendar aCalendar, Administrator... allAdmins)
+  public ScheduleBlock(int aId, Date aStartDate, Date aEndDate, float aVisitFees, int aVisitCapacity, ScheduleEvent aEvent, Calendar aCalendar, Administrator... allAdmins)
   {
+    id = aId;
     startDate = aStartDate;
     endDate = aEndDate;
     visitFees = aVisitFees;
@@ -49,6 +52,7 @@ public class ScheduleBlock
     {
       throw new RuntimeException("Unable to create ScheduleBlock, must have at least 1 admins. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
+    visitors = new ArrayList<Visitor>();
     boolean didAddCalendar = setCalendar(aCalendar);
     if (!didAddCalendar)
     {
@@ -98,6 +102,12 @@ public class ScheduleBlock
     event = aEvent;
     wasSet = true;
     return wasSet;
+  }
+
+  @Id
+  public int getId()
+  {
+    return id;
   }
 
   public Date getStartDate()
@@ -152,6 +162,36 @@ public class ScheduleBlock
   public int indexOfAdmin(Administrator aAdmin)
   {
     int index = admins.indexOf(aAdmin);
+    return index;
+  }
+  /* Code from template association_GetMany */
+  public Visitor getVisitor(int index)
+  {
+    Visitor aVisitor = visitors.get(index);
+    return aVisitor;
+  }
+
+  public List<Visitor> getVisitors()
+  {
+    List<Visitor> newVisitors = Collections.unmodifiableList(visitors);
+    return newVisitors;
+  }
+
+  public int numberOfVisitors()
+  {
+    int number = visitors.size();
+    return number;
+  }
+
+  public boolean hasVisitors()
+  {
+    boolean has = visitors.size() > 0;
+    return has;
+  }
+
+  public int indexOfVisitor(Visitor aVisitor)
+  {
+    int index = visitors.indexOf(aVisitor);
     return index;
   }
   /* Code from template association_GetOne */
@@ -293,6 +333,88 @@ public class ScheduleBlock
     }
     return wasAdded;
   }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfVisitors()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToManyMethod */
+  public boolean addVisitor(Visitor aVisitor)
+  {
+    boolean wasAdded = false;
+    if (visitors.contains(aVisitor)) { return false; }
+    visitors.add(aVisitor);
+    if (aVisitor.indexOfTicket(this) != -1)
+    {
+      wasAdded = true;
+    }
+    else
+    {
+      wasAdded = aVisitor.addTicket(this);
+      if (!wasAdded)
+      {
+        visitors.remove(aVisitor);
+      }
+    }
+    return wasAdded;
+  }
+  /* Code from template association_RemoveMany */
+  public boolean removeVisitor(Visitor aVisitor)
+  {
+    boolean wasRemoved = false;
+    if (!visitors.contains(aVisitor))
+    {
+      return wasRemoved;
+    }
+
+    int oldIndex = visitors.indexOf(aVisitor);
+    visitors.remove(oldIndex);
+    if (aVisitor.indexOfTicket(this) == -1)
+    {
+      wasRemoved = true;
+    }
+    else
+    {
+      wasRemoved = aVisitor.removeTicket(this);
+      if (!wasRemoved)
+      {
+        visitors.add(oldIndex,aVisitor);
+      }
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addVisitorAt(Visitor aVisitor, int index)
+  {  
+    boolean wasAdded = false;
+    if(addVisitor(aVisitor))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfVisitors()) { index = numberOfVisitors() - 1; }
+      visitors.remove(aVisitor);
+      visitors.add(index, aVisitor);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveVisitorAt(Visitor aVisitor, int index)
+  {
+    boolean wasAdded = false;
+    if(visitors.contains(aVisitor))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfVisitors()) { index = numberOfVisitors() - 1; }
+      visitors.remove(aVisitor);
+      visitors.add(index, aVisitor);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addVisitorAt(aVisitor, index);
+    }
+    return wasAdded;
+  }
   /* Code from template association_SetOneToMany */
   public boolean setCalendar(Calendar aCalendar)
   {
@@ -321,6 +443,12 @@ public class ScheduleBlock
     {
       aAdmin.removeShift(this);
     }
+    ArrayList<Visitor> copyOfVisitors = new ArrayList<Visitor>(visitors);
+    visitors.clear();
+    for(Visitor aVisitor : copyOfVisitors)
+    {
+      aVisitor.removeTicket(this);
+    }
     Calendar placeholderCalendar = calendar;
     this.calendar = null;
     if(placeholderCalendar != null)
@@ -330,9 +458,31 @@ public class ScheduleBlock
   }
 
 
+  // @ManyToOne(optional=false)
+  // // line 31 "../../../../..//MuseumSystem.ump"
+  // public Calendar getCalendarJPA(){
+  //   return getCalendar();
+  // }
+
+
+  @ManyToMany(mappedBy="shifts")
+  // line 32 "../../../../..//MuseumSystem.ump"
+  public List<Administrator> getAdminsJPA(){
+    return getAdmins();
+  }
+
+
+  @ManyToMany(mappedBy="tickets")
+  // line 33 "../../../../..//MuseumSystem.ump"
+  public List<Visitor> getVisitorsJPA(){
+    return getVisitors();
+  }
+
+
   public String toString()
   {
     return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
             "visitFees" + ":" + getVisitFees()+ "," +
             "visitCapacity" + ":" + getVisitCapacity()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "startDate" + "=" + (getStartDate() != null ? !getStartDate().equals(this)  ? getStartDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +

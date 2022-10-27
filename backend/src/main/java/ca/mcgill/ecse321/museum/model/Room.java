@@ -1,11 +1,15 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+/*This code was generated using the UMPLE 1.31.0.5692.1a9e80997 modeling language!*/
 
 package ca.mcgill.ecse321.museum.model;
+import javax.persistence.*;
 import java.util.*;
 import java.sql.Date;
 
-// line 107 "../../../../../MuseumSystem.ump"
+@Entity
+  @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+  @DiscriminatorColumn(name="RoomType")
+// line 148 "../../../../..//MuseumSystem.ump"
 public abstract class Room
 {
 
@@ -14,6 +18,7 @@ public abstract class Room
   //------------------------
 
   //Room Attributes
+  private int id;
   private String name;
 
   //Room Associations
@@ -24,8 +29,9 @@ public abstract class Room
   // CONSTRUCTOR
   //------------------------
 
-  public Room(String aName, MuseumSystem aMuseum)
+  public Room(int aId, String aName, MuseumSystem aMuseum)
   {
+    id = aId;
     name = aName;
     boolean didAddMuseum = setMuseum(aMuseum);
     if (!didAddMuseum)
@@ -45,6 +51,12 @@ public abstract class Room
     name = aName;
     wasSet = true;
     return wasSet;
+  }
+
+  @Id
+  public int getId()
+  {
+    return id;
   }
 
   public String getName()
@@ -111,9 +123,9 @@ public abstract class Room
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Artwork addArtwork(String aTitle, String aAuthor, Date aCreationDate, String aDescription, String aImageLink, float aPrice, boolean aIsAvailable, MuseumSystem aMuseum)
+  public Artwork addArtwork(int aId, String aTitle, String aAuthor, Date aCreationDate, String aDescription, String aImageLink, float aPrice, boolean aIsAvailable, MuseumSystem aMuseum)
   {
-    return new Artwork(aTitle, aAuthor, aCreationDate, aDescription, aImageLink, aPrice, aIsAvailable, aMuseum, this);
+    return new Artwork(aId, aTitle, aAuthor, aCreationDate, aDescription, aImageLink, aPrice, aIsAvailable, aMuseum, this);
   }
 
   public boolean addArtwork(Artwork aArtwork)
@@ -194,9 +206,24 @@ public abstract class Room
   }
 
 
+  @ManyToOne(optional=false)
+  // line 153 "../../../../..//MuseumSystem.ump"
+  public MuseumSystem getMuseumJPA(){
+    return getMuseum();
+  }
+
+
+  @OneToMany(mappedBy="storage")
+  // line 154 "../../../../..//MuseumSystem.ump"
+  public List<Artwork> getArtworksJPA(){
+    return getArtworks();
+  }
+
+
   public String toString()
   {
     return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
             "name" + ":" + getName()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "museum = "+(getMuseum()!=null?Integer.toHexString(System.identityHashCode(getMuseum())):"null");
   }

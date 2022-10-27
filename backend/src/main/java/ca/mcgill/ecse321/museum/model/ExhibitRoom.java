@@ -1,12 +1,12 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+/*This code was generated using the UMPLE 1.31.0.5692.1a9e80997 modeling language!*/
 
 package ca.mcgill.ecse321.museum.model;
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
-// line 114 "../../../../../MuseumSystem.ump"
+// line 159 "../../../../..//MuseumSystem.ump"
 public class ExhibitRoom extends Room
 {
 
@@ -21,9 +21,9 @@ public class ExhibitRoom extends Room
   // CONSTRUCTOR
   //------------------------
 
-  public ExhibitRoom(String aName, MuseumSystem aMuseum, int aCapacity)
+  public ExhibitRoom(int aId, String aName, MuseumSystem aMuseum, int aCapacity)
   {
-    super(aName, aMuseum);
+    super(aId, aName, aMuseum);
     capacity = aCapacity;
   }
 

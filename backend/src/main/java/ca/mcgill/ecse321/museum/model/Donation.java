@@ -1,12 +1,12 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+/*This code was generated using the UMPLE 1.31.0.5692.1a9e80997 modeling language!*/
 
 package ca.mcgill.ecse321.museum.model;
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
-// line 46 "../../../../../MuseumSystem.ump"
+// line 66 "../../../../..//MuseumSystem.ump"
 public class Donation
 {
 
@@ -15,6 +15,7 @@ public class Donation
   //------------------------
 
   //Donation Attributes
+  private int id;
   private boolean validated;
 
   //Donation Associations
@@ -27,8 +28,9 @@ public class Donation
   // CONSTRUCTOR
   //------------------------
 
-  public Donation(boolean aValidated, MuseumSystem aMuseum, Visitor aDonor, Artwork... allArtworks)
+  public Donation(int aId, boolean aValidated, MuseumSystem aMuseum, Visitor aDonor, Artwork... allArtworks)
   {
+    id = aId;
     validated = aValidated;
     boolean didAddMuseum = setMuseum(aMuseum);
     if (!didAddMuseum)
@@ -58,6 +60,12 @@ public class Donation
     validated = aValidated;
     wasSet = true;
     return wasSet;
+  }
+
+  @Id
+  public int getId()
+  {
+    return id;
   }
 
   public boolean getValidated()
@@ -334,9 +342,38 @@ public class Donation
   }
 
 
+  @ManyToOne(optional=false)
+  // line 71 "../../../../..//MuseumSystem.ump"
+  public MuseumSystem getMuseumJPA(){
+    return getMuseum();
+  }
+
+
+  @ManyToMany(mappedBy="donations")
+  // line 72 "../../../../..//MuseumSystem.ump"
+  public List<Artwork> getArtworksJPA(){
+    return getArtworks();
+  }
+
+
+  @ManyToOne(optional=false)
+  // line 73 "../../../../..//MuseumSystem.ump"
+  public Visitor getDonorJPA(){
+    return getDonor();
+  }
+
+
+  @ManyToOne(optional=false)
+  // line 74 "../../../../..//MuseumSystem.ump"
+  public Administrator getValidatorJPA(){
+    return getValidator();
+  }
+
+
   public String toString()
   {
     return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
             "validated" + ":" + getValidated()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "museum = "+(getMuseum()!=null?Integer.toHexString(System.identityHashCode(getMuseum())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "donor = "+(getDonor()!=null?Integer.toHexString(System.identityHashCode(getDonor())):"null") + System.getProperties().getProperty("line.separator") +

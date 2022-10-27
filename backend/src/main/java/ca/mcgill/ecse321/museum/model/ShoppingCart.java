@@ -1,18 +1,21 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+/*This code was generated using the UMPLE 1.31.0.5692.1a9e80997 modeling language!*/
 
 package ca.mcgill.ecse321.museum.model;
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
-// line 72 "../../../../../MuseumSystem.ump"
+// line 107 "../../../../..//MuseumSystem.ump"
 public class ShoppingCart
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
+
+  //ShoppingCart Attributes
+  private int id;
 
   //ShoppingCart Associations
   private List<Visitor> customers;
@@ -22,8 +25,9 @@ public class ShoppingCart
   // CONSTRUCTOR
   //------------------------
 
-  public ShoppingCart()
+  public ShoppingCart(int aId)
   {
+    id = aId;
     customers = new ArrayList<Visitor>();
     artworks = new ArrayList<Artwork>();
   }
@@ -31,6 +35,12 @@ public class ShoppingCart
   //------------------------
   // INTERFACE
   //------------------------
+
+  @Id
+  public int getId()
+  {
+    return id;
+  }
   /* Code from template association_GetMany */
   public Visitor getCustomer(int index)
   {
@@ -229,4 +239,17 @@ public class ShoppingCart
     artworks.clear();
   }
 
+
+  @OneToMany(mappedBy="shoppingCart")
+  // line 110 "../../../../..//MuseumSystem.ump"
+  public List<Visitor> getCustomersJPA(){
+    return getCustomers();
+  }
+
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "id" + ":" + getId()+ "]";
+  }
 }

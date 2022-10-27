@@ -1,5 +1,5 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+/*This code was generated using the UMPLE 1.31.0.5692.1a9e80997 modeling language!*/
 
 package ca.mcgill.ecse321.museum.model;
 import javax.persistence.*;
@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.util.*;
 
 @Entity
-// line 54 "../../../../../MuseumSystem.ump"
+// line 79 "../../../../..//MuseumSystem.ump"
 public class Loan
 {
 
@@ -16,6 +16,7 @@ public class Loan
   //------------------------
 
   //Loan Attributes
+  private int id;
   private float price;
   private boolean validated;
   private Date startDate;
@@ -31,8 +32,9 @@ public class Loan
   // CONSTRUCTOR
   //------------------------
 
-  public Loan(float aPrice, boolean aValidated, Date aStartDate, Date aEndDate, MuseumSystem aMuseum, Visitor aCustomer, Artwork... allArtworks)
+  public Loan(int aId, float aPrice, boolean aValidated, Date aStartDate, Date aEndDate, MuseumSystem aMuseum, Visitor aCustomer, Artwork... allArtworks)
   {
+    id = aId;
     price = aPrice;
     validated = aValidated;
     startDate = aStartDate;
@@ -89,6 +91,12 @@ public class Loan
     endDate = aEndDate;
     wasSet = true;
     return wasSet;
+  }
+
+  @Id
+  public int getId()
+  {
+    return id;
   }
 
   public float getPrice()
@@ -380,9 +388,38 @@ public class Loan
   }
 
 
+  @ManyToOne(optional=false)
+  // line 84 "../../../../..//MuseumSystem.ump"
+  public MuseumSystem getMuseumJPA(){
+    return getMuseum();
+  }
+
+
+  @ManyToOne(optional=false)
+  // line 85 "../../../../..//MuseumSystem.ump"
+  public Visitor getCustomerJPA(){
+    return getCustomer();
+  }
+
+
+  @ManyToMany(mappedBy="loans")
+  // line 86 "../../../../..//MuseumSystem.ump"
+  public List<Artwork> getArtworksJPA(){
+    return getArtworks();
+  }
+
+
+  @ManyToOne(optional=false)
+  // line 87 "../../../../..//MuseumSystem.ump"
+  public Administrator getValidatorJPA(){
+    return getValidator();
+  }
+
+
   public String toString()
   {
     return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
             "price" + ":" + getPrice()+ "," +
             "validated" + ":" + getValidated()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "startDate" + "=" + (getStartDate() != null ? !getStartDate().equals(this)  ? getStartDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +

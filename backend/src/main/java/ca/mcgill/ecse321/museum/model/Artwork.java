@@ -1,5 +1,5 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+/*This code was generated using the UMPLE 1.31.0.5692.1a9e80997 modeling language!*/
 
 package ca.mcgill.ecse321.museum.model;
 import javax.persistence.*;
@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.util.*;
 
 @Entity
-// line 79 "../../../../../MuseumSystem.ump"
+// line 116 "../../../../..//MuseumSystem.ump"
 public class Artwork
 {
 
@@ -16,6 +16,7 @@ public class Artwork
   //------------------------
 
   //Artwork Attributes
+  private int id;
   private String title;
   private String author;
   private Date creationDate;
@@ -34,8 +35,9 @@ public class Artwork
   // CONSTRUCTOR
   //------------------------
 
-  public Artwork(String aTitle, String aAuthor, Date aCreationDate, String aDescription, String aImageLink, float aPrice, boolean aIsAvailable, MuseumSystem aMuseum, Room aStorage)
+  public Artwork(int aId, String aTitle, String aAuthor, Date aCreationDate, String aDescription, String aImageLink, float aPrice, boolean aIsAvailable, MuseumSystem aMuseum, Room aStorage)
   {
+    id = aId;
     title = aTitle;
     author = aAuthor;
     creationDate = aCreationDate;
@@ -115,6 +117,12 @@ public class Artwork
     isAvailable = aIsAvailable;
     wasSet = true;
     return wasSet;
+  }
+
+  @Id
+  public int getId()
+  {
+    return id;
   }
 
   public String getTitle()
@@ -467,9 +475,38 @@ public class Artwork
   }
 
 
+  @ManyToOne(optional=false)
+  // line 123 "../../../../..//MuseumSystem.ump"
+  public MuseumSystem getMuseumJPA(){
+    return getMuseum();
+  }
+
+
+  @ManyToOne(optional=false)
+  // line 124 "../../../../..//MuseumSystem.ump"
+  public Room getStorageJPA(){
+    return getStorage();
+  }
+
+
+  @ManyToMany(mappedBy="artworks")
+  // line 125 "../../../../..//MuseumSystem.ump"
+  public List<Loan> getLoansJPA(){
+    return getLoans();
+  }
+
+
+  @ManyToMany(mappedBy="artworks")
+  // line 126 "../../../../..//MuseumSystem.ump"
+  public List<Donation> getDonationsJPA(){
+    return getDonations();
+  }
+
+
   public String toString()
   {
     return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
             "title" + ":" + getTitle()+ "," +
             "author" + ":" + getAuthor()+ "," +
             "description" + ":" + getDescription()+ "," +
