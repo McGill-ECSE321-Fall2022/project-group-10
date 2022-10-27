@@ -1,0 +1,124 @@
+namespace ca.mcgill.ecse321.museum.model;
+
+@Entity
+class MuseumSystem {
+    depend javax.persistence.*;
+    String name;
+}
+
+@Entity
+class Calendar {
+    depend javax.persistence.*;
+    1 calendar -<@> 1 MuseumSystem museum;
+    1 calendar -- * ScheduleBlock scheduleBlocks;
+    boolean isMuseumOpen;
+}
+
+@Entity
+class ScheduleBlock {
+    depend javax.persistence.*;
+    * shifts -- 1..* Administrator admins;
+    Date startDate;
+    Date endDate;
+    float visitFees;
+    int visitCapacity;
+    enum ScheduleEvent {MUSEUM_OPEN, MUSEUM_RESTORATION, MUSEUM_MEETING};
+    ScheduleEvent event;
+}
+
+class Person {
+    abstract;
+    * users -<@> 1 MuseumSystem museum;
+    String firstName;
+    String lastName;
+    String email;
+    String password;
+}
+
+class Administrator {
+    abstract;
+    isA Person;
+    0..1 validator -- * Donation assignedDonations;
+    0..1 validator -- * Loan assignedLoans;
+}
+
+@Entity
+class Donation {
+    depend javax.persistence.*;
+    * donations -<@> 1 MuseumSystem museum;
+    * donations -- 1 Visitor donor;
+    boolean validated;
+}
+
+@Entity
+class Loan {
+    depend javax.persistence.*;
+    * loans -<@> 1 MuseumSystem museum;
+    * loans -- 1 Visitor customer;
+    float price;
+    boolean validated;
+    Date startDate;
+    Date endDate;
+}
+
+@Entity
+class Visitor {
+    depend javax.persistence.*;
+    isA Person;
+    boolean isActive;
+}
+
+@Entity
+class ShoppingCart {
+    depend javax.persistence.*;
+    0..1 shoppingCart -- * Visitor customers;
+    * -> * Artwork artworks;
+}
+
+@Entity
+class Artwork {
+    depend javax.persistence.*;
+    * artworks -<@> 1 MuseumSystem museum;
+    1..* artworks -- * Loan loans;
+    1..* artworks -- * Donation donations;
+    * artworks -- 1 Room storage;
+    String title;
+    String author;
+    Date creationDate;
+    String description;
+    String imageLink;
+    float price;
+    boolean isAvailable;
+}
+
+@Entity
+class Employee {
+    depend javax.persistence.*;
+    isA Administrator;
+    boolean isActive;
+    float salary;
+}
+
+@Entity
+class Owner {
+    depend javax.persistence.*;
+}
+
+class Room {
+    abstract;
+    * rooms -<@> 1 MuseumSystem museum;
+    String name;
+}
+
+@Entity
+class ExhibitRoom {
+    depend javax.persistence.*;
+    isA Room;
+    int capacity;
+}
+
+@Entity
+class StorageRoom {
+    depend javax.persistence.*;
+    isA Room;
+}
