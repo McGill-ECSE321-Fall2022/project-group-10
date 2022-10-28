@@ -13,3 +13,8 @@ The team will analyze and translate the clients requirements into a working requ
 | Adam Simard   | Simard302        | Requirements, Use-cases, Tests, Documentation, Wiki | 8|
 | Alex Turianskyj   | Al3X-T        | Requirements, Use-cases, Tests, Documentation | |
 | Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation | |
+
+## Index
+[Project Report](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Project-Report)
+[Domain Model](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/UML-Domain-Model)
+[Use Case](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Use-Case-Diagram-and-Specifics)
