@@ -12,7 +12,7 @@ The team will analyze and translate the clients requirements into a working requ
 | Joseph Saliba   | JosephSaliba01        | Requirements, Use-cases, Tests, Documentation | |
 | Adam Simard   | Simard302        | Requirements, Use-cases, Tests, Documentation, Wiki | 8|
 | Alex Turianskyj   | Al3X-T        | Requirements, Use-cases, Tests, Documentation | |
-| Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation | |
+| Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation | 8|
 
 ## Index
 [Project Report](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Project-Report)
