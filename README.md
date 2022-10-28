@@ -1,10 +1,22 @@
-# Museum Web Application (group 10)
+# Museum Web Application (group 10
+## Project Scope
+The goal of this project is to design a Museum Management System. This system will manage the museum administration (ex: setting opening hours, employees, employee schedules) as well as manage visitors (ex: visitor passes and online browsing).
 
-| Name      | Github Username |
-| ----------- | ----------- |
-| Eduard Anton      | PersoSirEduard       |
-| Keith Crochtiere   | khc1100        |
-| Joseph Saliba   | JosephSaliba01        |
-| Adam Simard   | Simard302        |
-| Alex Turianskyj   | Al3X-T        |
-| Charles Blancas   | Charles Spencer Blancas        |
+The team will analyze and translate the clients requirements into a working requirements document. The team will also design, implement and validate the Museum Management System. It will also be made accessible to stakeholders through a web frontend.
+
+## Team Members
+| Name      | Github Username | Roles | Deliverable 1 (hours worked) |
+| ----------- | ----------- | ----------- | ----------- |
+| Eduard Anton      | PersoSirEduard       | Requirements, Use-cases, Tests, Documentation | |
+| Keith Crochtiere   | khc1100        | Requirements, Use-cases, Tests, Documentation | |
+| Joseph Saliba   | JosephSaliba01        | Requirements, Use-cases, Tests, Documentation | |
+| Adam Simard   | Simard302        | Requirements, Use-cases, Tests, Documentation, Wiki | 8|
+| Alex Turianskyj   | Al3X-T        | Requirements, Use-cases, Tests, Documentation | |
+| Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation | 8|
+
+## Index
+[Project Report](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Project-Report)
+
+[Domain Model](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/UML-Domain-Model)
+
+[Use Case](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Use-Case-Diagram-and-Specifics)

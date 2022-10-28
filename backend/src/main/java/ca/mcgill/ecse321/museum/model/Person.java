@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "PersonType")
 // line 45 "../../../../..//MuseumSystem.ump"
 public abstract class Person {
 
