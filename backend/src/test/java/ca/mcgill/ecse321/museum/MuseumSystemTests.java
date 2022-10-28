@@ -1,13 +1,12 @@
-package group10.backend;
+package ca.mcgill.ecse321.museum;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BackendApplicationTests {
+class MuseumSystemTests {
 
     @Test
     void contextLoads() {
     }
-
 }
