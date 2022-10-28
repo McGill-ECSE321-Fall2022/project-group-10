@@ -69,20 +69,24 @@ public class CalendarRepositoryTests {
         calendarRepository.save(calendar);
 
         Long calendarId = calendar.getId();
+        Long museumId = museum.getId();
+        Long scheduleBlockId = scheduleBlock.getId();
 
         // Read calendar from database
-        museum = null;
-        scheduleBlock = null;
         calendar = calendarRepository.findById(calendarId).orElse(null);
 
         // Assert that calendar has correct attributes
         assertNotNull(calendar);
         assertEquals(calendarId, calendar.getId());
         assertEquals(isMuseumOpen, calendar.isMuseumOpen());
+        // Test museum association
         assertNotNull(calendar.getMuseum());
+        assertEquals(museumId, calendar.getMuseum().getId());
         assertEquals(museumName, calendar.getMuseum().getName());
+        // Test schedule block association
         assertNotNull(calendar.getScheduleBlocks());
         assertEquals(1, calendar.getScheduleBlocks().size());
-        for (ScheduleBlock sb : calendar.getScheduleBlocks()) assertEquals(event, sb.getEvent());
+        assertEquals(scheduleBlockId, calendar.getScheduleBlocks().get(0).getId());
+        assertEquals(event, calendar.getScheduleBlocks().get(0).getEvent());
     }
 }
