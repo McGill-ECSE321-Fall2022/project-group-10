@@ -1,4 +1,4 @@
-# Museum Web Application (group 10
+# Museum Web Application (group 10)
 ## Project Scope
 The goal of this project is to design a Museum Management System. This system will manage the museum administration (ex: setting opening hours, employees, employee schedules) as well as manage visitors (ex: visitor passes and online browsing).
 
