@@ -29,6 +29,9 @@ public class ScheduleBlockRepositoryTests {
     @AfterEach
     public void clearDatabase() {
         scheduleBlockRepository.deleteAll();
+        calendarRepository.deleteAll();
+        visitorRepository.deleteAll();
+        administratorRepository.deleteAll();
     }
 
     @Test
