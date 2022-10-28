@@ -11,14 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.mcgill.ecse321.museum.model.Artwork;
+import ca.mcgill.ecse321.museum.model.ExhibitRoom;
+import ca.mcgill.ecse321.museum.model.Room;
 
 @SpringBootTest
 public class ArtworkRepositoryTests {
+
     @Autowired ArtworkRepository artworkRepository;
+    @Autowired RoomRepository roomRepository;
 
     @AfterEach
     public void clearDatabase() {
         artworkRepository.deleteAll();
+        roomRepository.deleteAll();
     }
 
     @Test
@@ -26,41 +31,46 @@ public class ArtworkRepositoryTests {
 
         // Create object
         Artwork artwork = new Artwork();
+        Room room = new ExhibitRoom();
 
         // Create attributes
         String title = "Test Title";
         String author = "Test Author";
-        String description = "Test Description";
-        String imageLink = "Test Image Link";
         Date creationDate = Date.valueOf("2020-01-01");
-        float price = 100.0f;
         boolean isAvailable = true;
+
+        String roomName = "Test Room Name";
 
         // Set attributes
         artwork.setTitle(title);
         artwork.setAuthor(author);
-        artwork.setDescription(description);
-        artwork.setImageLink(imageLink);
         artwork.setCreationDate(creationDate);
-        artwork.setPrice(price);
         artwork.setAvailable(isAvailable);
 
+        room.setName(roomName);
+        artwork.setStorage(room);
+
         // Save object
+        room = roomRepository.save(room);
         artwork = artworkRepository.save(artwork);
-        long id = artwork.getId();
+        long artworkId = artwork.getId();
+        long roomId = room.getId();
 
         // Read object from database
-        artwork = artworkRepository.findById(id).orElse(null);
+        artwork = artworkRepository.findById(artworkId).orElse(null);
+        room = roomRepository.findById(roomId).orElse(null);
 
         // Assert that object has correct attributes
         assertNotNull(artwork);
+        assertNotNull(room);
+
         assertEquals(title, artwork.getTitle());
         assertEquals(author, artwork.getAuthor());
-        assertEquals(description, artwork.getDescription());
-        assertEquals(imageLink, artwork.getImageLink());
         assertEquals(creationDate, artwork.getCreationDate());
-        assertEquals(price, artwork.getPrice());
         assertEquals(isAvailable, artwork.isAvailable());
+
+        assertEquals(roomName, room.getName());
+        assertEquals(roomName, artwork.getStorage().getName());
     }
 
 }
