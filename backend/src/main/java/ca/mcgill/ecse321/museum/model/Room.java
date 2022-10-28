@@ -26,7 +26,7 @@ public abstract class Room {
     @ManyToMany
     private List<Artwork> artworks;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
