@@ -5,6 +5,7 @@ import java.util.*;
 
 // line 136 "../../../../..//MuseumSystem.ump"
 @Entity
+@DiscriminatorValue("Employee")
 public class Employee extends Administrator {
 
     //------------------------
