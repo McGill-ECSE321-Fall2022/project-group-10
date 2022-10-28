@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 // line 143 "../../../../..//MuseumSystem.ump"
 @Entity
+@DiscriminatorValue("Owner")
 public class Owner extends Administrator {
 
     //------------------------

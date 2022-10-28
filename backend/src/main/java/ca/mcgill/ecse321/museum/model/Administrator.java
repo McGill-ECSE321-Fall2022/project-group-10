@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
+@DiscriminatorValue("Administrator")
 // line 57 "../../../../..//MuseumSystem.ump"
 public abstract class Administrator extends Person {
 
