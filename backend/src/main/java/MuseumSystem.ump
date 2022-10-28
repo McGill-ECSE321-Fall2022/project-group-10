@@ -73,6 +73,7 @@ class Donation {
     @ManyToOne(optional=false) Visitor getDonorJPA() { return getDonor(); };
     @ManyToOne(optional=false) Administrator getValidatorJPA() { return getValidator(); };
     boolean validated;
+    String description;
 }
 
 @Entity

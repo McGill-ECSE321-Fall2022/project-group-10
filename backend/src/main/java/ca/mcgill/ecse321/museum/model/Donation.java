@@ -16,6 +16,7 @@ public class Donation {
     @GeneratedValue
     private long id;
     private boolean validated;
+    private String description;
 
     //Donation Associations
     @ManyToOne
@@ -45,6 +46,14 @@ public class Donation {
 
     public void setValidated(boolean validated) {
         this.validated = validated;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public MuseumSystem getMuseum() {
