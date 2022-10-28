@@ -15,7 +15,7 @@ The team will analyze and translate the clients requirements into a working requ
 | Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation | 8|
 
 ## Index
-[Project Report](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Project-Report)
+[Deliverable 1 Project Report](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Project-Report)
 
 [Domain Model](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/UML-Domain-Model)
 
