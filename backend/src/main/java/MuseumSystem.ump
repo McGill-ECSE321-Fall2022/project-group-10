@@ -1,0 +1,170 @@
+namespace ca.mcgill.ecse321.museum.model;
+
+@Entity
+class MuseumSystem {
+    depend javax.persistence.*;
+    @Id immutable int id;
+    String name;
+
+    @OneToMany(mappedBy="museum") List<Person> getUsersJPA() { return getUsers(); };
+    @OneToMany(mappedBy="museum") List<Artwork> getArtworksJPA() { return getArtworks(); };
+    @OneToMany(mappedBy="museum") List<Room> getRoomsJPA() { return getRooms(); };
+    @OneToMany(mappedBy="museum") List<Loan> getLoansJPA() { return getLoans(); };
+    @OneToMany(mappedBy="museum") List<Donation> getDonationsJPA() { return getDonations(); };
+    @OneToOne(mappedBy="museum") Calendar getCalendarJPA() { return getCalendar(); };
+}
+
+@Entity
+class Calendar {
+    depend javax.persistence.*;
+    @Id immutable int id;
+    @ManyToOne(optional=false) MuseumSystem getMuseumJPA() { return getMuseum(); };
+    1 calendar -<@> 1 MuseumSystem museum;
+    1 calendar -- * ScheduleBlock scheduleBlocks;
+    boolean isMuseumOpen;
+}
+
+@Entity
+class ScheduleBlock {
+    depend javax.persistence.*;
+    @Id immutable int id;
+    @ManyToOne(optional=false) Calendar getCalendarJPA() { return getCalendar(); };
+    @ManyToMany(mappedBy="shifts") List<Administrator> getAdminsJPA() { return getAdmins(); };
+    @ManyToMany(mappedBy="tickets") List<Visitor> getVisitorsJPA() { return getVisitors(); };
+    * shifts -- 1..* Administrator admins;
+    * tickets -- * Visitor visitors;
+    Date startDate;
+    Date endDate;
+    float visitFees;
+    int visitCapacity;
+    enum ScheduleEvent {MUSEUM_OPEN, MUSEUM_RESTORATION, MUSEUM_MEETING};
+    ScheduleEvent event;
+}
+
+@MappedSuperclass
+class Person {
+    depend javax.persistence.*;
+    abstract;
+    * users -<@> 1 MuseumSystem museum;
+    String firstName;
+    String lastName;
+    @Id immutable String email;
+    @ManyToOne(optional=false) MuseumSystem getMuseumJPA() { return getMuseum(); };
+    String password;
+}
+
+@Entity
+class Administrator {
+    depend javax.persistence.*;
+    abstract;
+    isA Person;
+    0..1 validator -- * Donation assignedDonations;
+    0..1 validator -- * Loan assignedLoans;
+}
+
+@Entity
+class Donation {
+    depend javax.persistence.*;
+    * donations -<@> 1 MuseumSystem museum;
+    * donations -- 1 Visitor donor;
+    @Id immutable int id;
+    @ManyToOne(optional=false) MuseumSystem getMuseumJPA() { return getMuseum(); };
+    @ManyToMany(mappedBy="donations") List<Artwork> getArtworksJPA() { return getArtworks(); };
+    @ManyToOne(optional=false) Visitor getDonorJPA() { return getDonor(); };
+    @ManyToOne(optional=false) Administrator getValidatorJPA() { return getValidator(); };
+    boolean validated;
+    String description;
+}
+
+@Entity
+class Loan {
+    depend javax.persistence.*;
+    * loans -<@> 1 MuseumSystem museum;
+    * loans -- 1 Visitor customer;
+    @Id immutable int id;
+    @ManyToOne(optional=false) MuseumSystem getMuseumJPA() { return getMuseum(); };
+    @ManyToOne(optional=false) Visitor getCustomerJPA() { return getCustomer(); };
+    @ManyToMany(mappedBy="loans") List<Artwork> getArtworksJPA() { return getArtworks(); };
+    @ManyToOne(optional=false) Administrator getValidatorJPA() { return getValidator(); };
+    float price;
+    boolean validated;
+    Date startDate;
+    Date endDate;
+}
+
+@Entity
+class Visitor {
+    depend javax.persistence.*;
+    @ManyToMany(mappedBy="visitors") List<ScheduleBlock> getTicketsJPA() { return getTickets(); };
+    @OneToMany(mappedBy="customer") List<Loan> getLoansJPA() { return getLoans(); };
+    @ManyToOne(optional=false) ShoppingCart getShoppingCartJPA() { return getShoppingCart(); };
+    @OneToMany(mappedBy="donor") List<Donation> getDonationsJPA() { return getDonations(); };
+
+    isA Person;
+    boolean isActive;
+}
+
+@Entity
+class ShoppingCart {
+    depend javax.persistence.*;
+    @Id immutable int id;
+    @OneToMany(mappedBy="customers") List<Visitor> getCustomersJPA() { return getCustomers(); };
+    0..1 shoppingCart -- * Visitor customers;
+    * -> * Artwork artworks;
+}
+
+@Entity
+class Artwork {
+    depend javax.persistence.*;
+    * artworks -<@> 1 MuseumSystem museum;
+    1..* artworks -- * Loan loans;
+    1..* artworks -- * Donation donations;
+    * artworks -- 1 Room storage;
+    @Id immutable int id;
+    @ManyToOne(optional=false) MuseumSystem getMuseumJPA() { return getMuseum(); };
+    @ManyToOne(optional=false) Room getStorageJPA() { return getStorage(); };
+    @ManyToMany(mappedBy="artworks") List<Loan> getLoansJPA() { return getLoans(); };
+    @ManyToMany(mappedBy="artworks") List<Donation> getDonationsJPA() { return getDonations(); };
+    String title;
+    String author;
+    Date creationDate;
+    String description;
+    String imageLink;
+    float price;
+    boolean isAvailable;
+}
+
+class Employee {
+    depend javax.persistence.*;
+    isA Administrator;
+    boolean isActive;
+    float salary;
+}
+
+class Owner {
+    depend javax.persistence.*;
+}
+
+@Entity @Inheritance(strategy=InheritanceType.SINGLE_TABLE) @DiscriminatorColumn(name="RoomType")
+class Room {
+    depend javax.persistence.*;
+    abstract;
+    * rooms -<@> 1 MuseumSystem museum;
+    @Id immutable int id;
+    @ManyToOne(optional=false) MuseumSystem getMuseumJPA() { return getMuseum(); };
+    @OneToMany(mappedBy="storage") List<Artwork> getArtworksJPA() { return getArtworks(); };
+    String name;
+}
+
+@Entity
+class ExhibitRoom {
+    depend javax.persistence.*;
+    isA Room;
+    int capacity;
+}
+
+@Entity
+class StorageRoom {
+    depend javax.persistence.*;
+    isA Room;
+}
