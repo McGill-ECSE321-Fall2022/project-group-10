@@ -11,7 +11,7 @@ The team will analyze and translate the clients requirements into a working requ
 | Keith Crochtiere   | khc1100        | Requirements, Use-cases, Tests, Documentation | 8 |
 | Joseph Saliba   | JosephSaliba01        | Requirements, Use-cases, Tests, Documentation, Domain Model | 15 |
 | Adam Simard   | Simard302        | Requirements, Use-cases, Tests, Documentation, Wiki | 8 |
-| Alex Turianskyj   | Al3X-T        | Requirements, Use-cases, Tests, Documentation | 11 |
+| Alex Turianskyj   | Al3X-T        | Requirements, Use-cases, Tests, Documentation | 8 |
 | Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation, Project Setup, Model Classes | 10 |
 
 ## Index
