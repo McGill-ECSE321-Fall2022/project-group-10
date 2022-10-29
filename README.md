@@ -7,12 +7,12 @@ The team will analyze and translate the clients requirements into a working requ
 ## Team Members
 | Name      | Github Username | Roles | Deliverable 1 (hours worked) |
 | ----------- | ----------- | ----------- | ----------- |
-| Eduard Anton      | PersoSirEduard       | Requirements, Use-cases, Tests, Documentation | 15 |
+| Eduard Anton      | PersoSirEduard       | Requirements, Use-cases, Tests, Documentation, Domain Model | 15 |
 | Keith Crochtiere   | khc1100        | Requirements, Use-cases, Tests, Documentation | 8 |
-| Joseph Saliba   | JosephSaliba01        | Requirements, Use-cases, Tests, Documentation | 15 |
+| Joseph Saliba   | JosephSaliba01        | Requirements, Use-cases, Tests, Documentation, Domain Model | 15 |
 | Adam Simard   | Simard302        | Requirements, Use-cases, Tests, Documentation, Wiki | 8 |
 | Alex Turianskyj   | Al3X-T        | Requirements, Use-cases, Tests, Documentation | 11 |
-| Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation | 10 |
+| Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation, Project Setup, Model Classes | 10 |
 
 ## Index
 [Deliverable 1 Project Report](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Deliverable-1-Project-Report)
