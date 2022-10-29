@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -76,7 +74,7 @@ public class MuseumSystemRepositoryTests {
         owner.setPassword("lovelovemedo");
         owner = personRepository.save(owner);
 
-        List users = List.of(visitor, owner);
+        List<Person> users = List.of(visitor, owner);
         museumSystem.setUsers(users);
 
         // For artworks
@@ -98,7 +96,7 @@ public class MuseumSystemRepositoryTests {
         artwork2.setAvailable(true);
         artwork2 = artworkRepository.save(artwork2);
 
-        List artworks = List.of(artwork1, artwork2);
+        List<Artwork> artworks = List.of(artwork1, artwork2);
         museumSystem.setArtworks(artworks);
 
         // For Donations
@@ -117,7 +115,7 @@ public class MuseumSystemRepositoryTests {
         donation2.setValidator(owner);
         donation2 = donationRepository.save(donation2);
 
-        List donations = List.of(donation1, donation2);
+        List<Donation> donations = List.of(donation1, donation2);
         museumSystem.setDonations(donations);
 
         // For Loans
@@ -135,7 +133,7 @@ public class MuseumSystemRepositoryTests {
         loan2.setCustomer(visitor);
         loan2 = loanRepository.save(loan2);
 
-        List loans = List.of(loan1, loan2);
+        List<Loan> loans = List.of(loan1, loan2);
         museumSystem.setLoans(loans);
 
         // For Rooms
@@ -150,7 +148,7 @@ public class MuseumSystemRepositoryTests {
         storageRoom.setArtworks(List.of(artwork2));
         storageRoom = roomRepository.save(storageRoom);
 
-        List rooms = List.of(room, storageRoom);
+        List<Room> rooms = List.of(room, storageRoom);
         museumSystem.setRooms(rooms);
 
         // Save object

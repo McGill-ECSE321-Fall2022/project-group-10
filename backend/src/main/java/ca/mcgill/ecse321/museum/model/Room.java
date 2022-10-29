@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.museum.model;
 
 import javax.persistence.*;
 import java.util.*;
-import java.sql.Date;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

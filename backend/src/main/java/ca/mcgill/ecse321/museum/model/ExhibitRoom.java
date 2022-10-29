@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.museum.model;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 // line 159 "../../../../..//MuseumSystem.ump"
