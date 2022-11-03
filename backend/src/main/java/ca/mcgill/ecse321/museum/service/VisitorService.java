@@ -26,5 +26,5 @@ public class VisitorService {
     public Optional<Visitor> getVisitor(long id) {
         return visitorRepository.findById(id);
     }
-
+    
 }
