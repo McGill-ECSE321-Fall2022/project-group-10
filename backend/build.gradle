@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id 'pmd'
     id 'com.github.spotbugs' version '5.0.13'
+    id 'jacoco'
 }
 
 group = 'ca.mcgill.ecse321'
@@ -35,4 +36,9 @@ test {
     testLogging {
         events "PASSED", "SKIPPED", "FAILED"
     }
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
 }
