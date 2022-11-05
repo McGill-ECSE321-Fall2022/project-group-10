@@ -1,33 +1,29 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto;
 
 import ca.mcgill.ecse321.museum.model.*;
-
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.util.List;
 
 @Entity
 // line 95 "../../../../..//MuseumSystem.ump"
 public class VisitorDto extends PersonDto {
 
-    //------------------------
+    // ------------------------
     // MEMBER VARIABLES
-    //------------------------
+    // ------------------------
 
-    //Visitor Attributes
+    // Visitor Attributes
     private boolean isActive;
 
-    //Visitor Associations
-    @ManyToMany
-    private List<ScheduleBlock> tickets;
-    @OneToMany
-    private List<Donation> donations;
-    @OneToMany
-    private List<Loan> loans;
-    @ManyToOne
-    private ShoppingCart shoppingCart;
+    // Visitor Associations
+    @ManyToMany private List<ScheduleBlock> tickets;
+    @OneToMany private List<Donation> donations;
+    @OneToMany private List<Loan> loans;
+    @ManyToOne private ShoppingCart shoppingCart;
 
     public boolean isActive() {
         return isActive;

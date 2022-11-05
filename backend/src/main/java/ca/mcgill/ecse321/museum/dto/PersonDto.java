@@ -1,7 +1,7 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto;
 
 import ca.mcgill.ecse321.museum.model.MuseumSystem;
-
 import javax.persistence.*;
 
 @Entity
@@ -10,22 +10,19 @@ import javax.persistence.*;
 // line 45 "../../../../..//MuseumSystem.ump"
 public abstract class PersonDto {
 
-    //------------------------
+    // ------------------------
     // MEMBER VARIABLES
-    //------------------------
+    // ------------------------
 
-    //Person Attributes
+    // Person Attributes
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
-    //Person Associations
-    @ManyToOne
-    private MuseumSystem museum;
-    @Id
-    @GeneratedValue
-    private Long id;
+    // Person Associations
+    @ManyToOne private MuseumSystem museum;
+    @Id @GeneratedValue private Long id;
 
     public Long getId() {
         return id;

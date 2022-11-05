@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum;
 
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 @Configuration
 @EnableSwagger2
