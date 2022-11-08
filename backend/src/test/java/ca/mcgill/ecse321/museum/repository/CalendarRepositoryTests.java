@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.museum.model.Calendar;
-import ca.mcgill.ecse321.museum.model.MuseumSystem;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock.ScheduleEvent;
 
@@ -23,16 +22,12 @@ public class CalendarRepositoryTests {
     CalendarRepository calendarRepository;
 
     @Autowired
-    MuseumSystemRepository museumSystemRepository;
-
-    @Autowired
     ScheduleBlockRepository scheduleBlockRepository;
 
     @AfterEach
     public void clearDatabase() {
         // Clear database rows after each test
         calendarRepository.deleteAll();
-        museumSystemRepository.deleteAll();
         scheduleBlockRepository.deleteAll();
     }
 
@@ -45,12 +40,7 @@ public class CalendarRepositoryTests {
 
         // Create all objects
         Calendar calendar = new Calendar();
-        MuseumSystem museum = new MuseumSystem();
         ScheduleBlock scheduleBlock = new ScheduleBlock();
-
-        // Set museum attribute
-        String museumName = "Museum";
-        museum.setName(museumName);
 
         // Set schedule block attribute
         ScheduleEvent event = ScheduleEvent.MUSEUM_OPEN;
@@ -59,17 +49,14 @@ public class CalendarRepositoryTests {
         // Set all calendar attributes
         boolean isMuseumOpen = true;
         calendar.setMuseumOpen(true);
-        calendar.setMuseum(museum);
-        List<ScheduleBlock> scheduleBlocks = Arrays.asList(scheduleBlock);
+        List<ScheduleBlock> scheduleBlocks = List.of(scheduleBlock);
         calendar.setScheduleBlocks(scheduleBlocks);
-        
+
         // Save all objects
-        museumSystemRepository.save(museum);
         scheduleBlockRepository.save(scheduleBlock);
         calendarRepository.save(calendar);
 
         Long calendarId = calendar.getId();
-        Long museumId = museum.getId();
         Long scheduleBlockId = scheduleBlock.getId();
 
         // Read calendar from database
@@ -79,10 +66,6 @@ public class CalendarRepositoryTests {
         assertNotNull(calendar);
         assertEquals(calendarId, calendar.getId());
         assertEquals(isMuseumOpen, calendar.isMuseumOpen());
-        // Test museum association
-        assertNotNull(calendar.getMuseum());
-        assertEquals(museumId, calendar.getMuseum().getId());
-        assertEquals(museumName, calendar.getMuseum().getName());
         // Test schedule block association
         assertNotNull(calendar.getScheduleBlocks());
         assertEquals(1, calendar.getScheduleBlocks().size());

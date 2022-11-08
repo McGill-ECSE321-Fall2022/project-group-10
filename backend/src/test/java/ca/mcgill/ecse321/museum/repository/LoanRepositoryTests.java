@@ -23,16 +23,13 @@ public class LoanRepositoryTests {
     VisitorRepository visitorRepository;
     @Autowired
     ArtworkRepository artworkRepository;
-    @Autowired
-    MuseumSystemRepository museumSystemRepository;
-
+    
     @AfterEach
     public void clearDatabase() {
         loanRepository.deleteAll();
         administratorRepository.deleteAll();
         visitorRepository.deleteAll();
         artworkRepository.deleteAll();
-        museumSystemRepository.deleteAll();
     }
 
     @Test
@@ -87,13 +84,6 @@ public class LoanRepositoryTests {
 
         loan.setCustomer(visitor);
 
-        // MuseumSystem
-        MuseumSystem museumSystem = new MuseumSystem();
-        museumSystem.setName("Muesli, yum");
-        museumSystem = museumSystemRepository.save(museumSystem);
-
-        loan.setMuseum(museumSystem);
-
         // Save object
         loan = loanRepository.save(loan);
         long id = loan.getId();
@@ -110,6 +100,5 @@ public class LoanRepositoryTests {
         assertEquals(List.of(artwork), loan.getArtworks());
         assertEquals(visitor, loan.getCustomer());
         assertEquals(owner, loan.getValidator());
-        assertEquals(museumSystem, loan.getMuseum());
     }
 }

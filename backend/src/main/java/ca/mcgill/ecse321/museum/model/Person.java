@@ -19,8 +19,6 @@ public abstract class Person {
     private String password;
 
     //Person Associations
-    @ManyToOne
-    private MuseumSystem museum;
     @Id
     @GeneratedValue
     private Long id;
@@ -63,13 +61,5 @@ public abstract class Person {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public MuseumSystem getMuseum() {
-        return museum;
-    }
-
-    public void setMuseum(MuseumSystem museum) {
-        this.museum = museum;
     }
 }

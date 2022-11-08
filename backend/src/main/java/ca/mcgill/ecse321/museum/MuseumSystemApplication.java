@@ -1,7 +1,6 @@
 /* (C)2022 */
 package ca.mcgill.ecse321.museum;
 
-import ca.mcgill.ecse321.museum.repository.MuseumSystemRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -24,8 +23,9 @@ public class MuseumSystemApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(MuseumSystemRepository museumSystemRepository) {
-        return args -> {};
+    CommandLineRunner commandLineRunner() {
+        return args -> {
+        };
     }
 
     @Bean

@@ -18,8 +18,6 @@ public class Calendar {
     private boolean isMuseumOpen;
 
     //Calendar Associations
-    @OneToOne
-    private MuseumSystem museum;
     @OneToMany
     private List<ScheduleBlock> scheduleBlocks;
 
@@ -41,14 +39,6 @@ public class Calendar {
 
     public void setMuseumOpen(boolean museumOpen) {
         isMuseumOpen = museumOpen;
-    }
-
-    public MuseumSystem getMuseum() {
-        return museum;
-    }
-
-    public void setMuseum(MuseumSystem museum) {
-        this.museum = museum;
     }
 
     public List<ScheduleBlock> getScheduleBlocks() {

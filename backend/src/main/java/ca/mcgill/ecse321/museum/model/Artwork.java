@@ -25,8 +25,6 @@ public class Artwork {
     private boolean isAvailable;
 
     //Artwork Associations
-    @ManyToOne
-    private MuseumSystem museum;
     @ManyToMany
     private List<Loan> loans;
     @ManyToMany
@@ -101,15 +99,7 @@ public class Artwork {
     public void setAvailable(boolean available) {
         isAvailable = available;
     }
-
-    public MuseumSystem getMuseum() {
-        return museum;
-    }
-
-    public void setMuseum(MuseumSystem museum) {
-        this.museum = museum;
-    }
-
+    
     public List<Loan> getLoans() {
         return loans;
     }

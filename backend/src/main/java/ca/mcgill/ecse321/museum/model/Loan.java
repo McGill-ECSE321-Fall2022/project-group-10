@@ -23,8 +23,6 @@ public class Loan {
 
     //Loan Associations
     @ManyToOne
-    private MuseumSystem museum;
-    @ManyToOne
     private Visitor customer;
     @ManyToOne
     private Administrator validator;
@@ -74,15 +72,7 @@ public class Loan {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-
-    public MuseumSystem getMuseum() {
-        return museum;
-    }
-
-    public void setMuseum(MuseumSystem museum) {
-        this.museum = museum;
-    }
-
+    
     public Visitor getCustomer() {
         return customer;
     }

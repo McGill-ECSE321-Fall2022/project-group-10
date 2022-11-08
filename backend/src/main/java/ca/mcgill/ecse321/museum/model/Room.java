@@ -20,8 +20,6 @@ public abstract class Room {
     private String name;
 
     //Room Associations
-    @ManyToOne
-    private MuseumSystem museum;
     @ManyToMany
     private List<Artwork> artworks;
 
@@ -43,14 +41,6 @@ public abstract class Room {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public MuseumSystem getMuseum() {
-        return museum;
-    }
-
-    public void setMuseum(MuseumSystem museum) {
-        this.museum = museum;
     }
 
     public List<Artwork> getArtworks() {

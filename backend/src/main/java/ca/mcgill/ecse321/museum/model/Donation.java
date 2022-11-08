@@ -20,8 +20,6 @@ public class Donation {
 
     //Donation Associations
     @ManyToOne
-    private MuseumSystem museum;
-    @ManyToOne
     private Visitor donor;
     @ManyToOne
     private Administrator validator;
@@ -55,15 +53,7 @@ public class Donation {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public MuseumSystem getMuseum() {
-        return museum;
-    }
-
-    public void setMuseum(MuseumSystem museum) {
-        this.museum = museum;
-    }
-
+    
     public Visitor getDonor() {
         return donor;
     }
