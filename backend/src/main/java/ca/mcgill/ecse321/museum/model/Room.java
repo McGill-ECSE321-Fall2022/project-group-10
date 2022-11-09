@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.museum.model;
 
+import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -17,6 +19,7 @@ public abstract class Room {
     @Id
     @GeneratedValue
     private long id;
+    @NonNull
     private String name;
 
     //Room Associations
