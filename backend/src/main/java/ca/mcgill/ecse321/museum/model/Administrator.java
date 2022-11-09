@@ -11,11 +11,6 @@ public abstract class Administrator extends Person {
     //------------------------
     // MEMBER VARIABLES
     //------------------------
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
     //Administrator Associations
     @OneToMany
     private List<Donation> assignedDonations;
@@ -23,14 +18,6 @@ public abstract class Administrator extends Person {
     private List<Loan> assignedLoans;
     @ManyToMany
     private List<ScheduleBlock> shifts;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public List<Donation> getAssignedDonations() {
         return assignedDonations;
@@ -56,5 +43,5 @@ public abstract class Administrator extends Person {
         this.shifts = shifts;
     }
 
-    
+
 }
