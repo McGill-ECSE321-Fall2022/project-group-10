@@ -2,6 +2,7 @@
 package ca.mcgill.ecse321.museum.service;
 
 import ca.mcgill.ecse321.museum.model.Artwork;
+import ca.mcgill.ecse321.museum.model.Room;
 import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
 import ca.mcgill.ecse321.museum.repository.VisitorRepository;
@@ -39,5 +40,13 @@ public class ArtworkService {
 
     @Transactional public Artwork getArtwork(long id) { return artworkRepository.findById(id).orElse(null); }
 
-    @Transactional public List<Artwork> getArtworks() { return artworkRepository.findAll();}
+    @Transactional public List<Artwork> getAllArtworks() { return artworkRepository.findAll();}
+
+    @Transactional public void deleteArtwork(Artwork artwork) {artworkRepository.delete(artwork);}
+
+    @Transactional public Artwork moveArtworkToRoom(Artwork artwork, Room room) {
+        artwork.setStorage(room);
+        return artworkRepository.save(artwork);
+    }
+
 }

@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -57,17 +57,12 @@ public class ArtworkServiceTests {
             return List.of(artwork);
         });
 
-
         // Whenever anything is saved, just return the parameter object
         Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
             return invocation.getArgument(0);
         };
         lenient().when(artworkRepository.save(any(Artwork.class))).thenAnswer(returnParameterAsAnswer);
     }
-
-    @AfterEach
-
-
     @Test
     public void testCreateArtworkComplete() {
         var title = "Mona Lisa";
@@ -95,9 +90,22 @@ public class ArtworkServiceTests {
     }
 
     @Test public void testGetAllArtworks() {
-        List<Artwork> artworks = artworkService.getArtworks();
+        List<Artwork> artworks = artworkService.getAllArtworks();
         assertNotNull(artworks);
         assertNotNull(artworks.get(0));
         assertEquals(ARTWORK_KEY, artworks.get(0).getId());
+    }
+
+    @Test public void testMoveArtworkToRoom() {
+        var room = new ExhibitRoom();
+        var artwork = new Artwork();
+        artwork = artworkService.moveArtworkToRoom(artwork, room);
+        assertNotNull(artwork);
+        assertEquals(room, artwork.getStorage());
+    }
+    @Test public void testDeleteArtwork() {
+        var artwork = new Artwork();
+        artworkRepository.delete(artwork);
+        verify(artworkRepository,times(1)).delete(artwork);
     }
 }
