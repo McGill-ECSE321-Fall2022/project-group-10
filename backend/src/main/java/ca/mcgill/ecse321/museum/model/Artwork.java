@@ -1,5 +1,8 @@
 package ca.mcgill.ecse321.museum.model;
 
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.*;
@@ -16,10 +19,15 @@ public class Artwork {
     @Id
     @GeneratedValue
     private long id;
+    @NonNull
     private String title;
+    @NonNull
     private String author;
+    @NonNull
     private Date creationDate;
+    @NonNull
     private String description;
+    @Nullable // We may have artworks without links
     private String imageLink;
     private float price;
     private boolean isAvailable;
@@ -99,7 +107,7 @@ public class Artwork {
     public void setAvailable(boolean available) {
         isAvailable = available;
     }
-    
+
     public List<Loan> getLoans() {
         return loans;
     }
