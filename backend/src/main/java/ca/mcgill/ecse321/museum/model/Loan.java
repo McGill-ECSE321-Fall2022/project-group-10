@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.museum.model;
 
+import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.*;
@@ -18,7 +20,9 @@ public class Loan {
     private long id;
     private float price;
     private boolean validated;
+    @NonNull
     private Date startDate;
+    @NonNull
     private Date endDate;
 
     //Loan Associations
@@ -72,7 +76,7 @@ public class Loan {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    
+
     public Visitor getCustomer() {
         return customer;
     }
