@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.museum.model;
 
+import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -16,6 +18,7 @@ public class Donation {
     @GeneratedValue
     private long id;
     private boolean validated;
+    @NonNull // The user needs to leave a short message for their donation
     private String description;
 
     //Donation Associations
@@ -53,7 +56,7 @@ public class Donation {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     public Visitor getDonor() {
         return donor;
     }
