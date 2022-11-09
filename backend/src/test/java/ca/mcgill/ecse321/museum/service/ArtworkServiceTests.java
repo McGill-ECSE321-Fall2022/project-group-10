@@ -19,10 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.lenient;
 
 @SpringBootTest
@@ -34,9 +37,27 @@ public class ArtworkServiceTests {
 
     @InjectMocks
     private ArtworkService artworkService;
+    private static final Long ARTWORK_KEY = Long.valueOf(1);
 
     @BeforeEach
     public void setMockOutput() {
+        lenient().when(artworkRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) -> {
+            if(invocation.getArgument(0).equals(ARTWORK_KEY)) {
+                var artwork = new Artwork();
+                artwork.setId(ARTWORK_KEY);
+                return Optional.of(artwork);
+            } else {
+                return null;
+            }
+        });
+
+        lenient().when(artworkRepository.findAll()).thenAnswer ( (InvocationOnMock invocation) -> {
+            var artwork = new Artwork();
+            artwork.setId(ARTWORK_KEY);
+            return List.of(artwork);
+        });
+
+
         // Whenever anything is saved, just return the parameter object
         Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
             return invocation.getArgument(0);
@@ -67,5 +88,16 @@ public class ArtworkServiceTests {
         assertEquals(isAvailable, artwork.isAvailable());
     }
 
-    
+    @Test public void testGetArtwork() {
+        Artwork artwork = artworkService.getArtwork(1);
+        assertNotNull(artwork);
+        assertEquals(ARTWORK_KEY,artwork.getId());
+    }
+
+    @Test public void testGetAllArtworks() {
+        List<Artwork> artworks = artworkService.getArtworks();
+        assertNotNull(artworks);
+        assertNotNull(artworks.get(0));
+        assertEquals(ARTWORK_KEY, artworks.get(0).getId());
+    }
 }

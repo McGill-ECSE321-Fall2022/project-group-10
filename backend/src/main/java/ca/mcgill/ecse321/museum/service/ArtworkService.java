@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArtworkService {
@@ -35,4 +37,7 @@ public class ArtworkService {
         return artworkRepository.save(artwork);
     }
 
+    @Transactional public Artwork getArtwork(long id) { return artworkRepository.findById(id).orElse(null); }
+
+    @Transactional public List<Artwork> getArtworks() { return artworkRepository.findAll();}
 }
