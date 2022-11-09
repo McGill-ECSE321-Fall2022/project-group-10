@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.museum.model;
 
+import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.*;
@@ -20,10 +22,13 @@ public class ScheduleBlock {
     //------------------------
     // MEMBER VARIABLES
     //------------------------
+    @NonNull
     private Date startDate;
+    @NonNull
     private Date endDate;
     private float visitFees;
     private int visitCapacity;
+    @NonNull
     private ScheduleEvent event;
     //ScheduleBlock Associations
     @ManyToMany
