@@ -41,10 +41,21 @@ test {
         events "PASSED", "SKIPPED", "FAILED"
     }
     finalizedBy jacocoTestReport
+    finalizedBy jacocoTestCoverageVerification
 }
 
 jacocoTestReport {
     dependsOn test
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.7
+            }
+        }
+    }
 }
 
 spotless {
