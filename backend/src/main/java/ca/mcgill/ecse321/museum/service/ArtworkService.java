@@ -3,9 +3,8 @@ package ca.mcgill.ecse321.museum.service;
 
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.Room;
-import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
-import ca.mcgill.ecse321.museum.repository.VisitorRepository;
+import ca.mcgill.ecse321.museum.repository.StorageRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +17,8 @@ import java.util.Optional;
 public class ArtworkService {
     @Autowired
     ArtworkRepository artworkRepository;
+    @Autowired
+    StorageRoomRepository storageRoomRepository;
 
     @Transactional
     public Artwork createArtwork(String title,
@@ -35,6 +36,7 @@ public class ArtworkService {
         artwork.setImageLink(imageLink);
         artwork.setPrice(price);
         artwork.setAvailable(isAvailable);
+        artwork.setStorage(storageRoomRepository.findAll().get(0));
         return artworkRepository.save(artwork);
     }
 
