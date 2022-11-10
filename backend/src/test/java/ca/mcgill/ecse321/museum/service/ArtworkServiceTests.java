@@ -3,9 +3,11 @@ package ca.mcgill.ecse321.museum.service;
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.Room;
+import ca.mcgill.ecse321.museum.model.StorageRoom;
 import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
 import ca.mcgill.ecse321.museum.repository.PersonRepository;
 import ca.mcgill.ecse321.museum.repository.RoomRepository;
+import ca.mcgill.ecse321.museum.repository.StorageRoomRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,9 +36,12 @@ public class ArtworkServiceTests {
 
     @Mock
     private ArtworkRepository artworkRepository;
+    @Mock
+    private StorageRoomRepository storageRoomRepository;
 
     @InjectMocks
     private ArtworkService artworkService;
+
     private static final Long ARTWORK_KEY = Long.valueOf(1);
 
     @BeforeEach
@@ -57,6 +62,11 @@ public class ArtworkServiceTests {
             return List.of(artwork);
         });
 
+        lenient().when(storageRoomRepository.findAll()).thenAnswer ( (InvocationOnMock invocation) -> {
+            var storage = new StorageRoom();
+            return List.of(storage);
+        });
+
         // Whenever anything is saved, just return the parameter object
         Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
             return invocation.getArgument(0);
@@ -74,6 +84,7 @@ public class ArtworkServiceTests {
         boolean isAvailable = false;
         var artwork = artworkService.createArtwork(title, author, date, description, imageLink, price, isAvailable);
         assertNotNull(artwork);
+        assertNotNull(artwork.getStorage());
         assertEquals(title, artwork.getTitle());
         assertEquals(author, artwork.getAuthor());
         assertEquals(date, artwork.getCreationDate());
