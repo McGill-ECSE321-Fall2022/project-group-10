@@ -56,4 +56,9 @@ public class ArtworkRestController {
         return artworkDtos.toList();
     }
 
+    @DeleteMapping(value = {"/artworks/{id}"})
+    public void deleteArtwork(@PathVariable long id) throws IllegalArgumentException {
+        var artwork = artworkService.getArtwork(id);
+        artworkService.deleteArtwork(artwork);
+    }
 }
