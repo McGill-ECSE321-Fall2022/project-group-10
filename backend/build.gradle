@@ -46,9 +46,27 @@ test {
 
 jacocoTestReport {
     dependsOn test
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "ca/mcgill/ecse321/museum/dto"
+            ]
+            )
+        }))
+    }
 }
 
 jacocoTestCoverageVerification {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "ca/mcgill/ecse321/museum/dto"
+            ]
+            )
+        }))
+    }
+
     violationRules {
         rule {
             limit {
