@@ -1,6 +1,6 @@
 package ca.mcgill.ecse321.museum.controller;
 
-import ca.mcgill.ecse321.museum.controller.body.CreateArtworkBody;
+import ca.mcgill.ecse321.museum.controller.body.CreateArtworkRequestBody;
 import ca.mcgill.ecse321.museum.dto.ArtworkDto;
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
@@ -74,7 +74,7 @@ public class ArtworkRestControllerTests {
         var imageLink = "https://yeet.com/images/124";
         float price = 100;
         boolean isAvailable = false;
-        var body = new CreateArtworkBody();
+        var body = new CreateArtworkRequestBody();
         body.setTitle(title);
         body.setAuthor(author);
         body.setCreationDate(date);

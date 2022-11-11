@@ -2,7 +2,7 @@ package ca.mcgill.ecse321.museum.controller.body;
 
 import java.sql.Date;
 
-public class CreateArtworkBody {
+public class CreateArtworkRequestBody {
     String title;
     String author;
     Date creationDate;
