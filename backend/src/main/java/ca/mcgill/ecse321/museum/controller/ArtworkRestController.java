@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -48,5 +49,11 @@ public class ArtworkRestController {
         return convertToDto(artwork);
     }
 
+    @GetMapping(value = {"/artworks"})
+    public List<ArtworkDto> getAllArtworks() throws IllegalArgumentException {
+        var artworks = artworkService.getAllArtworks();
+        var artworkDtos = artworks.stream().map(artwork -> convertToDto(artwork));
+        return artworkDtos.toList();
+    }
 
 }
