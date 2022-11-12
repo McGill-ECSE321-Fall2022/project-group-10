@@ -24,8 +24,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -62,11 +61,6 @@ public class ArtworkServiceTests {
             return List.of(artwork);
         });
 
-        lenient().when(storageRoomRepository.findAll()).thenAnswer ( (InvocationOnMock invocation) -> {
-            var storage = new StorageRoom();
-            return List.of(storage);
-        });
-
         // Whenever anything is saved, just return the parameter object
         Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
             return invocation.getArgument(0);
@@ -75,6 +69,12 @@ public class ArtworkServiceTests {
     }
     @Test
     public void testCreateArtworkComplete() {
+        // Mock a storage room
+        lenient().when(storageRoomRepository.findAll()).thenAnswer ( (InvocationOnMock invocation) -> {
+            var storage = new StorageRoom();
+            return List.of(storage);
+        });
+
         var title = "Mona Lisa";
         var author = "Leonardo da Vinci";
         var date = new Date(13371337);
@@ -85,6 +85,26 @@ public class ArtworkServiceTests {
         var artwork = artworkService.createArtwork(title, author, date, description, imageLink, price, isAvailable);
         assertNotNull(artwork);
         assertNotNull(artwork.getStorage());
+        assertEquals(title, artwork.getTitle());
+        assertEquals(author, artwork.getAuthor());
+        assertEquals(date, artwork.getCreationDate());
+        assertEquals(description, artwork.getDescription());
+        assertEquals(imageLink, artwork.getImageLink());
+        assertEquals(price, artwork.getPrice());
+        assertEquals(isAvailable, artwork.isAvailable());
+    }
+
+    @Test public void testCreateArtworkNoStorage() {
+        var title = "Mona Lisa";
+        var author = "Leonardo da Vinci";
+        var date = new Date(13371337);
+        var description = "This is a nice painting";
+        var imageLink = "https://yeet.com/images/124";
+        float price = 100;
+        boolean isAvailable = false;
+        var artwork = artworkService.createArtwork(title, author, date, description, imageLink, price, isAvailable);
+        assertNotNull(artwork);
+        assertNull(artwork.getStorage());
         assertEquals(title, artwork.getTitle());
         assertEquals(author, artwork.getAuthor());
         assertEquals(date, artwork.getCreationDate());
