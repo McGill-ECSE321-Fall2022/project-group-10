@@ -18,11 +18,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.lang.Integer.parseInt;
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,24 +35,14 @@ public class ArtworkStepDefinitions {
     @Autowired ModelMapper modelMapper;
 
     List<ArtworkDto> artworks = List.of();
+    ArtworkDto artwork = null;
     HttpStatus httpStatus = null;
 
     @Before
     public void resetState() {
         artworks = List.of();
+        artwork = null;
         httpStatus = null;
-    }
-
-    @Given("there exists a storage room")
-    public void thereExistsAStorageRoom() {
-    }
-
-    @When("the user creates an artwork")
-    public void theUserCreatesAnArtwork() {
-    }
-
-    @Then("the artwork is stored in the storage room")
-    public void theArtworkIsStoredInTheStorageRoom() {
     }
 
     @Given("the following artworks exist:")
@@ -95,7 +85,6 @@ public class ArtworkStepDefinitions {
         } );
     }
 
-
     @Then("an HTTP Status of {string} is returned")
     public void anHTTPStatusOfIsReturned(String httpStatusString) {
         var expectedHttpStatus = HttpStatus.valueOf(parseInt(httpStatusString));
@@ -104,6 +93,37 @@ public class ArtworkStepDefinitions {
 
     @When("a DELETE request to artworks.{string} is made")
     public void aDELETERequestToArtworksIsMade(String arg0) {
+        HttpEntity requestEntity = new HttpEntity<>(null, new HttpHeaders());
+        var response = client.exchange("/artworks/"+arg0, HttpMethod.DELETE, requestEntity, new ParameterizedTypeReference<>() {
+        });
+        httpStatus = response.getStatusCode();
+    }
 
+    @When("a GET request to artworks.{string} is made")
+    public void aGETRequestToArtworksIsMade(String arg0) {
+        HttpEntity requestEntity = new HttpEntity<>(null, new HttpHeaders());
+        var response = client.exchange("/artworks/"+arg0, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<ArtworkDto>() {
+        });
+        artwork = response.getBody();
+        httpStatus = response.getStatusCode();
+    }
+
+    @Then("the following artwork is returned:")
+    public void theFollowingArtworkIsReturned(DataTable dataTable) {
+        Map<String, String> row = dataTable.asMaps().get(0);
+        ArtworkDto returnedArtwork = modelMapper.map(row, ArtworkDto.class);
+        assertNotNull(artwork);
+        assertEquals(artwork.getTitle(),returnedArtwork.getTitle());
+        assertEquals(artwork.getAuthor(),returnedArtwork.getAuthor());
+        assertEquals(artwork.getPrice(),returnedArtwork.getPrice());
+        assertEquals(artwork.getCreationDate(),returnedArtwork.getCreationDate());
+        assertEquals(artwork.getDescription(), returnedArtwork.getDescription());
+        assertEquals(artwork.isAvailable(),returnedArtwork.isAvailable());
+        assertEquals(artwork.getStorage(),returnedArtwork.getStorage());
+    }
+
+    @Then("the artwork with id {string} shall not exist in the system")
+    public void theArtworkWithIdShallNotExistInTheSystem(String arg0) {
+        assertNull(artworkRepository.findById(Long.parseLong(arg0)).orElse(null));
     }
 }
