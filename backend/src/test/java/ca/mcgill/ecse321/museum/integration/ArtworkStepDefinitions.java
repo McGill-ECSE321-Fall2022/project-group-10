@@ -4,6 +4,7 @@ import ca.mcgill.ecse321.museum.dto.ArtworkDto;
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -35,6 +36,12 @@ public class ArtworkStepDefinitions {
 
     List<ArtworkDto> artworks = List.of();
     HttpStatus httpStatus = null;
+
+    @Before
+    public void resetState() {
+        artworks = List.of();
+        httpStatus = null;
+    }
 
     @Given("there exists a storage room")
     public void thereExistsAStorageRoom() {
@@ -93,5 +100,10 @@ public class ArtworkStepDefinitions {
     public void anHTTPStatusOfIsReturned(String httpStatusString) {
         var expectedHttpStatus = HttpStatus.valueOf(parseInt(httpStatusString));
         assertEquals(expectedHttpStatus, httpStatus);
+    }
+
+    @When("a DELETE request to artworks.{string} is made")
+    public void aDELETERequestToArtworksIsMade(String arg0) {
+
     }
 }
