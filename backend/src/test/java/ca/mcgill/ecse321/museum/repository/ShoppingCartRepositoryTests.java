@@ -45,26 +45,22 @@ public class ShoppingCartRepositoryTests {
         // Create all objects
         ShoppingCart shoppingCart = new ShoppingCart();
         List<Artwork> artworks = new ArrayList<>();
-        List<Visitor> customers = new ArrayList<>();
+        Visitor customer = new Visitor();
 
         // Create attributes
-        Visitor customer1 = new Visitor();
-        Visitor customer2 = new Visitor();
         Artwork artwork1 = new Artwork();
         Artwork artwork2 = new Artwork();
-        customers.add(customer1);
-        customers.add(customer2);
+
         artworks.add(artwork1);
         artworks.add(artwork2);
 
         // Set attributes
-        shoppingCart.setCustomers(customers);
+        shoppingCart.setCustomer(customer);
         shoppingCart.setArtworks(artworks);
         
         // Save all objects
         shoppingCartRepository.save(shoppingCart);
-        visitorRepository.save(customer1);
-        visitorRepository.save(customer2);
+        visitorRepository.save(customer);
         artworkRepository.save(artwork1);
         artworkRepository.save(artwork2);
 
@@ -76,7 +72,7 @@ public class ShoppingCartRepositoryTests {
         // Assert that shopping cart has correct attributes
         assertNotNull(shoppingCart);
         assertEquals(shoppingCartId, shoppingCart.getId());
-        assertEquals(customers, shoppingCart.getCustomers());
+        assertEquals(customer, shoppingCart.getCustomer());
         assertEquals(artworks, shoppingCart.getArtworks());
     }
 }

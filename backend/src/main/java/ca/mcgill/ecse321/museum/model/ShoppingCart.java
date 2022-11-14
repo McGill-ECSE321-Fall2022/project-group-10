@@ -17,8 +17,8 @@ public class ShoppingCart {
     private long id;
 
     //ShoppingCart Associations
-    @OneToMany
-    private List<Visitor> customers;
+    @OneToOne
+    private Visitor customer;
     @ManyToMany
     private List<Artwork> artworks;
 
@@ -34,12 +34,12 @@ public class ShoppingCart {
         this.id = id;
     }
 
-    public List<Visitor> getCustomers() {
-        return customers;
+    public Visitor getCustomer() {
+        return customer;
     }
 
-    public void setCustomers(List<Visitor> customers) {
-        this.customers = customers;
+    public void setCustomer(Visitor customer) {
+        this.customer = customer;
     }
 
     public List<Artwork> getArtworks() {

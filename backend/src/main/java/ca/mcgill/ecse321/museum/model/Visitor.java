@@ -21,7 +21,7 @@ public class Visitor extends Person {
     private List<Donation> donations;
     @OneToMany
     private List<Loan> loans;
-    @ManyToOne
+    @OneToOne
     private ShoppingCart shoppingCart;
 
     public boolean isActive() {
