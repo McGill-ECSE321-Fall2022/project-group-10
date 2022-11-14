@@ -19,19 +19,11 @@ public class ShoppingCartService {
     ShoppingCartRepository shoppingCartRepository;
 
     @Transactional
-    public ShoppingCart createShoppingCart(List<Visitor> customers){
+    public ShoppingCart createShoppingCart(Visitor customer) {
         var shoppingCart = new ShoppingCart();
-        shoppingCart.setCustomers(customers);
+        shoppingCart.setCustomer(customer);
         //shoppingCart.setArtworks(artworks);
         //shoppingCart.setArtwork(artwork);
-        return shoppingCartRepository.save(shoppingCart);
-    }
-
-    @Transactional
-    public ShoppingCart createShoppingCart(Visitor customer){
-        var shoppingCart = new ShoppingCart();
-        List<Visitor> customers = List.of(customer);
-        shoppingCart.setCustomers(customers);
         return shoppingCartRepository.save(shoppingCart);
     }
 
