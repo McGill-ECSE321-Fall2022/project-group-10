@@ -2,16 +2,20 @@
 package ca.mcgill.ecse321.museum.service;
 
 import java.util.List;
+import java.sql.Date;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.instrument.classloading.tomcat.TomcatLoadTimeWeaver;
 import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.museum.model.Artwork;
+import ca.mcgill.ecse321.museum.model.Loan;
 import ca.mcgill.ecse321.museum.model.ShoppingCart;
 import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.repository.ShoppingCartRepository;
+import ca.mcgill.ecse321.museum.service.LoanService;
 
 @Service
 public class ShoppingCartService {
@@ -51,18 +55,26 @@ public class ShoppingCartService {
         return shoppingCartRepository.save(shoppingCart);
     }
 
-    /*
     @Transactional
-    public ShoppingCart loanAllArtworks(ShoppingCart shoppingCart){
+    public ShoppingCart loanAllArtworks(ShoppingCart shoppingCart, Date startDate, Date endDate){
+        LoanService loanService = new LoanService();
         List<Artwork> artworks = shoppingCart.getArtworks();
+        long customerID = shoppingCart.getCustomer().getId();
+        float price;
+        float totalPrice=0;
+        long artworkID;
+        List<Long> artworksID = List.of();  //this is a placeholder
         for(Artwork artwork : artworks){
-            artwork.s
+            price = artwork.getPrice();
+            totalPrice += price;
+            artworkID = artwork.getId();
+            artworksID.add(artworkID);
         }
+        loanService.createLoan(totalPrice, false, startDate, endDate, artworksID, customerID, (long) 0);
         artworks.clear();
         shoppingCart.setArtworks(artworks);
         return shoppingCartRepository.save(shoppingCart);
     }
-    */
 
     @Transactional public void setArtworks(ShoppingCart shoppingCart, List<Artwork> artworks) { shoppingCart.setArtworks(artworks); }
 
