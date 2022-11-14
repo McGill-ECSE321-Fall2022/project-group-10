@@ -17,8 +17,6 @@ import ca.mcgill.ecse321.museum.repository.ShoppingCartRepository;
 public class ShoppingCartService {
     @Autowired
     ShoppingCartRepository shoppingCartRepository;
-    //@Autowired
-    //StorageRoomRepository storageRoomRepository;
 
     @Transactional
     public ShoppingCart createShoppingCart(List<Visitor> customers){
@@ -26,6 +24,14 @@ public class ShoppingCartService {
         shoppingCart.setCustomers(customers);
         //shoppingCart.setArtworks(artworks);
         //shoppingCart.setArtwork(artwork);
+        return shoppingCartRepository.save(shoppingCart);
+    }
+
+    @Transactional
+    public ShoppingCart createShoppingCart(Visitor customer){
+        var shoppingCart = new ShoppingCart();
+        List<Visitor> customers = List.of(customer);
+        shoppingCart.setCustomers(customers);
         return shoppingCartRepository.save(shoppingCart);
     }
 
