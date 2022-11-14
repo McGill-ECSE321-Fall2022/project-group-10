@@ -9,6 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
+import java.sql.Date;
+import java.util.TimeZone;
+
 @RestController
 @SpringBootApplication
 public class MuseumSystemApplication {
@@ -31,5 +35,10 @@ public class MuseumSystemApplication {
     @Bean
     ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @PostConstruct
+    public void init(){
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 }

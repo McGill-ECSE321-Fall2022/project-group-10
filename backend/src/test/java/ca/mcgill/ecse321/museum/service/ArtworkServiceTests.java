@@ -3,9 +3,11 @@ package ca.mcgill.ecse321.museum.service;
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.Room;
+import ca.mcgill.ecse321.museum.model.StorageRoom;
 import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
 import ca.mcgill.ecse321.museum.repository.PersonRepository;
 import ca.mcgill.ecse321.museum.repository.RoomRepository;
+import ca.mcgill.ecse321.museum.repository.StorageRoomRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,8 +24,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -34,9 +35,12 @@ public class ArtworkServiceTests {
 
     @Mock
     private ArtworkRepository artworkRepository;
+    @Mock
+    private StorageRoomRepository storageRoomRepository;
 
     @InjectMocks
     private ArtworkService artworkService;
+
     private static final Long ARTWORK_KEY = Long.valueOf(1);
 
     @BeforeEach
@@ -65,6 +69,12 @@ public class ArtworkServiceTests {
     }
     @Test
     public void testCreateArtworkComplete() {
+        // Mock a storage room
+        lenient().when(storageRoomRepository.findAll()).thenAnswer ( (InvocationOnMock invocation) -> {
+            var storage = new StorageRoom();
+            return List.of(storage);
+        });
+
         var title = "Mona Lisa";
         var author = "Leonardo da Vinci";
         var date = new Date(13371337);
@@ -74,6 +84,27 @@ public class ArtworkServiceTests {
         boolean isAvailable = false;
         var artwork = artworkService.createArtwork(title, author, date, description, imageLink, price, isAvailable);
         assertNotNull(artwork);
+        assertNotNull(artwork.getStorage());
+        assertEquals(title, artwork.getTitle());
+        assertEquals(author, artwork.getAuthor());
+        assertEquals(date, artwork.getCreationDate());
+        assertEquals(description, artwork.getDescription());
+        assertEquals(imageLink, artwork.getImageLink());
+        assertEquals(price, artwork.getPrice());
+        assertEquals(isAvailable, artwork.isAvailable());
+    }
+
+    @Test public void testCreateArtworkNoStorage() {
+        var title = "Mona Lisa";
+        var author = "Leonardo da Vinci";
+        var date = new Date(13371337);
+        var description = "This is a nice painting";
+        var imageLink = "https://yeet.com/images/124";
+        float price = 100;
+        boolean isAvailable = false;
+        var artwork = artworkService.createArtwork(title, author, date, description, imageLink, price, isAvailable);
+        assertNotNull(artwork);
+        assertNull(artwork.getStorage());
         assertEquals(title, artwork.getTitle());
         assertEquals(author, artwork.getAuthor());
         assertEquals(date, artwork.getCreationDate());

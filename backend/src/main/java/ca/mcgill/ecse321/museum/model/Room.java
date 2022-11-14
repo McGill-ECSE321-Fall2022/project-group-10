@@ -8,6 +8,7 @@ import java.util.*;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "RoomType")
+@SequenceGenerator(name="seq", initialValue=12)
 // line 148 "../../../../..//MuseumSystem.ump"
 public abstract class Room {
 
@@ -17,7 +18,7 @@ public abstract class Room {
 
     //Room Attributes
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     private long id;
     @NonNull
     private String name;
