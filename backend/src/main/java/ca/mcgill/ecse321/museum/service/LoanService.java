@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ca.mcgill.ecse321.museum.model.Administrator;
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.Loan;
 import ca.mcgill.ecse321.museum.model.Visitor;
@@ -67,6 +68,30 @@ public class LoanService {
     @Transactional
     public List<Loan> getValidatedLoansForArtwork(Artwork artwork) {
         return loanRepository.findByArtworkAndStatus(artwork.getId(), LoanStatus.VALIDATED);
+    }
+
+    @Transactional
+    public void validateLoan(long id, long validatorID) {
+        Loan loan = loanRepository.findById(id).orElse(null);
+        Administrator admin = administratorRepository.findById(validatorID).orElse(null);
+
+        if (loan == null || admin == null) return;
+
+        loan.setValidator(admin);
+        loan.setStatus(LoanStatus.VALIDATED);
+        loanRepository.save(loan);
+    }
+
+    @Transactional
+    public void rejectLoan(long id, long validatorID) {
+        Loan loan = loanRepository.findById(id).orElse(null);
+        Administrator admin = administratorRepository.findById(validatorID).orElse(null);
+
+        if (loan == null || admin == null) return;
+
+        loan.setValidator(admin);
+        loan.setStatus(LoanStatus.DENIED);
+        loanRepository.save(loan);
     }
 
     @Transactional
