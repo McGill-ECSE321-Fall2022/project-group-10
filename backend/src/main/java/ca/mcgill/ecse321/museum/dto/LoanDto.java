@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.*;
 
-@Entity
 // line 79 "../../../../..//MuseumSystem.ump"
 public class LoanDto {
 
@@ -16,23 +15,20 @@ public class LoanDto {
     //------------------------
 
     //Loan Attributes
-    @Id
-    @GeneratedValue
+
     private long id;
     private float price;
     private boolean validated;
-    @NonNull
     private Date startDate;
-    @NonNull
     private Date endDate;
 
     //Loan Associations
-    @ManyToOne
+
     private Visitor customer;
-    @ManyToOne
+
     private Administrator validator;
-    @ManyToMany
-    private List<Artwork> artworks;
+
+    private Artwork artwork;
 
     public Long getId() {
         return id;
@@ -94,11 +90,7 @@ public class LoanDto {
         this.validator = validator;
     }
 
-    public List<Artwork> getArtworks() {
-        return artworks;
-    }
-
-    public void setArtworks(List<Artwork> artworks) {
-        this.artworks = artworks;
+    public Artwork getArtworks() {
+        return artwork;
     }
 }

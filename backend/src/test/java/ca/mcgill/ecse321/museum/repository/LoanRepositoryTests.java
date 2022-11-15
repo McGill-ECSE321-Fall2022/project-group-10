@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.museum.repository;
 
 import java.sql.Date;
-import java.util.List;
 
 import ca.mcgill.ecse321.museum.model.*;
 import org.junit.jupiter.api.AfterEach;
@@ -72,7 +71,7 @@ public class LoanRepositoryTests {
         artwork.setAvailable(false);
         artwork = artworkRepository.save(artwork);
 
-        loan.setArtworks(List.of(artwork));
+        loan.setArtwork(artwork);
 
         // Visitor
         Visitor visitor = new Visitor();
@@ -97,7 +96,7 @@ public class LoanRepositoryTests {
         assertEquals(endDate, loan.getEndDate());
         assertEquals(price, loan.getPrice());
         assertEquals(isValidated, loan.isValidated());
-        assertEquals(List.of(artwork), loan.getArtworks());
+        assertEquals(artwork, loan.getArtwork());
         assertEquals(visitor, loan.getCustomer());
         assertEquals(owner, loan.getValidator());
     }

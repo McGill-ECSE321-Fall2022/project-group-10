@@ -30,8 +30,9 @@ public class Loan {
     private Visitor customer;
     @ManyToOne
     private Administrator validator;
-    @ManyToMany
-    private List<Artwork> artworks;
+
+    @OneToOne
+    private Artwork artwork;
 
     public Long getId() {
         return id;
@@ -93,11 +94,11 @@ public class Loan {
         this.validator = validator;
     }
 
-    public List<Artwork> getArtworks() {
-        return artworks;
+    public Artwork getArtwork() {
+        return artwork;
     }
 
-    public void setArtworks(List<Artwork> artworks) {
-        this.artworks = artworks;
+    public void setArtwork(Artwork artwork) {
+        this.artwork = artwork;
     }
 }

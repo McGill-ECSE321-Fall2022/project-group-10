@@ -27,9 +27,6 @@ public class ArtworkDto {
     private float price;
     private boolean isAvailable;
 
-    //Artwork Associations
-    private List<Loan> loans;
-    private List<Donation> donations;
     private Room storage;
 
     public Long getId() {
@@ -98,22 +95,6 @@ public class ArtworkDto {
 
     public void setAvailable(boolean available) {
         isAvailable = available;
-    }
-
-    public List<Loan> getLoans() {
-        return loans;
-    }
-
-    public void setLoans(List<Loan> loans) {
-        this.loans = loans;
-    }
-
-    public List<Donation> getDonations() {
-        return donations;
-    }
-
-    public void setDonations(List<Donation> donations) {
-        this.donations = donations;
     }
 
     public Room getStorage() {

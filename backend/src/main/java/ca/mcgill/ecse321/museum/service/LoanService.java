@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.Loan;
 import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
@@ -36,7 +37,7 @@ public class LoanService {
         boolean validated,
         Date startDate,
         Date endDate,
-        List<Long> artworksID,
+        Artwork artwork,
         long customerID,
         long validatorID
     ) {
@@ -47,7 +48,7 @@ public class LoanService {
         loan.setEndDate(endDate);
         loan.setCustomer((Visitor) personRepository.findById(customerID).orElse(null));
         loan.setValidator(administratorRepository.findById(validatorID).orElse(null));
-        loan.setArtworks(artworksID.stream().map(id -> artworkRepository.findById(id).orElse(null)).toList());
+        loan.setArtwork(artwork);
 
         loanRepository.save(loan);
     }
