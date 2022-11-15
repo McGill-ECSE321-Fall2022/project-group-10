@@ -119,10 +119,10 @@ public class LoanService {
         Visitor customer = (Visitor) personRepository.findById(customerID).orElse(null);
         if (customer == null) return;
 
-        for (Loan loan : customer.getLoans()) {
-            if (loan.getStatus() == LoanStatus.INCART) {
-                requestLoan(loan.getArtwork().getId());
-            }
+        List<Loan> inCartLoans = loanRepository.findByCustomerAndStatus(customerID, LoanStatus.INCART);
+
+        for (Loan inCartLoan : inCartLoans) {
+            requestLoan(inCartLoan.getId());
         }
     }
 

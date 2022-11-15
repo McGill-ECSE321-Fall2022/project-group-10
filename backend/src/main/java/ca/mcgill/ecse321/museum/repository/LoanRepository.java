@@ -7,4 +7,5 @@ import ca.mcgill.ecse321.museum.model.Loan;
 
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     public List<Loan> findByArtworkAndStatus(Long artworkId, Loan.LoanStatus status);
+    public List<Loan> findByCustomerAndStatus(Long customerId, Loan.LoanStatus status);
 }
