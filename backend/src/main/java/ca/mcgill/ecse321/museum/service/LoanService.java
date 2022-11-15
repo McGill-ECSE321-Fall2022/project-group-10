@@ -127,6 +127,17 @@ public class LoanService {
     }
 
     @Transactional
+    public void editLoan(long id, Date startDate, Date endDate) {
+        Loan loan = loanRepository.findById(id).orElse(null);
+
+        if (loan == null) return;
+
+        loan.setStartDate(startDate);
+        loan.setEndDate(endDate);
+        loanRepository.save(loan);
+    }
+
+    @Transactional
     public void deleteLoan(Loan loan) {
         loanRepository.delete(loan);
     }
