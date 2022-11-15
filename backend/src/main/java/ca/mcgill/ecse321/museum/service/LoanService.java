@@ -115,6 +115,18 @@ public class LoanService {
     }
 
     @Transactional
+    public void requestLoanForAllInCart(long customerID) {
+        Visitor customer = (Visitor) personRepository.findById(customerID).orElse(null);
+        if (customer == null) return;
+
+        for (Loan loan : customer.getLoans()) {
+            if (loan.getStatus() == LoanStatus.INCART) {
+                requestLoan(loan.getArtwork().getId());
+            }
+        }
+    }
+
+    @Transactional
     public void deleteLoan(Loan loan) {
         loanRepository.delete(loan);
     }
