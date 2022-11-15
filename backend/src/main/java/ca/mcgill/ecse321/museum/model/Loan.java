@@ -19,7 +19,7 @@ public class Loan {
     @GeneratedValue
     private long id;
     private float price;
-    private boolean validated;
+    private LoanStatus status;
     @NonNull
     private Date startDate;
     @NonNull
@@ -33,6 +33,10 @@ public class Loan {
 
     @OneToOne
     private Artwork artwork;
+
+    public enum LoanStatus {
+        INCART, PENDING, VALIDATED, DENIED
+    }
 
     public Long getId() {
         return id;
@@ -54,12 +58,12 @@ public class Loan {
         this.price = price;
     }
 
-    public boolean isValidated() {
-        return validated;
+    public LoanStatus getStatus() {
+        return status;
     }
 
-    public void setValidated(boolean validated) {
-        this.validated = validated;
+    public void setStatus(LoanStatus status) {
+        this.status = status;
     }
 
     public Date getStartDate() {

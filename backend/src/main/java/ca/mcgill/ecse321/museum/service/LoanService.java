@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.Loan;
 import ca.mcgill.ecse321.museum.model.Visitor;
+import ca.mcgill.ecse321.museum.model.Loan.LoanStatus;
 import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
 import ca.mcgill.ecse321.museum.repository.PersonRepository;
 import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
@@ -34,7 +35,7 @@ public class LoanService {
     @Transactional
     public void createLoan(
         float price,
-        boolean validated,
+        LoanStatus status,
         Date startDate,
         Date endDate,
         Artwork artwork,
@@ -43,7 +44,7 @@ public class LoanService {
     ) {
         Loan loan = new Loan();
         loan.setPrice(price);
-        loan.setValidated(validated);
+        loan.setStatus(status);
         loan.setStartDate(startDate);
         loan.setEndDate(endDate);
         loan.setCustomer((Visitor) personRepository.findById(customerID).orElse(null));

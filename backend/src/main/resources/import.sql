@@ -18,7 +18,7 @@ INSERT INTO room (room_type, id, name, capacity) VALUES ('ExhibitRoom', 11, 'Mus
 -- Insert owner account
 -- Note: I filled in the fields first and last name for the owner with placeholder values, in case we
 --  are planning to @NOTNULL them later
-INSERT INTO person(person_type, id, email, first_name, last_name, password, is_active, salary, shopping_cart_id) VALUES ('Owner', 0, 'admin@mail.museum.com', 'ADMIN_FIRST_NAME', 'ADMIN_LAST_NAME', 'admin', TRUE, NULL, NULL);
+INSERT INTO person(person_type, id, email, first_name, last_name, password, is_active, salary) VALUES ('Owner', 0, 'admin@mail.museum.com', 'ADMIN_FIRST_NAME', 'ADMIN_LAST_NAME', 'admin', TRUE, NULL);
 
 -- Insert Calendar
 INSERT INTO calendar (id, is_museum_open) VALUES (1, TRUE);

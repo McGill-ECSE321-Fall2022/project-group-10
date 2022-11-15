@@ -18,7 +18,6 @@ public class VisitorDto extends PersonDto {
     private List<ScheduleBlock> tickets;
     private List<Donation> donations;
     private List<Loan> loans;
-    private ShoppingCart shoppingCart;
 
     public boolean isActive() {
         return isActive;
@@ -50,13 +49,5 @@ public class VisitorDto extends PersonDto {
 
     public void setLoans(List<Loan> loans) {
         this.loans = loans;
-    }
-
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
     }
 }
