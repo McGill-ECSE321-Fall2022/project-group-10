@@ -1,12 +1,6 @@
 /* (C)2022 */
 package ca.mcgill.ecse321.museum.dto;
 
-import javax.persistence.*;
-
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "PersonType")
-// line 45 "../../../../..//MuseumSystem.ump"
 public abstract class PersonDto {
 
     // ------------------------
@@ -19,9 +13,6 @@ public abstract class PersonDto {
     private String email;
     private String password;
 
-    // Person Associations
-    @Id
-    @GeneratedValue
     private Long id;
 
     public Long getId() {

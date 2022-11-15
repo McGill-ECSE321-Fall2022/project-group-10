@@ -32,11 +32,6 @@ public class Artwork {
     private float price;
     private boolean isAvailable;
 
-    //Artwork Associations
-    @ManyToMany
-    private List<Loan> loans;
-    @ManyToMany
-    private List<Donation> donations;
     @ManyToOne
     private Room storage;
 
@@ -106,22 +101,6 @@ public class Artwork {
 
     public void setAvailable(boolean available) {
         isAvailable = available;
-    }
-
-    public List<Loan> getLoans() {
-        return loans;
-    }
-
-    public void setLoans(List<Loan> loans) {
-        this.loans = loans;
-    }
-
-    public List<Donation> getDonations() {
-        return donations;
-    }
-
-    public void setDonations(List<Donation> donations) {
-        this.donations = donations;
     }
 
     public Room getStorage() {

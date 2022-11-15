@@ -21,8 +21,6 @@ public class Visitor extends Person {
     private List<Donation> donations;
     @OneToMany
     private List<Loan> loans;
-    @OneToOne
-    private ShoppingCart shoppingCart;
 
     public boolean isActive() {
         return isActive;
@@ -54,13 +52,5 @@ public class Visitor extends Person {
 
     public void setLoans(List<Loan> loans) {
         this.loans = loans;
-    }
-
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
     }
 }

@@ -1,9 +1,10 @@
 package ca.mcgill.ecse321.museum.repository;
 
 import java.sql.Date;
-import java.util.List;
 
 import ca.mcgill.ecse321.museum.model.*;
+import ca.mcgill.ecse321.museum.model.Loan.LoanStatus;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +44,13 @@ public class LoanRepositoryTests {
         Date startDate = Date.valueOf("2020-01-01");
         Date endDate = Date.valueOf("2020-01-10");
         float price = 100.0f;
-        boolean isValidated = true;
+        LoanStatus status = LoanStatus.VALIDATED;
 
         // Set attributes
         loan.setStartDate(startDate);
         loan.setEndDate(endDate);
         loan.setPrice(price);
-        loan.setValidated(isValidated);
+        loan.setStatus(status);
 
         // Set associations
         // Administrator
@@ -72,7 +73,7 @@ public class LoanRepositoryTests {
         artwork.setAvailable(false);
         artwork = artworkRepository.save(artwork);
 
-        loan.setArtworks(List.of(artwork));
+        loan.setArtwork(artwork);
 
         // Visitor
         Visitor visitor = new Visitor();
@@ -96,8 +97,8 @@ public class LoanRepositoryTests {
         assertEquals(startDate, loan.getStartDate());
         assertEquals(endDate, loan.getEndDate());
         assertEquals(price, loan.getPrice());
-        assertEquals(isValidated, loan.isValidated());
-        assertEquals(List.of(artwork), loan.getArtworks());
+        assertEquals(status, loan.getStatus());
+        assertEquals(artwork, loan.getArtwork());
         assertEquals(visitor, loan.getCustomer());
         assertEquals(owner, loan.getValidator());
     }
