@@ -95,6 +95,16 @@ public class LoanService {
     }
 
     @Transactional
+    public void requestLoan(long id) {
+        Loan loan = loanRepository.findById(id).orElse(null);
+
+        if (loan == null) return;
+
+        loan.setStatus(LoanStatus.PENDING);
+        loanRepository.save(loan);
+    }
+
+    @Transactional
     public void deleteLoan(Loan loan) {
         loanRepository.delete(loan);
     }
