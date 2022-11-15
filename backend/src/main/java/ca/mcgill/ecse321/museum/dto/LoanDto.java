@@ -1,11 +1,8 @@
 package ca.mcgill.ecse321.museum.dto;
 
-import org.springframework.lang.NonNull;
 import ca.mcgill.ecse321.museum.model.*;
 
-import javax.persistence.*;
 import java.sql.Date;
-import java.util.*;
 
 // line 79 "../../../../..//MuseumSystem.ump"
 public class LoanDto {

@@ -3,12 +3,7 @@ package ca.mcgill.ecse321.museum.dto;
 
 import ca.mcgill.ecse321.museum.model.*;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
-@Entity
 // line 95 "../../../../..//MuseumSystem.ump"
 public class VisitorDto extends PersonDto {
 
@@ -20,10 +15,10 @@ public class VisitorDto extends PersonDto {
     private boolean isActive;
 
     // Visitor Associations
-    @ManyToMany private List<ScheduleBlock> tickets;
-    @OneToMany private List<Donation> donations;
-    @OneToMany private List<Loan> loans;
-    @ManyToOne private ShoppingCart shoppingCart;
+    private List<ScheduleBlock> tickets;
+    private List<Donation> donations;
+    private List<Loan> loans;
+    private ShoppingCart shoppingCart;
 
     public boolean isActive() {
         return isActive;

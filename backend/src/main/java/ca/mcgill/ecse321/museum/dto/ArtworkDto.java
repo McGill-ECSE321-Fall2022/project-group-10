@@ -1,16 +1,8 @@
 package ca.mcgill.ecse321.museum.dto;
 
-import ca.mcgill.ecse321.museum.model.Donation;
-import ca.mcgill.ecse321.museum.model.Loan;
-import ca.mcgill.ecse321.museum.model.Room;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
-
-import javax.persistence.*;
+import ca.mcgill.ecse321.museum.model.Room; 
 import java.sql.Date;
-import java.util.List;
 
-// line 116 "../../../../..//MuseumSystem.ump"
 public class ArtworkDto {
 
     //------------------------
