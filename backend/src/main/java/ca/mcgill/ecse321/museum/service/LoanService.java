@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.tool.schema.internal.StandardTableExporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,8 +41,8 @@ public class LoanService {
         Date startDate,
         Date endDate,
         Artwork artwork,
-        long customerID,
-        long validatorID
+        long customerID
+        //long validatorID
     ) {
         Loan loan = new Loan();
         loan.setPrice(price);
@@ -49,7 +50,7 @@ public class LoanService {
         loan.setStartDate(startDate);
         loan.setEndDate(endDate);
         loan.setCustomer((Visitor) personRepository.findById(customerID).orElse(null));
-        loan.setValidator(administratorRepository.findById(validatorID).orElse(null));
+        //loan.setValidator(administratorRepository.findById(validatorID).orElse(null));
         loan.setArtwork(artwork);
 
         loanRepository.save(loan);
@@ -99,6 +100,15 @@ public class LoanService {
         Loan loan = loanRepository.findById(id).orElse(null);
 
         if (loan == null) return;
+
+        // check if the loan overlaps with any other validated loans
+        Artwork artwork = loan.getArtwork();
+        List<Loan> validatedLoans = loanRepository.findByArtworkAndStatus(artwork.getId(), LoanStatus.VALIDATED);
+        for (Loan validatedLoan : validatedLoans) {
+            if (loan.getStartDate().before(validatedLoan.getEndDate()) || loan.getEndDate().after(validatedLoan.getStartDate())) {
+                return;
+            }
+        }
 
         loan.setStatus(LoanStatus.PENDING);
         loanRepository.save(loan);
