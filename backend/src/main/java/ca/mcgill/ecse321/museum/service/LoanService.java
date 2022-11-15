@@ -65,6 +65,11 @@ public class LoanService {
     }
 
     @Transactional
+    public List<Loan> getValidatedLoansForArtwork(Artwork artwork) {
+        return loanRepository.findByArtworkAndStatus(artwork.getId(), LoanStatus.VALIDATED);
+    }
+
+    @Transactional
     public void deleteLoan(Loan loan) {
         loanRepository.delete(loan);
     }
