@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ArtworkService {
