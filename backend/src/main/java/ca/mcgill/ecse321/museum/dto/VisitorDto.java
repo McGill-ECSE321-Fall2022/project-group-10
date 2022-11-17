@@ -1,23 +1,15 @@
-/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto;
 
-import ca.mcgill.ecse321.museum.model.*;
-import java.util.List;
+import ca.mcgill.ecse321.museum.model.Visitor;
 
-// line 95 "../../../../..//MuseumSystem.ump"
 public class VisitorDto extends PersonDto {
 
-    // ------------------------
-    // MEMBER VARIABLES
-    // ------------------------
-
-    // Visitor Attributes
     private boolean isActive;
 
-    // Visitor Associations
-    private List<ScheduleBlock> tickets;
-    private List<Donation> donations;
-    private List<Loan> loans;
+    public VisitorDto(Visitor visitor) {
+        super(visitor);
+        this.isActive = visitor.isActive();
+    }
 
     public boolean isActive() {
         return isActive;
@@ -27,27 +19,9 @@ public class VisitorDto extends PersonDto {
         isActive = active;
     }
 
-    public List<ScheduleBlock> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<ScheduleBlock> tickets) {
-        this.tickets = tickets;
-    }
-
-    public List<Donation> getDonations() {
-        return donations;
-    }
-
-    public void setDonations(List<Donation> donations) {
-        this.donations = donations;
-    }
-
-    public List<Loan> getLoans() {
-        return loans;
-    }
-
-    public void setLoans(List<Loan> loans) {
-        this.loans = loans;
+    public Visitor toModel() {
+        Visitor visitor = new Visitor();
+        visitor.setActive(isActive);
+        return visitor;
     }
 }

@@ -1,15 +1,13 @@
 package ca.mcgill.ecse321.museum.dto;
 
-import ca.mcgill.ecse321.museum.model.Room; 
 import java.sql.Date;
+
+import ca.mcgill.ecse321.museum.model.Artwork;
+import ca.mcgill.ecse321.museum.model.ExhibitRoom;
+import ca.mcgill.ecse321.museum.model.StorageRoom;
 
 public class ArtworkDto {
 
-    //------------------------
-    // MEMBER VARIABLES
-    //------------------------
-
-    //Artwork Attributes
     private long id;
     private String title;
     private String author;
@@ -19,7 +17,24 @@ public class ArtworkDto {
     private float price;
     private boolean isAvailable;
 
-    private Room storage;
+    private RoomDto storage;
+
+    public ArtworkDto(Artwork artwork) {
+        this.id = artwork.getId();
+        this.title = artwork.getTitle();
+        this.author = artwork.getAuthor();
+        this.creationDate = artwork.getCreationDate();
+        this.description = artwork.getDescription();
+        this.imageLink = artwork.getImageLink();
+        this.price = artwork.getPrice();    
+        this.isAvailable = artwork.isAvailable();
+
+        if (artwork.getStorage().getClass() == ExhibitRoom.class) {
+            this.storage = new ExhibitRoomDto((ExhibitRoom) artwork.getStorage());
+        } else {
+            this.storage = new StorageRoomDto((StorageRoom) artwork.getStorage());
+        }
+    }
 
     public Long getId() {
         return id;
@@ -89,11 +104,25 @@ public class ArtworkDto {
         isAvailable = available;
     }
 
-    public Room getStorage() {
+    public RoomDto getStorage() {
         return storage;
     }
 
-    public void setStorage(Room storage) {
+    public void setStorage(RoomDto storage) {
         this.storage = storage;
+    }
+
+    public Artwork toModel() {
+        Artwork artwork = new Artwork();
+        artwork.setId(this.id);
+        artwork.setTitle(this.title);
+        artwork.setAuthor(this.author);
+        artwork.setCreationDate(this.creationDate);
+        artwork.setDescription(this.description);
+        artwork.setImageLink(this.imageLink);
+        artwork.setPrice(this.price);
+        artwork.setAvailable(this.isAvailable);
+        artwork.setStorage(this.storage.toModel());
+        return artwork;
     }
 }

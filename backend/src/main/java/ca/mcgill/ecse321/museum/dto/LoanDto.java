@@ -1,31 +1,42 @@
 package ca.mcgill.ecse321.museum.dto;
 
-import ca.mcgill.ecse321.museum.model.*;
+import ca.mcgill.ecse321.museum.model.Administrator;
+import ca.mcgill.ecse321.museum.model.Employee;
+import ca.mcgill.ecse321.museum.model.Loan;
+import ca.mcgill.ecse321.museum.model.Owner;
+import ca.mcgill.ecse321.museum.model.Loan.LoanStatus;
 
 import java.sql.Date;
 
-// line 79 "../../../../..//MuseumSystem.ump"
 public class LoanDto {
-
-    //------------------------
-    // MEMBER VARIABLES
-    //------------------------
-
-    //Loan Attributes
 
     private long id;
     private float price;
-    private boolean validated;
+    private LoanStatus status;
     private Date startDate;
     private Date endDate;
 
-    //Loan Associations
+    private VisitorDto customer;
+    private AdministratorDto validator;
+    private ArtworkDto artwork;
 
-    private Visitor customer;
+    public LoanDto(Loan loan) {
+        this.id = loan.getId();
+        this.price = loan.getPrice();
+        this.status = loan.getStatus();
+        this.startDate = loan.getStartDate();
+        this.endDate = loan.getEndDate();
+        this.customer = new VisitorDto(loan.getCustomer());
 
-    private Administrator validator;
 
-    private Artwork artwork;
+        if (loan.getValidator().getClass() == Administrator.class) {
+            this.validator = new OwnerDto((Owner) loan.getValidator());
+        } else {
+            this.validator = new EmployeeDto((Employee) loan.getValidator());
+        }
+        
+        this.artwork = new ArtworkDto(loan.getArtwork());
+    }
 
     public Long getId() {
         return id;
@@ -47,12 +58,12 @@ public class LoanDto {
         this.price = price;
     }
 
-    public boolean isValidated() {
-        return validated;
+    public LoanStatus getStatus() {
+        return status;
     }
 
-    public void setValidated(boolean validated) {
-        this.validated = validated;
+    public void setStatus(LoanStatus status) {
+        this.status = status;
     }
 
     public Date getStartDate() {
@@ -71,23 +82,23 @@ public class LoanDto {
         this.endDate = endDate;
     }
 
-    public Visitor getCustomer() {
+    public VisitorDto getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Visitor customer) {
+    public void setCustomer(VisitorDto customer) {
         this.customer = customer;
     }
 
-    public Administrator getValidator() {
+    public AdministratorDto getValidator() {
         return validator;
     }
 
-    public void setValidator(Administrator validator) {
+    public void setValidator(AdministratorDto validator) {
         this.validator = validator;
     }
 
-    public Artwork getArtworks() {
+    public ArtworkDto getArtwork() {
         return artwork;
     }
 }

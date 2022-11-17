@@ -1,19 +1,24 @@
 /* (C)2022 */
 package ca.mcgill.ecse321.museum.dto;
 
+import ca.mcgill.ecse321.museum.model.Person;
+
 public abstract class PersonDto {
 
-    // ------------------------
-    // MEMBER VARIABLES
-    // ------------------------
-
-    // Person Attributes
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
     private Long id;
+
+    public PersonDto(Person person) {
+        this.firstName = person.getFirstName();
+        this.lastName = person.getLastName();
+        this.email = person.getEmail();
+        this.password = person.getPassword();
+        this.id = person.getId();
+    }
 
     public Long getId() {
         return id;
@@ -54,5 +59,4 @@ public abstract class PersonDto {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }
