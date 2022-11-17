@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.museum.model.Administrator;
-import ca.mcgill.ecse321.museum.model.Calendar;
 import ca.mcgill.ecse321.museum.model.Employee;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock;
 import ca.mcgill.ecse321.museum.model.Visitor;
@@ -22,14 +21,12 @@ import ca.mcgill.ecse321.museum.model.Visitor;
 @SpringBootTest
 public class ScheduleBlockRepositoryTests {
     @Autowired ScheduleBlockRepository scheduleBlockRepository;
-    @Autowired CalendarRepository calendarRepository;
     @Autowired VisitorRepository visitorRepository;
     @Autowired AdministratorRepository administratorRepository;
 
     @AfterEach
     public void clearDatabase() {
         scheduleBlockRepository.deleteAll();
-        calendarRepository.deleteAll();
         visitorRepository.deleteAll();
         administratorRepository.deleteAll();
     }
@@ -40,7 +37,6 @@ public class ScheduleBlockRepositoryTests {
 
         // Create all objects
         ScheduleBlock scheduleBlock = new ScheduleBlock();
-        Calendar calendar = new Calendar();
         Administrator admin = new Employee();
         Visitor visitor = new Visitor();
         
@@ -49,10 +45,6 @@ public class ScheduleBlockRepositoryTests {
         visitor.setEmail(email);
         Boolean isActive = true;
         visitor.setActive(isActive);
-
-        // Set calendar attribute
-        Boolean isMuseumOpen = true;
-        calendar.setMuseumOpen(isMuseumOpen);
 
         // Set schedule block attributes
         Date startDate = Date.valueOf("2020-01-01");
@@ -70,7 +62,6 @@ public class ScheduleBlockRepositoryTests {
 
         // Save schedule block to database
         scheduleBlockRepository.save(scheduleBlock);
-        calendarRepository.save(calendar);
         visitorRepository.save(visitor);
         administratorRepository.save(admin);
 
