@@ -30,13 +30,11 @@ public class ScheduleBlock {
     private int visitCapacity;
     @NonNull
     private ScheduleEvent event;
-    //ScheduleBlock Associations
+
     @ManyToMany
     private List<Administrator> admins;
     @ManyToMany
     private List<Visitor> visitors;
-    @ManyToOne
-    private Calendar calendar;
 
     public Long getId() {
         return id;
@@ -105,14 +103,6 @@ public class ScheduleBlock {
     public void setVisitors(List<Visitor> visitors) {
         this.visitors = visitors;
     }
-
-    public Calendar getCalendar() {
-        return calendar;
-    }
-
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
-    }
-
+    
     public enum ScheduleEvent {MUSEUM_OPEN, MUSEUM_RESTORATION, MUSEUM_MEETING}
 }

@@ -75,7 +75,6 @@ public class DonationRepositoryTests {
         donation.setDescription(description);
         donation.setDonor(donor);
         donation.setValidator(validator);
-        donation.setArtworks(artworks);
 
         // Save objects to repositories 
 
@@ -101,7 +100,5 @@ public class DonationRepositoryTests {
         assertEquals(donor.getEmail(), donation.getDonor().getEmail());
         assertEquals(isValidated, donation.isValidated());
         assertNotNull(artworks);
-        assertEquals(artworks.size(), donation.getArtworks().size());
     }
-
 }

@@ -78,8 +78,6 @@ public class RoomRepositoryTests {
         exhibitRoom.setName(name);
         exhibitRoom.setCapacity(capacity);
 
-        exhibitRoom.setArtworks(artworks);
-
         // Save object;
         artworks = artworkRepository.saveAll(artworks);
         exhibitRoom = roomRepository.save(exhibitRoom);
@@ -150,7 +148,6 @@ public class RoomRepositoryTests {
         artworks.add(artwork2);      
         
         // Set attributes for storage room
-        storageRoom.setArtworks(artworks);
         storageRoom.setName(name);
 
         // Save object;

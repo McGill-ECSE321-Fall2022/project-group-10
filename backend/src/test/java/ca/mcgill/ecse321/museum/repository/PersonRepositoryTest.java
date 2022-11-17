@@ -48,7 +48,6 @@ public class PersonRepositoryTest {
 
         // Set attribute and reference
         visitor.setActive(isActive);
-        visitor.setLoans(loans);
         
         // Save object
         visitor = personRepository.save(visitor);
@@ -59,11 +58,6 @@ public class PersonRepositoryTest {
         // Assert that object has correct attributes
         assertNotNull(visitor);
         assertEquals(isActive, visitor.isActive());
-        assertNotNull(visitor.getLoans());
-        assertEquals(loans.size(), visitor.getLoans().size());
-        for (int i=0; i < loans.size(); i++){
-            assertEquals(loans.get(i).getId(), visitor.getLoans().get(i).getId());
-        }
     }
 
     @Test
@@ -85,7 +79,6 @@ public class PersonRepositoryTest {
 
         // Set attribute and reference
         employee.setSalary(salary);
-        employee.setAssignedLoans(loans);
         
         // Save object
         employee = personRepository.save(employee);
@@ -96,11 +89,6 @@ public class PersonRepositoryTest {
         // Assert that object has correct attributes
         assertNotNull(employee);
         assertEquals(salary, employee.getSalary());
-        assertNotNull(employee.getAssignedLoans());
-        assertEquals(loans.size(), employee.getAssignedLoans().size());
-        for (int i=0; i < loans.size(); i++){
-            assertEquals(loans.get(i).getId(), employee.getAssignedLoans().get(i).getId());
-        }
     }
 
     @Test
@@ -122,7 +110,6 @@ public class PersonRepositoryTest {
 
         // Set attribute and reference
         owner.setEmail(email);
-        owner.setAssignedLoans(loans);
         
         // Save object
         owner = personRepository.save(owner);
@@ -133,10 +120,5 @@ public class PersonRepositoryTest {
         // Assert that object has correct attributes
         assertNotNull(owner);
         assertEquals(email, owner.getEmail());
-        assertNotNull(owner.getAssignedLoans());
-        assertEquals(loans.size(), owner.getAssignedLoans().size());
-        for (int i=0; i < loans.size(); i++){
-            assertEquals(loans.get(i).getId(), owner.getAssignedLoans().get(i).getId());
-        }
     }
 }

@@ -4,7 +4,6 @@ import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.*;
 
 @Entity
 // line 79 "../../../../..//MuseumSystem.ump"
@@ -30,8 +29,7 @@ public class Loan {
     private Visitor customer;
     @ManyToOne
     private Administrator validator;
-
-    @OneToOne
+    @ManyToOne
     private Artwork artwork;
 
     public enum LoanStatus {

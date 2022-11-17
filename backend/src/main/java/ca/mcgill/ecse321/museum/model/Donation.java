@@ -1,9 +1,6 @@
 package ca.mcgill.ecse321.museum.model;
 
-import org.springframework.lang.NonNull;
-
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 // line 66 "../../../../..//MuseumSystem.ump"
@@ -18,7 +15,7 @@ public class Donation {
     @GeneratedValue
     private long id;
     private boolean validated;
-    @NonNull // The user needs to leave a short message for their donation
+
     private String description;
 
     //Donation Associations
@@ -26,8 +23,8 @@ public class Donation {
     private Visitor donor;
     @ManyToOne
     private Administrator validator;
-    @ManyToMany
-    private List<Artwork> artworks;
+    @ManyToOne
+    private Artwork artwork;
 
     public Long getId() {
         return id;
@@ -73,11 +70,11 @@ public class Donation {
         this.validator = validator;
     }
 
-    public List<Artwork> getArtworks() {
-        return artworks;
+    public Artwork getArtworks() {
+        return artwork;
     }
 
-    public void setArtworks(List<Artwork> artworks) {
-        this.artworks = artworks;
+    public void setArtworks(Artwork artwork) {
+        this.artwork = artwork;
     }
 }
