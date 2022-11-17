@@ -35,13 +35,13 @@ public class LoanService {
     ArtworkRepository artworkRepository;
 
     @Transactional
-    public void createLoan(
+    public Loan createLoan(
         float price,
         LoanStatus status,
         Date startDate,
         Date endDate,
         Artwork artwork,
-        long customerID
+        Visitor customer
         //long validatorID
     ) {
         Loan loan = new Loan();
@@ -49,11 +49,11 @@ public class LoanService {
         loan.setStatus(status);
         loan.setStartDate(startDate);
         loan.setEndDate(endDate);
-        loan.setCustomer((Visitor) personRepository.findById(customerID).orElse(null));
+        loan.setCustomer(customer);
         //loan.setValidator(administratorRepository.findById(validatorID).orElse(null));
         loan.setArtwork(artwork);
 
-        loanRepository.save(loan);
+        return loanRepository.save(loan);
     }
 
     @Transactional
@@ -72,46 +72,37 @@ public class LoanService {
     }
 
     @Transactional
-    public void validateLoan(long id, long validatorID) {
+    public Loan validateLoan(long id, long validatorID) {
         Loan loan = loanRepository.findById(id).orElse(null);
         Administrator admin = administratorRepository.findById(validatorID).orElse(null);
 
-        if (loan == null || admin == null) return;
+        if (loan == null || admin == null) return null;
 
         loan.setValidator(admin);
         loan.setStatus(LoanStatus.VALIDATED);
-        loanRepository.save(loan);
+        return loanRepository.save(loan);
     }
 
     @Transactional
-    public void rejectLoan(long id, long validatorID) {
+    public Loan rejectLoan(long id, long validatorID) {
         Loan loan = loanRepository.findById(id).orElse(null);
         Administrator admin = administratorRepository.findById(validatorID).orElse(null);
 
-        if (loan == null || admin == null) return;
+        if (loan == null || admin == null) return null;
 
         loan.setValidator(admin);
         loan.setStatus(LoanStatus.DENIED);
-        loanRepository.save(loan);
+        return loanRepository.save(loan);
     }
 
     @Transactional
-    public void requestLoan(long id) {
+    public Loan requestLoan(long id) {
         Loan loan = loanRepository.findById(id).orElse(null);
 
-        if (loan == null) return;
-
-        // check if the loan overlaps with any other validated loans
-        Artwork artwork = loan.getArtwork();
-        List<Loan> validatedLoans = loanRepository.findByArtworkAndStatus(artwork.getId(), LoanStatus.VALIDATED);
-        for (Loan validatedLoan : validatedLoans) {
-            if (loan.getStartDate().before(validatedLoan.getEndDate()) || loan.getEndDate().after(validatedLoan.getStartDate())) {
-                return;
-            }
-        }
+        if (loan == null) return null;
 
         loan.setStatus(LoanStatus.PENDING);
-        loanRepository.save(loan);
+        return loanRepository.save(loan);
     }
 
     @Transactional

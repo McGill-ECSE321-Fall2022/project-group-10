@@ -65,9 +65,7 @@ public class ScheduleBlockRepositoryTests {
         scheduleBlock.setVisitCapacity(visitCapacity);
         ScheduleBlock.ScheduleEvent event = ScheduleBlock.ScheduleEvent.MUSEUM_OPEN;
         scheduleBlock.setEvent(event);
-        scheduleBlock.setCalendar(calendar);
         List<Visitor> visitors = Arrays.asList(visitor);
-        scheduleBlock.setVisitors(visitors);
         List<Administrator> admins = Arrays.asList(admin);
         scheduleBlock.setAdmins(admins);
 
@@ -94,16 +92,7 @@ public class ScheduleBlockRepositoryTests {
         assertEquals(endDate, scheduleBlock.getEndDate());
         assertEquals(visitFees, scheduleBlock.getVisitFees());
         assertEquals(visitCapacity, scheduleBlock.getVisitCapacity());
-        // Test calendar association
-        assertNotNull(scheduleBlock.getCalendar());
-        assertEquals(calendarId, scheduleBlock.getCalendar().getId());
-        assertEquals(isMuseumOpen, scheduleBlock.getCalendar().isMuseumOpen());
-        // Test visitor association
-        assertNotNull(scheduleBlock.getVisitors());
-        assertEquals(1, scheduleBlock.getVisitors().size());
-        assertEquals(visitorId, scheduleBlock.getVisitors().get(0).getId());
-        assertEquals(email, scheduleBlock.getVisitors().get(0).getEmail());
-        assertEquals(isActive, scheduleBlock.getVisitors().get(0).isActive());
+
         // Test admin association
         assertNotNull(scheduleBlock.getAdmins());
         assertEquals(1, scheduleBlock.getAdmins().size());
