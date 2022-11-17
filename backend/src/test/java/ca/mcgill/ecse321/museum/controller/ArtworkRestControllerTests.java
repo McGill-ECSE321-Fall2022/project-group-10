@@ -87,19 +87,20 @@ public class ArtworkRestControllerTests {
     }
 
     @Test public void testGetArtwork() {
-        ArtworkDto artwork = artworkRestController.getArtwork(1);
+        ArtworkDto artwork = artworkRestController.getArtwork(1).getBody();
         assertNotNull(artwork);
     }
 
     @Test public void testGetAllArtworks() {
-        List<ArtworkDto> artworks = artworkRestController.getAllArtworks();
+        List<ArtworkDto> artworks = artworkRestController.getAllArtworks().getBody();
         assertNotNull(artworks);
         assertNotNull(artworks.get(0));
     }
 
     @Test public void testMoveArtworkToRoom() {
         var room = new ExhibitRoom();
-        var artwork = artworkRestController.moveArtworkToRoom(1, room);
+        room.setId(1);
+        var artwork = artworkRestController.moveArtworkToRoom(1, 1);
         assertNotNull(artwork);
     }
 
