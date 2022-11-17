@@ -35,7 +35,7 @@ public class LoanRestController {
             body.getArtwork().toModel(),
             body.getCustomer().toModel()
         );
-        return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
+        return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.CREATED);
     }
 
     @GetMapping(value = {"/loans/{id}"})

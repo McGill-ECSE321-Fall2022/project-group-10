@@ -64,8 +64,6 @@ public class DonationRepositoryTests {
         String description = "This artwork features joey and a tentacle monster";
         String firstname = "Joey";
         String email = "donor@gmail.com";
-        String name = "sussy museum";
-
 
         // Set attributes
         validator.setFirstName(firstname);

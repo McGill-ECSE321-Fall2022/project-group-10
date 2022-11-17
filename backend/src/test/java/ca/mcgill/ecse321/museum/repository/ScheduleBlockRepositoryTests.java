@@ -65,7 +65,6 @@ public class ScheduleBlockRepositoryTests {
         scheduleBlock.setVisitCapacity(visitCapacity);
         ScheduleBlock.ScheduleEvent event = ScheduleBlock.ScheduleEvent.MUSEUM_OPEN;
         scheduleBlock.setEvent(event);
-        List<Visitor> visitors = Arrays.asList(visitor);
         List<Administrator> admins = Arrays.asList(admin);
         scheduleBlock.setAdmins(admins);
 
@@ -76,8 +75,6 @@ public class ScheduleBlockRepositoryTests {
         administratorRepository.save(admin);
 
         Long scheduleId = scheduleBlock.getId();
-        Long calendarId = calendar.getId();
-        Long visitorId = visitor.getId();
         Long adminId = admin.getId();
 
         // Load schedule block from database
