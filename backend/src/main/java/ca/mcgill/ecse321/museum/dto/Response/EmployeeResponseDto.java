@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Response;
 
 import ca.mcgill.ecse321.museum.model.Employee;
@@ -7,7 +8,13 @@ public class EmployeeResponseDto extends AdministratorResponseDto {
     private boolean isActive;
     private float salary;
 
-    public EmployeeResponseDto(boolean isActive, float salary, String firstName, String lastName, String email, String password) {
+    public EmployeeResponseDto(
+            boolean isActive,
+            float salary,
+            String firstName,
+            String lastName,
+            String email,
+            String password) {
         super(firstName, lastName, email, password);
         this.isActive = isActive;
         this.salary = salary;
@@ -39,14 +46,14 @@ public class EmployeeResponseDto extends AdministratorResponseDto {
 
     public static EmployeeResponseDto createDto(Employee employee) {
         if (employee == null) return null;
-        EmployeeResponseDto employeeDto = new EmployeeResponseDto(
-            employee.isActive(),
-            employee.getSalary(),
-            employee.getFirstName(),
-            employee.getLastName(),
-            employee.getEmail(),
-            employee.getPassword()
-        );
+        EmployeeResponseDto employeeDto =
+                new EmployeeResponseDto(
+                        employee.isActive(),
+                        employee.getSalary(),
+                        employee.getFirstName(),
+                        employee.getLastName(),
+                        employee.getEmail(),
+                        employee.getPassword());
 
         return employeeDto;
     }

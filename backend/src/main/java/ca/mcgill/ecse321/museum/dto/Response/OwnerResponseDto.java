@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Response;
 
 import ca.mcgill.ecse321.museum.model.Owner;
@@ -10,12 +11,12 @@ public class OwnerResponseDto extends AdministratorResponseDto {
 
     public static OwnerResponseDto createDto(Owner owner) {
         if (owner == null) return null;
-        OwnerResponseDto ownerDto = new OwnerResponseDto(
-            owner.getFirstName(),
-            owner.getLastName(),
-            owner.getEmail(),
-            owner.getPassword()
-        );
+        OwnerResponseDto ownerDto =
+                new OwnerResponseDto(
+                        owner.getFirstName(),
+                        owner.getLastName(),
+                        owner.getEmail(),
+                        owner.getPassword());
         return ownerDto;
     }
 
