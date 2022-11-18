@@ -5,7 +5,6 @@ import ca.mcgill.ecse321.museum.dto.Request.ArtworkRequestDto;
 import ca.mcgill.ecse321.museum.dto.Response.ArtworkResponseDto;
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.service.ArtworkService;
-import ca.mcgill.ecse321.museum.service.RoomService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
