@@ -40,7 +40,7 @@ public class RoomRestController {
         return new ResponseEntity<StorageRoomDto>(new StorageRoomDto(storageRoom), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = {"/rooms/exhibitRoom/{id}"})
+    @PutMapping(value = {"/rooms/exhibitRoom/{id}/{newName}/{newCapacity}"})
     public ResponseEntity<ExhibitRoomDto> updateExhibitRoom(@PathVariable long id, @PathVariable String newName, @PathVariable int newCapacity) {
         ExhibitRoom exhibitRoom = roomService.updateExhibitRoom(
             id, newName, newCapacity
@@ -50,7 +50,7 @@ public class RoomRestController {
         return new ResponseEntity<ExhibitRoomDto>(new ExhibitRoomDto(exhibitRoom), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/rooms/storageRoom/{id}"})
+    @PutMapping(value = {"/rooms/storageRoom/{id}/{newName}"})
     public ResponseEntity<StorageRoomDto> updateStorageRoom(@PathVariable long id, @PathVariable String newName) {
         StorageRoom storageRoom = roomService.updateStorageRoom(
             id, newName

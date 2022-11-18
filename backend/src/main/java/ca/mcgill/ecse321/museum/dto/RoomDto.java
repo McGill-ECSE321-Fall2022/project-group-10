@@ -7,6 +7,11 @@ public abstract class RoomDto {
     private long id;
     private String name;
 
+    public RoomDto(long id, String name) {
+        this.id = id;
+        this.name = name;
+    } 
+
     public RoomDto(Room room) {
         this.id = room.getId();
         this.name = room.getName();

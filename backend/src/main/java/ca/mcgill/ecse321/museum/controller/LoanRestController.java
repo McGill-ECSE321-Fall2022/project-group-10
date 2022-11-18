@@ -56,14 +56,14 @@ public class LoanRestController {
         return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/loans/validate/{id}"})
+    @PutMapping(value = {"/loans/validate/{id}/{validatorId}"})
     public ResponseEntity<LoanDto> validateLoan(@PathVariable long loanId, @PathVariable long validatorId) {
         Loan loan = loanService.validateLoan(loanId, validatorId);
         if (loan == null) { return new ResponseEntity<LoanDto>(HttpStatus.NOT_FOUND); };
         return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/loans/reject/{id}"})
+    @PutMapping(value = {"/loans/reject/{id}/{validatorId}"})
     public ResponseEntity<LoanDto> rejectLoan(@PathVariable long loanId, @PathVariable long validatorId) {
         Loan loan = loanService.rejectLoan(loanId, validatorId);
         if (loan == null) { return new ResponseEntity<LoanDto>(HttpStatus.NOT_FOUND); };
