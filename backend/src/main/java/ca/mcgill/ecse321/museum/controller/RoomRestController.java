@@ -6,6 +6,7 @@ import ca.mcgill.ecse321.museum.dto.Response.StorageRoomResponseDto;
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.StorageRoom;
 import ca.mcgill.ecse321.museum.service.RoomService;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
 @RestController
+@Api(tags = "Room")
 public class RoomRestController {
 
     @Autowired private RoomService roomService;
