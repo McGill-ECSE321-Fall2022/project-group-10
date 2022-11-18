@@ -1,8 +1,23 @@
 package ca.mcgill.ecse321.museum.dto.Response;
 
-public abstract class AdministratorResponseDto extends PersonResponseDto {
+import ca.mcgill.ecse321.museum.model.Administrator;
+
+public class AdministratorResponseDto extends PersonResponseDto {
 
     public AdministratorResponseDto(String firstName, String lastName, String email, String password) {
         super(firstName, lastName, email, password);
+    }
+
+    public static AdministratorResponseDto createDto(Administrator administrator) {
+        if (administrator == null) return null;
+
+        AdministratorResponseDto administratorDto = new AdministratorResponseDto(
+            administrator.getFirstName(),
+            administrator.getLastName(),
+            administrator.getEmail(),
+            administrator.getPassword()
+        );
+        
+        return administratorDto;
     }
 }

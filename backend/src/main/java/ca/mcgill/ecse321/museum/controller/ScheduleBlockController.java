@@ -12,11 +12,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.museum.dto.Request.ScheduleBlockRequestDto;
+import ca.mcgill.ecse321.museum.dto.Response.AdministratorResponseDto;
 import ca.mcgill.ecse321.museum.dto.Response.ScheduleBlockResponseDto;
+import ca.mcgill.ecse321.museum.dto.Response.VisitorResponseDto;
+import ca.mcgill.ecse321.museum.model.Administrator;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock;
+import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.service.ScheduleBlockService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -46,7 +51,7 @@ public class ScheduleBlockController {
         return new ResponseEntity<ScheduleBlockResponseDto>(ScheduleBlockResponseDto.createDto(scheduleBlock), HttpStatus.CREATED);
     }
 
-    @PostMapping(value = {"/scheduleBlock/{id}"})
+    @PutMapping(value = {"/scheduleBlock/{id}"})
     public ResponseEntity<ScheduleBlockResponseDto> updateScheduleBlock(@RequestBody ScheduleBlockRequestDto body, @PathVariable long id) {
         // Check if the schedule block is valid
         if ( body == null ) { return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.BAD_REQUEST); }
@@ -120,5 +125,81 @@ public class ScheduleBlockController {
         }
 
         return new ResponseEntity<Iterable<ScheduleBlockResponseDto>>(scheduleBlockResponseDtos, HttpStatus.OK);
+    }
+
+    @GetMapping(value = {"/scheduleBlock/{id}/visitors"})
+    public ResponseEntity<Iterable<VisitorResponseDto>> getVisitorsOnScheduleBlock(@PathVariable long id) {
+        // Get visitors for schedule block
+        Iterable<Visitor> visitors = scheduleBlockService.getVisitorsOnScheduleBlock(id);
+
+        // Convert to response DTOs
+        Iterable<VisitorResponseDto> visitorResponseDtos = new ArrayList<VisitorResponseDto>();
+        for (Visitor visitor : visitors) {
+            ((ArrayList<VisitorResponseDto>) visitorResponseDtos).add(VisitorResponseDto.createDto(visitor));
+        }
+
+        return new ResponseEntity<Iterable<VisitorResponseDto>>(visitorResponseDtos, HttpStatus.OK);
+    }
+
+    @PostMapping(value = {"/scheduleBlock/{scheduleId}/visitors/{visitorId}"})
+    public ResponseEntity<ScheduleBlockResponseDto> addVisitorToScheduleBlock(@PathVariable long scheduleId, @PathVariable long visitorId) {
+        // Add visitor to schedule block
+        try {
+            scheduleBlockService.registerVisitorOnScheduleBlock(scheduleId, visitorId);
+        } catch (Exception e) {
+            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = {"/scheduleBlock/{scheduleId}/visitors/{visitorId}"})
+    public ResponseEntity<ScheduleBlockResponseDto> removeVisitorFromScheduleBlock(@PathVariable long scheduleId, @PathVariable long visitorId) {
+        // Remove visitor from schedule block
+        try {
+            scheduleBlockService.unregisterVisitorOnScheduleBlock(scheduleId, visitorId);
+        } catch (Exception e) {
+            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = {"/scheduleBlock/{id}/staff"})
+    public ResponseEntity<Iterable<AdministratorResponseDto>> getStaffOnScheduleBlock(@PathVariable long id) {
+        // Get staff for schedule block
+        Iterable<Administrator> staff = scheduleBlockService.getStaffOnScheduleBlock(id);
+
+        // Convert to response DTOs
+        Iterable<AdministratorResponseDto> staffResponseDtos = new ArrayList<AdministratorResponseDto>();
+        for (Administrator staffMember : staff) {
+            ((ArrayList<AdministratorResponseDto>) staffResponseDtos).add(AdministratorResponseDto.createDto(staffMember));
+        }
+
+        return new ResponseEntity<Iterable<AdministratorResponseDto>>(staffResponseDtos, HttpStatus.OK);
+    }
+
+    @PostMapping(value = {"/scheduleBlock/{scheduleId}/staff/{staffId}"})
+    public ResponseEntity<ScheduleBlockResponseDto> addStaffToScheduleBlock(@PathVariable long scheduleId, @PathVariable long staffId) {
+        // Add staff to schedule block
+        try {
+            scheduleBlockService.registerStaffOnScheduleBlock(scheduleId, staffId);
+        } catch (Exception e) {
+            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = {"/scheduleBlock/{scheduleId}/staff/{staffId}"})
+    public ResponseEntity<ScheduleBlockResponseDto> removeStaffFromScheduleBlock(@PathVariable long scheduleId, @PathVariable long staffId) {
+        // Remove staff from schedule block
+        try {
+            scheduleBlockService.unregisterStaffOnScheduleBlock(scheduleId, staffId);
+        } catch (Exception e) {
+            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.OK);
     }
 }
