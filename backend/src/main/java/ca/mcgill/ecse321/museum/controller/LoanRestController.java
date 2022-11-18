@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.museum.dto.LoanDto;
@@ -45,7 +46,7 @@ public class LoanRestController {
         return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
     }
 
-    @PostMapping(value = {"/loans/request/{id}"})
+    @PutMapping(value = {"/loans/request/{id}"})
     public ResponseEntity<LoanDto> requestLoan(@PathVariable long loanId) {
         Loan loan = loanService.getLoan(loanId);
         if (loan == null) { return new ResponseEntity<LoanDto>(HttpStatus.NOT_FOUND); };
@@ -55,14 +56,14 @@ public class LoanRestController {
         return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
     }
 
-    @PostMapping(value = {"/loans/validate/{id}"})
+    @PutMapping(value = {"/loans/validate/{id}"})
     public ResponseEntity<LoanDto> validateLoan(@PathVariable long loanId, @PathVariable long validatorId) {
         Loan loan = loanService.validateLoan(loanId, validatorId);
         if (loan == null) { return new ResponseEntity<LoanDto>(HttpStatus.NOT_FOUND); };
         return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
     }
 
-    @PostMapping(value = {"/loans/reject/{id}"})
+    @PutMapping(value = {"/loans/reject/{id}"})
     public ResponseEntity<LoanDto> rejectLoan(@PathVariable long loanId, @PathVariable long validatorId) {
         Loan loan = loanService.rejectLoan(loanId, validatorId);
         if (loan == null) { return new ResponseEntity<LoanDto>(HttpStatus.NOT_FOUND); };
