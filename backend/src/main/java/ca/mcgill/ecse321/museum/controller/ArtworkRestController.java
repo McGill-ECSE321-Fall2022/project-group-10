@@ -9,10 +9,7 @@ import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.Room;
 import ca.mcgill.ecse321.museum.service.ArtworkService;
 import ca.mcgill.ecse321.museum.service.RoomService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +20,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
+@Api(tags = "Artwork")
 public class ArtworkRestController {
     @Autowired private ArtworkService artworkService;
     @Autowired private RoomService roomService;
@@ -31,7 +29,7 @@ public class ArtworkRestController {
     @ApiOperation("Create artwork")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Artwork successfully created"),
-            @ApiResponse(code = 400, message = "No such artwork")
+            @ApiResponse(code = 404, message = "No such artwork")
             }
     )
     @PostMapping(value = {"/artworks"})
@@ -57,7 +55,7 @@ public class ArtworkRestController {
     @ApiOperation("Get artwork")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Artwork returned"),
-            @ApiResponse(code = 400, message = "No such artwork")
+            @ApiResponse(code = 404, message = "No such artwork")
     }
     )
     @GetMapping(value = {"/artworks/{id}"})
@@ -74,7 +72,7 @@ public class ArtworkRestController {
     @ApiOperation("Get all artworks")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Artworks returned"),
-            @ApiResponse(code = 400, message = "No such artwork")
+            @ApiResponse(code = 404, message = "No such artwork")
     }
     )
     @GetMapping(value = {"/artworks"})
@@ -92,7 +90,7 @@ public class ArtworkRestController {
     @ApiOperation("Delete artwork")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Artwork deleted"),
-            @ApiResponse(code = 400, message = "No such artwork")
+            @ApiResponse(code = 404, message = "No such artwork")
     }
     )
     @DeleteMapping(value = {"/artworks/{id}"})
@@ -109,7 +107,7 @@ public class ArtworkRestController {
     @ApiOperation("Move artwork to room")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Artwork moved"),
-            @ApiResponse(code = 400, message = "No such artwork/room")
+            @ApiResponse(code = 404, message = "No such artwork/room")
     }
     )
     @PutMapping(value = {"/artworks/move/{id}"})
