@@ -131,6 +131,18 @@ public class ScheduleBlockService {
         return scheduleBlockRepository.findScheduleBlockByStartDateGreaterThanEqualAndEndDateLessThanEqual(startDate, endDate);
     }
 
+    // /**
+    //  *  Get all schedule blocks of specified type between two dates
+    //  * @param startDate - start date
+    //  * @param endDate - end date
+    //  * @param event - event type
+    //  * @return - all schedule blocks of specified type between two dates
+    //  */
+    // @Transactional
+    // public Iterable<ScheduleBlock> getScheduleBlocksBetweenDatesAndEvent(Date startDate, Date endDate, ScheduleEvent event) {
+    //     return scheduleBlockRepository.findScheduleBlockByStartDateGreaterThanEqualAndEndDateLessThanEqualAndEvent(startDate, endDate, event);
+    // }
+
     /**
      * Get all visitors of a schedule block
      * @param id - id of the schedule block
