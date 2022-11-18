@@ -59,6 +59,7 @@ public class ArtworkService {
     /**
      * @param id Id of the artwork to get
      * @return The artwork if it is found
+     * @throws ServiceLayerException if the artwork does not exist
      */
     @Transactional public Artwork getArtwork(long id) {
         var artwork = artworkRepository.findById(id).orElse(null);
@@ -71,6 +72,10 @@ public class ArtworkService {
      */
     @Transactional public List<Artwork> getAllArtworks() { return artworkRepository.findAll();}
 
+    /**
+     * @param artworkId Id of the artwork to be deleted
+     * @throws ServiceLayerException if the artwork does not exist
+     */
     @Transactional public void deleteArtwork(long artworkId) {
         var artwork = artworkRepository.findById(artworkId).orElse(null);
         if (artwork == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such artwork");
@@ -81,6 +86,7 @@ public class ArtworkService {
      * @param artworkId Id of the artwork to be moved
      * @param roomId Id of the room where the artwork is moved
      * @return The artwork in its new room
+     * @throws ServiceLayerException if the artwork or room does not exist
      */
     @Transactional public Artwork moveArtworkToRoom(long artworkId, long roomId) {
         var artwork = artworkRepository.findById(artworkId).orElse(null);
