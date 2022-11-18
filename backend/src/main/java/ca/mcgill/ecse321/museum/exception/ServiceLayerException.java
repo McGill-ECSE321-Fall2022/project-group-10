@@ -1,11 +1,11 @@
-package ca.mcgill.ecse321.museum.controller.exception;
+package ca.mcgill.ecse321.museum.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class ServiceException extends RuntimeException {
+public class ServiceLayerException extends RuntimeException {
     private HttpStatus status;
 	
-	public ServiceException(HttpStatus status, String message) {
+	public ServiceLayerException(HttpStatus status, String message) {
 		super(message);
 		this.status = status;
 	}
