@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.museum.service;
 
 import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.Artwork;
+import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.Room;
 import ca.mcgill.ecse321.museum.model.StorageRoom;
 import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
@@ -39,7 +40,7 @@ public class ArtworkService {
                                  String description,
                                  String imageLink,
                                  float price,
-                                 boolean isAvailable) {
+                                 boolean isAvailable) throws IllegalArgumentException {
         var artwork = new Artwork();
         artwork.setTitle(title);
         artwork.setAuthor(author);
@@ -93,6 +94,14 @@ public class ArtworkService {
         if (artwork == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such artwork");
         var room = roomRepository.findById(roomId).orElse(null);
         if (room == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such room");
+
+        // Only move to an exhibit room if the cap is not filled
+        if (room instanceof ExhibitRoom) {
+            var exhibit = (ExhibitRoom) room;
+            if (artworkRepository.countArtworksByStorage(exhibit) >= exhibit.getCapacity()) {
+                throw new ServiceLayerException(HttpStatus.FORBIDDEN, "The room is full");
+            }
+        }
 
         artwork.setStorage(room);
         return artworkRepository.save(artwork);

@@ -1,9 +1,11 @@
 package ca.mcgill.ecse321.museum.service;
 
+import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.StorageRoom;
 import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
+import ca.mcgill.ecse321.museum.repository.RoomRepository;
 import ca.mcgill.ecse321.museum.repository.StorageRoomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 
 import java.sql.Date;
 import java.util.List;
@@ -28,10 +31,9 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class ArtworkServiceTests {
 
-    @Mock
-    private ArtworkRepository artworkRepository;
-    @Mock
-    private StorageRoomRepository storageRoomRepository;
+    @Mock private ArtworkRepository artworkRepository;
+    @Mock private StorageRoomRepository storageRoomRepository;
+    @Mock private RoomRepository roomRepository;
 
     @InjectMocks
     private ArtworkService artworkService;
@@ -46,7 +48,7 @@ public class ArtworkServiceTests {
                 artwork.setId(ARTWORK_KEY);
                 return Optional.of(artwork);
             } else {
-                return null;
+                throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such artwork");
             }
         });
 
@@ -62,6 +64,10 @@ public class ArtworkServiceTests {
         };
         lenient().when(artworkRepository.save(any(Artwork.class))).thenAnswer(returnParameterAsAnswer);
     }
+
+    /**
+     * Test CreateArtwork with complete information and with existing storage
+     */
     @Test
     public void testCreateArtworkComplete() {
         // Mock a storage room
@@ -89,6 +95,9 @@ public class ArtworkServiceTests {
         assertEquals(isAvailable, artwork.isAvailable());
     }
 
+    /**
+     * Test CreateArtwork with complete information and with no existing storage
+     */
     @Test public void testCreateArtworkNoStorage() {
         var title = "Mona Lisa";
         var author = "Leonardo da Vinci";
@@ -109,12 +118,30 @@ public class ArtworkServiceTests {
         assertEquals(isAvailable, artwork.isAvailable());
     }
 
+    /**
+     * Test GetArtwork and artwork exists
+     */
     @Test public void testGetArtwork() {
         Artwork artwork = artworkService.getArtwork(1);
         assertNotNull(artwork);
         assertEquals(ARTWORK_KEY,artwork.getId());
     }
 
+    /**
+     * Test GetArtwork and artwork does not exist
+     */
+    @Test public void testGetArtworkFail() {
+        try {
+            Artwork artwork = artworkService.getArtwork(2);
+        }
+        catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        }
+    }
+
+    /**
+     * Test GetAllArtworks
+     */
     @Test public void testGetAllArtworks() {
         List<Artwork> artworks = artworkService.getAllArtworks();
         assertNotNull(artworks);
@@ -122,6 +149,9 @@ public class ArtworkServiceTests {
         assertEquals(ARTWORK_KEY, artworks.get(0).getId());
     }
 
+    /**
+     * Test Move Artwork to Room Successful
+     */
     @Test public void testMoveArtworkToRoom() {
         var room = new ExhibitRoom();
         var artwork = new Artwork();
@@ -129,6 +159,7 @@ public class ArtworkServiceTests {
         assertNotNull(artwork);
         assertEquals(room, artwork.getStorage());
     }
+
     @Test public void testDeleteArtwork() {
         var artwork = new Artwork();
         artworkService.deleteArtwork(1);
