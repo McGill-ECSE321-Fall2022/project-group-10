@@ -1,18 +1,18 @@
-package ca.mcgill.ecse321.museum.dto;
+package ca.mcgill.ecse321.museum.dto.Response;
 
 import ca.mcgill.ecse321.museum.model.Room;
 
-public abstract class RoomDto {
+public abstract class RoomResponseDto {
 
     private long id;
     private String name;
 
-    public RoomDto(long id, String name) {
+    public RoomResponseDto(long id, String name) {
         this.id = id;
         this.name = name;
     } 
 
-    public RoomDto(Room room) {
+    public RoomResponseDto(Room room) {
         this.id = room.getId();
         this.name = room.getName();
     } 

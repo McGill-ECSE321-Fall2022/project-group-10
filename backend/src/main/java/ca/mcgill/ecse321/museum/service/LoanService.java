@@ -38,27 +38,34 @@ public class LoanService {
     @Transactional
     public Loan createLoan(
         float price,
-        LoanStatus status,
         Date startDate,
         Date endDate,
-        Artwork artwork,
-        Visitor customer
-        //long validatorID
+        Long artworkId,
+        Long customerId
     ) {
         Loan loan = new Loan();
         loan.setPrice(price);
-        loan.setStatus(status);
+        loan.setStatus(LoanStatus.INCART);
+    
+        if (startDate == null ) throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Start date cannot be null");
         loan.setStartDate(startDate);
+
+        if (endDate == null ) throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "End date cannot be null");
         loan.setEndDate(endDate);
+
+        Visitor customer = (Visitor) personRepository.findById(customerId).orElse(null);
+        if (personRepository.findById(customerId).orElse(null) == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such customer");
         loan.setCustomer(customer);
-        //loan.setValidator(administratorRepository.findById(validatorID).orElse(null));
+
+        Artwork artwork = (Artwork) artworkRepository.findById(artworkId).orElse(null);
+        if (artwork == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such artwork");
         loan.setArtwork(artwork);
 
         return loanRepository.save(loan);
     }
 
     @Transactional
-    public Loan getLoan(long id) {
+    public Loan getLoan(Long id) {
         Loan loan = loanRepository.findById(id).orElse(null);
         if (loan == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such loan");
         return loan;
@@ -70,14 +77,14 @@ public class LoanService {
     }
 
     @Transactional
-    public List<Loan> getValidatedLoansForArtwork(long artworkId) {
+    public List<Loan> getValidatedLoansForArtwork(Long artworkId) {
         Artwork artwork = artworkRepository.findById(artworkId).orElse(null);
         if (artwork == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such artwork");
         return loanRepository.findByArtworkAndStatus(artwork.getId(), LoanStatus.VALIDATED);
     }
 
     @Transactional
-    public Loan validateLoan(long id, long validatorID) {
+    public Loan validateLoan(Long id, Long validatorID) {
         Loan loan = loanRepository.findById(id).orElse(null);
         Administrator admin = administratorRepository.findById(validatorID).orElse(null);
 
@@ -90,7 +97,7 @@ public class LoanService {
     }
 
     @Transactional
-    public Loan rejectLoan(long id, long validatorID) {
+    public Loan rejectLoan(Long id, Long validatorID) {
         Loan loan = loanRepository.findById(id).orElse(null);
         Administrator admin = administratorRepository.findById(validatorID).orElse(null);
 
@@ -103,7 +110,7 @@ public class LoanService {
     }
 
     @Transactional
-    public Loan requestLoan(long id) {
+    public Loan requestLoan(Long id) {
         Loan loan = loanRepository.findById(id).orElse(null);
 
         if (loan == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such loan");
@@ -119,7 +126,7 @@ public class LoanService {
     }
 
     @Transactional
-    public void requestLoanForAllInCart(long customerID) {
+    public void requestLoanForAllInCart(Long customerID) {
         Visitor customer = (Visitor) personRepository.findById(customerID).orElse(null);
         if (customer == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such customer");
 
@@ -131,7 +138,7 @@ public class LoanService {
     }
 
     @Transactional
-    public void editLoan(long id, Date startDate, Date endDate) {
+    public void editLoan(Long id, Date startDate, Date endDate) {
         Loan loan = loanRepository.findById(id).orElse(null);
 
         if (loan == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such loan");

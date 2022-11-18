@@ -1,8 +1,8 @@
 /* (C)2022 */
 package ca.mcgill.ecse321.museum.controller;
 
-import ca.mcgill.ecse321.museum.controller.body.CreateArtworkRequestBody;
-import ca.mcgill.ecse321.museum.dto.ArtworkDto;
+import ca.mcgill.ecse321.museum.dto.Request.ArtworkRequestDto;
+import ca.mcgill.ecse321.museum.dto.Response.ArtworkResponseDto;
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.Room;
@@ -22,7 +22,7 @@ public class ArtworkRestController {
     @Autowired private RoomService roomService;
 
     @PostMapping(value = {"/artworks"})
-    public ResponseEntity<ArtworkDto> createArtwork(@RequestBody CreateArtworkRequestBody body) {
+    public ResponseEntity<ArtworkResponseDto> createArtwork(@RequestBody ArtworkRequestDto body) {
         var artwork = artworkService.createArtwork(
                 body.getTitle(),
                 body.getAuthor(),
@@ -32,20 +32,20 @@ public class ArtworkRestController {
                 body.getPrice(),
                 body.isAvailable()
         );
-        return new ResponseEntity<ArtworkDto>(new ArtworkDto(artwork), HttpStatus.CREATED);
+        return new ResponseEntity<ArtworkResponseDto>(ArtworkResponseDto.createDto(artwork), HttpStatus.CREATED);
     }
 
     @GetMapping(value = {"/artworks/{id}"})
-    public ResponseEntity<ArtworkDto> getArtwork(@PathVariable long id) throws IllegalArgumentException {
+    public ResponseEntity<ArtworkResponseDto> getArtwork(@PathVariable long id) throws IllegalArgumentException {
         var artwork = artworkService.getArtwork(id);
-        return new ResponseEntity<>(new ArtworkDto(artwork), HttpStatus.OK);
+        return new ResponseEntity<>(ArtworkResponseDto.createDto(artwork), HttpStatus.OK);
     }
 
     @GetMapping(value = {"/artworks"})
-    public ResponseEntity<List<ArtworkDto>> getAllArtworks() throws IllegalArgumentException {
+    public ResponseEntity<List<ArtworkResponseDto>> getAllArtworks() throws IllegalArgumentException {
         var artworks = artworkService.getAllArtworks();
-        var artworkDtos = artworks.stream().map(artwork -> new ArtworkDto(artwork));
-        return new ResponseEntity<List<ArtworkDto>>(artworkDtos.toList(), HttpStatus.OK);
+        var artworkDtos = artworks.stream().map(artwork -> ArtworkResponseDto.createDto(artwork));
+        return new ResponseEntity<List<ArtworkResponseDto>>(artworkDtos.toList(), HttpStatus.OK);
     }
 
     @DeleteMapping(value = {"/artworks/{id}"})
@@ -56,7 +56,7 @@ public class ArtworkRestController {
     }
 
     @PatchMapping(value = {"/artworks/move/{id}"})
-    public ResponseEntity<ArtworkDto> moveArtworkToRoom(@PathVariable long id, @RequestParam long roomId) throws IllegalArgumentException {
+    public ResponseEntity<ArtworkResponseDto> moveArtworkToRoom(@PathVariable long id, @RequestParam long roomId) throws IllegalArgumentException {
         var artwork = artworkService.getArtwork(id);
         var room = roomService.getRoom(roomId);
 
@@ -68,7 +68,7 @@ public class ArtworkRestController {
             }
         }
         artwork = artworkService.moveArtworkToRoom(artwork, room);
-        return new ResponseEntity<ArtworkDto>(new ArtworkDto(artwork), HttpStatus.OK);
+        return new ResponseEntity<ArtworkResponseDto>(ArtworkResponseDto.createDto(artwork), HttpStatus.OK);
 
     }
 }

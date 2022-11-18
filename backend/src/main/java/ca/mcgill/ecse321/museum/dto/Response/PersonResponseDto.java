@@ -1,9 +1,7 @@
 /* (C)2022 */
-package ca.mcgill.ecse321.museum.dto;
+package ca.mcgill.ecse321.museum.dto.Response;
 
-import ca.mcgill.ecse321.museum.model.Person;
-
-public abstract class PersonDto {
+public abstract class PersonResponseDto {
 
     private String firstName;
     private String lastName;
@@ -12,12 +10,11 @@ public abstract class PersonDto {
 
     private Long id;
 
-    public PersonDto(Person person) {
-        this.firstName = person.getFirstName();
-        this.lastName = person.getLastName();
-        this.email = person.getEmail();
-        this.password = person.getPassword();
-        this.id = person.getId();
+    public PersonResponseDto(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
     }
 
     public Long getId() {

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.mcgill.ecse321.museum.dto.ExhibitRoomDto;
-import ca.mcgill.ecse321.museum.dto.StorageRoomDto;
+import ca.mcgill.ecse321.museum.dto.Response.ExhibitRoomResponseDto;
+import ca.mcgill.ecse321.museum.dto.Response.StorageRoomResponseDto;
 import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.StorageRoom;
@@ -25,37 +25,37 @@ public class RoomRestController {
     private RoomService roomService;
 
     @PostMapping(value = {"/rooms/exhibitRoom"})
-    public ResponseEntity<ExhibitRoomDto> createExhibitRoom(@RequestBody ExhibitRoomDto body) {
+    public ResponseEntity<ExhibitRoomResponseDto> createExhibitRoom(@RequestBody ExhibitRoomResponseDto body) {
         ExhibitRoom exhibitRoom = roomService.createExhibitRoom(
             body.getName(),
             body.getCapacity()
         );
-        return new ResponseEntity<ExhibitRoomDto>(new ExhibitRoomDto(exhibitRoom), HttpStatus.CREATED);
+        return new ResponseEntity<ExhibitRoomResponseDto>(new ExhibitRoomResponseDto(exhibitRoom), HttpStatus.CREATED);
     }
 
     @PostMapping(value = {"/rooms/storageRoom"})
-    public ResponseEntity<StorageRoomDto> createStorageRoom(@RequestBody StorageRoomDto body) {
+    public ResponseEntity<StorageRoomResponseDto> createStorageRoom(@RequestBody StorageRoomResponseDto body) {
         StorageRoom storageRoom = roomService.createStorageRoom(
             body.getName()
         );
-        return new ResponseEntity<StorageRoomDto>(new StorageRoomDto(storageRoom), HttpStatus.CREATED);
+        return new ResponseEntity<StorageRoomResponseDto>(StorageRoomResponseDto.createDto(storageRoom), HttpStatus.CREATED);
     }
 
     @PutMapping(value = {"/rooms/exhibitRoom/{id}/{newName}/{newCapacity}"})
-    public ResponseEntity<ExhibitRoomDto> updateExhibitRoom(@PathVariable long id, @PathVariable String newName, @PathVariable int newCapacity) {
+    public ResponseEntity<ExhibitRoomResponseDto> updateExhibitRoom(@PathVariable long id, @PathVariable String newName, @PathVariable int newCapacity) {
         try {
-            return new ResponseEntity<ExhibitRoomDto>(new ExhibitRoomDto(roomService.updateExhibitRoom(id, newName, newCapacity)), HttpStatus.OK);
+            return new ResponseEntity<ExhibitRoomResponseDto>(new ExhibitRoomResponseDto(roomService.updateExhibitRoom(id, newName, newCapacity)), HttpStatus.OK);
         } catch (ServiceLayerException e) {
-            return new ResponseEntity<ExhibitRoomDto>(e.getStatus());
+            return new ResponseEntity<ExhibitRoomResponseDto>(e.getStatus());
         }
     }
 
     @PutMapping(value = {"/rooms/storageRoom/{id}/{newName}"})
-    public ResponseEntity<StorageRoomDto> updateStorageRoom(@PathVariable long id, @PathVariable String newName) {
+    public ResponseEntity<StorageRoomResponseDto> updateStorageRoom(@PathVariable long id, @PathVariable String newName) {
         try {
-            return new ResponseEntity<StorageRoomDto>(new StorageRoomDto(roomService.updateStorageRoom(id, newName)), HttpStatus.OK);
+            return new ResponseEntity<StorageRoomResponseDto>(StorageRoomResponseDto.createDto(roomService.updateStorageRoom(id, newName)), HttpStatus.OK);
         } catch (ServiceLayerException e) {
-            return new ResponseEntity<StorageRoomDto>(e.getStatus());
+            return new ResponseEntity<StorageRoomResponseDto>(e.getStatus());
         }
     }
 }
