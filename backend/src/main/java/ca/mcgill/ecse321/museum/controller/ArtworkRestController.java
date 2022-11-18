@@ -76,9 +76,9 @@ public class ArtworkRestController {
     }
     )
     @DeleteMapping(value = {"/artworks/{id}"})
-    public ResponseEntity<ArtworkResponseDto> deleteArtwork(@PathVariable long id) throws IllegalArgumentException {
+    public ResponseEntity<String> deleteArtwork(@PathVariable long id) throws IllegalArgumentException {
         artworkService.deleteArtwork(id);
-        return new ResponseEntity<ArtworkResponseDto>(HttpStatus.OK);
+        return new ResponseEntity<String>("Artwork successfully deleted",HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.OK)
