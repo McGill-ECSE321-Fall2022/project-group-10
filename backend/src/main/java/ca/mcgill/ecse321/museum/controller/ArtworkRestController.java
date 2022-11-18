@@ -9,6 +9,11 @@ import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.Room;
 import ca.mcgill.ecse321.museum.service.ArtworkService;
 import ca.mcgill.ecse321.museum.service.RoomService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +27,13 @@ public class ArtworkRestController {
     @Autowired private ArtworkService artworkService;
     @Autowired private RoomService roomService;
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation("Create artwork")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Artwork successfully created"),
+            @ApiResponse(code = 400, message = "No such artwork")
+            }
+    )
     @PostMapping(value = {"/artworks"})
     public ResponseEntity<ArtworkDto> createArtwork(@RequestBody CreateArtworkRequestBody body) {
         try {
