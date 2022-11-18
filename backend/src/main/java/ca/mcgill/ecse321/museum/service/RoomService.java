@@ -18,20 +18,43 @@ public class RoomService {
     RoomRepository roomRepository;
     
     @Transactional
-    public void createExhibitRoom(String name, int capacity) {
+    public ExhibitRoom createExhibitRoom(String name, int capacity) {
         ExhibitRoom room = new ExhibitRoom();
         room.setName(name);
         room.setCapacity(capacity);
 
-        roomRepository.save(room);
+        return roomRepository.save(room);
     }
 
     @Transactional
-    public void createStorageRoom(String name) {
+    public StorageRoom createStorageRoom(String name) {
         StorageRoom room = new StorageRoom();
         room.setName(name);
 
-        roomRepository.save(room);
+        return roomRepository.save(room);
+    }
+
+    @Transactional
+    public ExhibitRoom updateExhibitRoom(long id, String name, int capacity) {
+        ExhibitRoom room = (ExhibitRoom) roomRepository.findById(id).orElse(null);
+
+        if (room == null) { return null; }
+
+        room.setName(name);
+        room.setCapacity(capacity);
+
+        return roomRepository.save(room);
+    }
+
+    @Transactional
+    public StorageRoom updateStorageRoom(long id, String name) {
+        StorageRoom room = (StorageRoom) roomRepository.findById(id).orElse(null);
+
+        if (room == null) { return null; }
+
+        room.setName(name);
+
+        return roomRepository.save(room);
     }
 
     @Transactional
