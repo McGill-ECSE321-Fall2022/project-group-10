@@ -1,7 +1,6 @@
 /* (C)2022 */
 package ca.mcgill.ecse321.museum;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,10 +30,6 @@ public class MuseumSystemApplication {
         };
     }
 
-    @Bean
-    ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
 
     @PostConstruct
     public void init(){
