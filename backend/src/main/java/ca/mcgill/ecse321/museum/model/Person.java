@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.model;
 
 import javax.persistence.*;
@@ -8,20 +9,18 @@ import javax.persistence.*;
 // line 45 "../../../../..//MuseumSystem.ump"
 public abstract class Person {
 
-    //------------------------
+    // ------------------------
     // MEMBER VARIABLES
-    //------------------------
+    // ------------------------
 
-    //Person Attributes
+    // Person Attributes
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
-    //Person Associations
-    @Id
-    @GeneratedValue
-    private long id;
+    // Person Associations
+    @Id @GeneratedValue private long id;
 
     public long getId() {
         return id;

@@ -1,15 +1,16 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Request;
 
 public abstract class VisitorRequestDto {
 
-    //Person Attributes
+    // Person Attributes
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private long id;
 
-    //Visitor Attribute
+    // Visitor Attribute
     private boolean isActive;
 
     public long getId() {

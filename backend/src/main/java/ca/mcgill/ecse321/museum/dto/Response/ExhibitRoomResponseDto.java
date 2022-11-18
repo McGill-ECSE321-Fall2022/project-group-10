@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Response;
 
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
@@ -26,11 +27,9 @@ public class ExhibitRoomResponseDto extends RoomResponseDto {
     }
 
     public static ExhibitRoomResponseDto createDto(ExhibitRoom exhibitRoom) {
-        ExhibitRoomResponseDto exhibitRoomDto = new ExhibitRoomResponseDto(
-            exhibitRoom.getId(),
-            exhibitRoom.getName(),
-            exhibitRoom.getCapacity()
-        );
+        ExhibitRoomResponseDto exhibitRoomDto =
+                new ExhibitRoomResponseDto(
+                        exhibitRoom.getId(), exhibitRoom.getName(), exhibitRoom.getCapacity());
         return exhibitRoomDto;
     }
 }
