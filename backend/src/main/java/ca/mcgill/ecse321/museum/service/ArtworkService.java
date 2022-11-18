@@ -15,10 +15,8 @@ import java.util.List;
 
 @Service
 public class ArtworkService {
-    @Autowired
-    ArtworkRepository artworkRepository;
-    @Autowired
-    StorageRoomRepository storageRoomRepository;
+    @Autowired ArtworkRepository artworkRepository;
+    @Autowired StorageRoomRepository storageRoomRepository;
 
     @Transactional
     public Artwork createArtwork(String title,
@@ -54,5 +52,4 @@ public class ArtworkService {
         artwork.setStorage(room);
         return artworkRepository.save(artwork);
     }
-
 }

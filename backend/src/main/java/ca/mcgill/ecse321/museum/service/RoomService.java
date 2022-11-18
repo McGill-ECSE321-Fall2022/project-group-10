@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ import ca.mcgill.ecse321.museum.repository.RoomRepository;
 public class RoomService {
     @Autowired
     RoomRepository roomRepository;
+    @Autowired
+    ArtworkRepository artworkRepository;
     
     @Transactional
     public ExhibitRoom createExhibitRoom(String name, int capacity) {
@@ -70,5 +73,9 @@ public class RoomService {
     @Transactional
     public void deleteRoom(Room room) {
         roomRepository.delete(room);
+    }
+
+    @Transactional public long countArtworksInExhibitRoom(ExhibitRoom room) {
+        return artworkRepository.countArtworksByStorage(room);
     }
 }
