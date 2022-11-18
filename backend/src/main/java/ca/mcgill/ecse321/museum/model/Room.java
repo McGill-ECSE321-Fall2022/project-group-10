@@ -1,22 +1,20 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.model;
 
-import org.springframework.lang.NonNull;
-
 import javax.persistence.*;
+import org.springframework.lang.NonNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "RoomType")
-@SequenceGenerator(name="seq", initialValue=12)
-
+@SequenceGenerator(name = "seq", initialValue = 12)
 public abstract class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     private long id;
-    
-    @NonNull
-    private String name = "DefaultRoomName";
+
+    @NonNull private String name = "DefaultRoomName";
 
     public long getId() {
         return id;
@@ -35,9 +33,7 @@ public abstract class Room {
     }
 
     public void setName(String name) {
-        if (name == null)
-            this.name = "DefaultRoomName"; 
-        else 
-            this.name = name;
+        if (name == null) this.name = "DefaultRoomName";
+        else this.name = name;
     }
 }

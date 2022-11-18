@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.model;
 
 import javax.persistence.*;
@@ -6,25 +7,20 @@ import javax.persistence.*;
 // line 66 "../../../../..//MuseumSystem.ump"
 public class Donation {
 
-    //------------------------
+    // ------------------------
     // MEMBER VARIABLES
-    //------------------------
+    // ------------------------
 
-    //Donation Attributes
-    @Id
-    @GeneratedValue
-    private long id;
+    // Donation Attributes
+    @Id @GeneratedValue private long id;
     private boolean validated;
 
     private String description;
 
-    //Donation Associations
-    @ManyToOne
-    private Visitor donor;
-    @ManyToOne
-    private Administrator validator;
-    @ManyToOne
-    private Artwork artwork;
+    // Donation Associations
+    @ManyToOne private Visitor donor;
+    @ManyToOne private Administrator validator;
+    @ManyToOne private Artwork artwork;
 
     public Long getId() {
         return id;

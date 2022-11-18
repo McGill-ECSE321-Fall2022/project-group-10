@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "156b34b7-8b0a-43e1-9e2f-b5dcf21fb019",
+		"name": "Artwork Integration Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateArtwork1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"author\": \"RTX 3090\",\n  \"creationDate\": \"2022-11-18\",\n  \"description\": \"This is AI generated art\",\n  \"imageLink\": \"yeet.com\",\n  \"price\": 100,\n  \"title\": \"A dog with a horse's mouth\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/artworks",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateArtwork2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"author\": \"Jeff\",\n  \"creationDate\": \"1980-05-09\",\n  \"description\": \"This is AI generated art\",\n  \"imageLink\": \"yeetington.tv\",\n  \"price\": 1000,\n  \"title\": \"My name is\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/artworks",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetArtworkSuccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetArtworkFail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllArtworks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MoveArtworkSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/move/1?roomId=4",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"move",
+						"1"
+					],
+					"query": [
+						{
+							"key": "roomId",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MoveArtwork Artwork does not exist",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/move/54?roomId=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"move",
+						"54"
+					],
+					"query": [
+						{
+							"key": "roomId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MoveArtwork Room does not exist",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/move/1?roomId=100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"move",
+						"1"
+					],
+					"query": [
+						{
+							"key": "roomId",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteArtworkSuccess",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deleted Artwork should not exist",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

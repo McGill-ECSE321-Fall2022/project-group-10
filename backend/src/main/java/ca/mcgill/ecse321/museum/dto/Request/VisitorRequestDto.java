@@ -1,30 +1,23 @@
 /* (C)2022 */
-package ca.mcgill.ecse321.museum.dto;
+package ca.mcgill.ecse321.museum.dto.Request;
 
-import ca.mcgill.ecse321.museum.model.Person;
+public abstract class VisitorRequestDto {
 
-public abstract class PersonDto {
-
+    // Person Attributes
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+    private long id;
 
-    private Long id;
+    // Visitor Attribute
+    private boolean isActive;
 
-    public PersonDto(Person person) {
-        this.firstName = person.getFirstName();
-        this.lastName = person.getLastName();
-        this.email = person.getEmail();
-        this.password = person.getPassword();
-        this.id = person.getId();
-    }
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -58,5 +51,13 @@ public abstract class PersonDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        this.isActive = active;
     }
 }

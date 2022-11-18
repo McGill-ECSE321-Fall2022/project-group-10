@@ -1,17 +1,16 @@
 plugins {
-    id 'org.springframework.boot' version '2.7.5'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    id 'java'
+	id 'org.springframework.boot' version '2.7.5'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'java'
 
-    // Static analysis
-    id 'pmd'
-    id 'com.github.spotbugs' version '5.0.13'
+	// Code coverage
+	id 'jacoco'
 
-    // Code coverage
-    id 'jacoco'
+	// Code style
+	id 'com.diffplug.spotless' version '6.11.0'
 
-    // Code style
-    id 'com.diffplug.spotless' version '6.11.0'
+	// Run Postman
+	id "com.github.michaelruocco.gradle-postman-runner" version "0.1.4"
 }
 
 group = 'ca.mcgill.ecse321'
@@ -19,112 +18,96 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
-    mavenCentral()
-    google()
-    mavenLocal()
+	mavenCentral()
+	google()
+	mavenLocal()
 }
 
 dependencies {
-    // Spring dependencies
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	// Spring dependencies
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-    // ModelMapper to quickly map Model objects to DTOs
-    implementation 'org.modelmapper.extensions:modelmapper-spring:3.1.0'
-    implementation 'org.modelmapper:modelmapper:3.1.0'
+	// Needed for Postgres
+	runtimeOnly 'org.postgresql:postgresql'
 
-    // Needed for Postgres
-    runtimeOnly 'org.postgresql:postgresql'
+	// For Swagger
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
-    // For Swagger
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
-
-    // For Mockito
-    testImplementation 'org.mockito:mockito-core:4.8.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:4.8.0'
-
-    // For Cucumber
-    testImplementation 'io.cucumber:cucumber-java:7.8.1'
-    testImplementation 'io.cucumber:cucumber-junit:7.8.1'
-    testImplementation 'io.cucumber:cucumber-spring:7.8.1'
-    testImplementation 'org.junit.vintage:junit-vintage-engine:5.9.0'
+	// For Mockito
+	testImplementation 'org.mockito:mockito-core:4.8.0'
+	testImplementation 'org.mockito:mockito-junit-jupiter:4.8.0'
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+	useJUnitPlatform()
 }
 
 test {
-    testLogging {
-        events "PASSED", "SKIPPED", "FAILED"
-    }
+	testLogging {
+		events "PASSED", "SKIPPED", "FAILED"
+	}
 
-    // Run code coverage report after testing
-    finalizedBy jacocoTestReport
-    finalizedBy jacocoTestCoverageVerification
+	// Run code coverage report after testing
+	finalizedBy jacocoTestReport
+	finalizedBy jacocoTestCoverageVerification
 }
 
 jacocoTestReport {
-    dependsOn test
-
-    afterEvaluate {
-        // Exclude DTOs from code coverage
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                    "ca/mcgill/ecse321/museum/dto"
-            ]
-            )
-        }))
-    }
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, includes : [
+					"ca/mcgill/ecse321/museum/service/*"
+			])
+		}))
+	}
 }
 
 jacocoTestCoverageVerification {
-    afterEvaluate {
-        // Exclude DTOs from code coverage
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                    "ca/mcgill/ecse321/museum/dto"
-            ]
-            )
-        }))
-    }
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, includes : [
+					"ca/mcgill/ecse321/museum/service/*"
+			])
+		}))
+	}
 
-    // Enforce a minimum of 70% instruction coverage
-    violationRules {
-        rule {
-            limit {
-                minimum = 0.7
-            }
-        }
-    }
+	// Enforce a minimum of 70% instruction coverage
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.7
+			}
+		}
+	}
 }
 
 // Enforce a coding style
 spotless {
-    // optional: limit format enforcement to just the files changed by this feature branch
-    ratchetFrom 'origin/main'
+	// optional: limit format enforcement to just the files changed by this feature branch
+	ratchetFrom 'origin/main'
 
-    format 'misc', {
-        // define the files to apply `misc` to
-        target '*.gradle', '*.md', '.gitignore'
+	format 'misc', {
+		// define the files to apply `misc` to
+		target '*.gradle', '*.md', '.gitignore'
 
-        // define the steps to apply to those files
-        trimTrailingWhitespace()
-        indentWithTabs() // or spaces. Takes an integer argument if you don't like 4
-        endWithNewline()
-    }
-    java {
-        // don't need to set target, it is inferred from java
+		// define the steps to apply to those files
+		trimTrailingWhitespace()
+		indentWithTabs() // or spaces. Takes an integer argument if you don't like 4
+		endWithNewline()
+	}
+	java {
+		// don't need to set target, it is inferred from java
 
-        // apply a specific flavor of google-java-format
-        googleJavaFormat('1.15.0').aosp().reflowLongStrings()
-        // fix formatting of type annotations
-        formatAnnotations()
-        // make sure every file has the following copyright header.
-        // optionally, Spotless can set copyright years by digging
-        // through git history (see "license" section below)
-        licenseHeader '/* (C)$YEAR */'
-    }
+		// apply a specific flavor of google-java-format
+		googleJavaFormat('1.15.0').aosp().reflowLongStrings()
+		// fix formatting of type annotations
+		formatAnnotations()
+		// make sure every file has the following copyright header.
+		// optionally, Spotless can set copyright years by digging
+		// through git history (see "license" section below)
+		licenseHeader '/* (C)$YEAR */'
+	}
 }

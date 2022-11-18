@@ -1,32 +1,27 @@
 /* (C)2022 */
-package ca.mcgill.ecse321.museum.model;
+package ca.mcgill.ecse321.museum.dto.Response;
 
-import javax.persistence.*;
+public abstract class PersonResponseDto {
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "PersonType")
-// line 45 "../../../../..//MuseumSystem.ump"
-public abstract class Person {
-
-    // ------------------------
-    // MEMBER VARIABLES
-    // ------------------------
-
-    // Person Attributes
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
-    // Person Associations
-    @Id @GeneratedValue private long id;
+    private Long id;
 
-    public long getId() {
+    public PersonResponseDto(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
