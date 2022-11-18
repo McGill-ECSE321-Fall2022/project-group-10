@@ -20,9 +20,9 @@ public class Loan {
     private float price;
     private LoanStatus status;
     @NonNull
-    private Date startDate;
+    private Date startDate = new Date(0);
     @NonNull
-    private Date endDate;
+    private Date endDate = new Date(0);
 
     //Loan Associations
     @ManyToOne
@@ -69,7 +69,11 @@ public class Loan {
     }
 
     public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+        if (startDate != null) {
+            this.startDate = startDate;
+        } else {
+            this.startDate = new Date(0);
+        }
     }
 
     public Date getEndDate() {
@@ -77,7 +81,11 @@ public class Loan {
     }
 
     public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+        if (endDate != null) {
+            this.endDate = endDate;
+        } else {
+            this.endDate = new Date(0);
+        }
     }
 
     public Visitor getCustomer() {

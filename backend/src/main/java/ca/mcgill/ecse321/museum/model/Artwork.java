@@ -19,13 +19,13 @@ public class Artwork {
     @GeneratedValue
     private long id;
     @NonNull
-    private String title;
+    private String title = "defaultTitle";
     @NonNull
-    private String author;
+    private String author = "defaultAuthor";
     @NonNull
-    private Date creationDate;
+    private Date creationDate = new Date(0);
     @NonNull
-    private String description;
+    private String description = "defaultDescription";
     @Nullable // We may have artworks without links
     private String imageLink;
     private float price;
@@ -51,7 +51,11 @@ public class Artwork {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        if (title != null) {
+            this.title = title;
+        } else {
+            this.title = "defaultTitle";
+        }
     }
 
     public String getAuthor() {
@@ -59,7 +63,11 @@ public class Artwork {
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        if (author != null) {
+            this.author = author;
+        } else {
+            this.author = "defaultAuthor";
+        }
     }
 
     public Date getCreationDate() {
@@ -67,7 +75,11 @@ public class Artwork {
     }
 
     public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+        if (creationDate != null) {
+            this.creationDate = creationDate;
+        } else {
+            this.creationDate = new Date(0);
+        }
     }
 
     public String getDescription() {
@@ -75,7 +87,11 @@ public class Artwork {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        if (description != null) {
+            this.description = description;
+        } else {
+            this.description = "defaultDescription";
+        }
     }
 
     public String getImageLink() {
