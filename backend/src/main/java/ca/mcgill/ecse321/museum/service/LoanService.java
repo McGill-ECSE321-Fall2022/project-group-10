@@ -129,26 +129,18 @@ public class LoanService {
     }
 
     @Transactional
-    public void requestLoanForAllInCart(Long customerID) {
-        Visitor customer = (Visitor) personRepository.findById(customerID).orElse(null);
-        if (customer == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such customer");
-
-        List<Loan> inCartLoans = loanRepository.findByCustomerAndStatus(customerID, LoanStatus.INCART);
-
-        for (Loan inCartLoan : inCartLoans) {
-            requestLoan(inCartLoan.getId());
-        }
-    }
-
-    @Transactional
-    public void editLoan(Long id, Date startDate, Date endDate) {
+    public Loan editLoan(Long id, Date startDate, Date endDate) {
         Loan loan = loanRepository.findById(id).orElse(null);
+
+        if (startDate == null ) throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Start date cannot be null");
+
+        if (endDate == null ) throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "End date cannot be null");
 
         if (loan == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such loan");
 
         loan.setStartDate(startDate);
         loan.setEndDate(endDate);
-        loanRepository.save(loan);
+        return loanRepository.save(loan);
     }
 
     @Transactional

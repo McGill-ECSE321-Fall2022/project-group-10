@@ -269,6 +269,50 @@ public class LoanServiceTests {
         }
     }
 
+    // success editLoan
+    
+    @Test public void editLoan() {
+        // Mock Artwork
+        lenient().when(artworkRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) ->{
+            Artwork artwork = new Artwork();
+            artwork.setId(Long.valueOf(1));
+            return Optional.of(artwork);
+        });
+
+        // Mock Visitor
+        lenient().when(personRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) ->{
+            ca.mcgill.ecse321.museum.model.Visitor visitor = new ca.mcgill.ecse321.museum.model.Visitor();
+            visitor.setId(Long.valueOf(1));
+            return Optional.of(visitor);
+        });
+
+        // Mock Employee
+        lenient().when(administratorRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) ->{
+            Employee employee = new Employee();
+            employee.setId(Long.valueOf(1));
+            return Optional.of(employee);
+        });
+
+        Date newStartDate = new Date(55);
+        Date newEndDate = new Date(65);
+        Loan loan = loanService.editLoan(LOAN_KEY_EMPTY, newStartDate, newEndDate);
+
+        assertNotNull(loan);
+        assertEquals(newStartDate, loan.getStartDate());
+        assertEquals(newEndDate, loan.getEndDate());
+    }
+
+    // fail getValidatedLoansForArtwork
+    @Test public void getValidatedLoansForArtworkFail() {
+        try {
+            loanService.getValidatedLoansForArtwork(1L);
+            fail();
+        }
+        catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        }
+    }
+
     @Test public void testDeleteLoan() {
         loanService.deleteLoan(LOAN_KEY_EMPTY);
         verify(loanRepository, times(1)).delete(any(Loan.class));
