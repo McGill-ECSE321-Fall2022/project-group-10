@@ -153,12 +153,23 @@ public class ArtworkServiceTests {
      * Test Move Artwork to Room Successful
      */
     @Test public void testMoveArtworkToRoom() {
-        var room = new ExhibitRoom();
+        var exhibit = new ExhibitRoom();
+        exhibit.setId(2);
+        exhibit.setCapacity(200);
+        exhibit.setName("Exhibit");
+
+        lenient().when(roomRepository.findById(2L)).thenReturn(Optional.of(exhibit));
+
         var artwork = new Artwork();
-        artwork = artworkService.moveArtworkToRoom(1, 1);
+        artwork = artworkService.moveArtworkToRoom(1, 2);
         assertNotNull(artwork);
-        assertEquals(room, artwork.getStorage());
+        assertEquals(exhibit, artwork.getStorage());
     }
+
+    @Test public void testMoveArtworkToFullRoom() {}
+    @Test public void testMoveArtworkToStorage() {}
+    @Test public void testMoveArtworkButArtworkDoesNotExist() {}
+    @Test public void testMoveArtworkButRoomDoesNotExist() {}
 
     @Test public void testDeleteArtwork() {
         var artwork = new Artwork();
