@@ -12,7 +12,7 @@ The team will analyze and translate the clients requirements into a working requ
 | Joseph Saliba   | JosephSaliba01        | Requirements, Use-cases, Tests, Documentation, Domain Model | 15 | X |
 | Adam Simard   | Simard302        | Requirements, Use-cases, Tests, Documentation, Wiki | 8 | X |
 | Alex Turianskyj   | Al3X-T        | Requirements, Use-cases, Tests, Documentation | 8 | X |
-| Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation, Project Setup, Model Classes | 10 | X |
+| Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation, Project Setup, Model Classes, Software Testing and Quality Tools Setup, Service Layer, REST Controller, Unit Tests, Integration Test | 10 | 15 |
 
 ## Index
 [Deliverable 1 Project Report](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Deliverable-1-Project-Report)
