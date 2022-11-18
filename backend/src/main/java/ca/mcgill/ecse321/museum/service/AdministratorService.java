@@ -49,11 +49,10 @@ public class AdministratorService {
      * @param lastName last name of the owner
      * @param email email of the owner
      * @param password password of the owner
-     * @param salary salary of the owner
      * @return the created owner
      */
     @Transactional
-    public Owner createOwner(String firstName, String lastName, String email, String password, float salary){
+    public Owner createOwner(String firstName, String lastName, String email, String password){
         Owner owner = new Owner();
 
         if (administratorRepository.findByEmail(email) != null) {

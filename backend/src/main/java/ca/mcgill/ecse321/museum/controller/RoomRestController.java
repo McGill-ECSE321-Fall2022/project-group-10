@@ -1,6 +1,8 @@
 /* (C)2022 */
 package ca.mcgill.ecse321.museum.controller;
 
+import ca.mcgill.ecse321.museum.dto.Request.ExhibitRoomRequestDto;
+import ca.mcgill.ecse321.museum.dto.Request.StorageRoomRequestDto;
 import ca.mcgill.ecse321.museum.dto.Response.ExhibitRoomResponseDto;
 import ca.mcgill.ecse321.museum.dto.Response.StorageRoomResponseDto;
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
@@ -26,7 +28,7 @@ public class RoomRestController {
 
     @PostMapping(value = {"/rooms/exhibitRoom"})
     public ResponseEntity<ExhibitRoomResponseDto> createExhibitRoom(
-            @RequestBody ExhibitRoomResponseDto body) {
+            @RequestBody ExhibitRoomRequestDto body) {
         ExhibitRoom exhibitRoom = roomService.createExhibitRoom(body.getName(), body.getCapacity());
         return new ResponseEntity<ExhibitRoomResponseDto>(
                 ExhibitRoomResponseDto.createDto(exhibitRoom), HttpStatus.CREATED);
@@ -34,7 +36,7 @@ public class RoomRestController {
 
     @PostMapping(value = {"/rooms/storageRoom"})
     public ResponseEntity<StorageRoomResponseDto> createStorageRoom(
-            @RequestBody StorageRoomResponseDto body) {
+            @RequestBody StorageRoomRequestDto body) {
         StorageRoom storageRoom = roomService.createStorageRoom(body.getName());
         return new ResponseEntity<StorageRoomResponseDto>(
                 StorageRoomResponseDto.createDto(storageRoom), HttpStatus.CREATED);
