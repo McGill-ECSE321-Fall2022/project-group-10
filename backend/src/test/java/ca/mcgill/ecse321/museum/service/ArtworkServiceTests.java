@@ -42,14 +42,10 @@ public class ArtworkServiceTests {
 
     @BeforeEach
     public void setMockOutput() {
-        lenient().when(artworkRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) -> {
-            if(invocation.getArgument(0).equals(ARTWORK_KEY)) {
+        lenient().when(artworkRepository.findById(ARTWORK_KEY)).thenAnswer( (InvocationOnMock invocation) -> {
                 var artwork = new Artwork();
                 artwork.setId(ARTWORK_KEY);
                 return Optional.of(artwork);
-            } else {
-                throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such artwork");
-            }
         });
 
         lenient().when(artworkRepository.findAll()).thenAnswer ( (InvocationOnMock invocation) -> {
@@ -131,12 +127,9 @@ public class ArtworkServiceTests {
      * Test GetArtwork and artwork does not exist
      */
     @Test public void testGetArtworkFail() {
-        try {
-            Artwork artwork = artworkService.getArtwork(2);
-        }
-        catch (ServiceLayerException e) {
-            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
-        }
+        lenient().when(artworkRepository.findById(2L)).thenReturn(Optional.empty());
+        Exception exception = assertThrows(ServiceLayerException.class, () -> artworkService.getArtwork(2L));
+        assertEquals("No such artwork", exception.getMessage());
     }
 
     /**
@@ -164,6 +157,7 @@ public class ArtworkServiceTests {
         artwork = artworkService.moveArtworkToRoom(1, 2);
         assertNotNull(artwork);
         assertEquals(exhibit, artwork.getStorage());
+
     }
 
     @Test public void testMoveArtworkToFullRoom() {}
