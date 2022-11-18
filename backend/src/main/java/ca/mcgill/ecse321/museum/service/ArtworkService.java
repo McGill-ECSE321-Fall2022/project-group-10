@@ -109,8 +109,7 @@ public class ArtworkService {
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such room");
 
         // Only move to an exhibit room if the cap is not filled
-        if (room instanceof ExhibitRoom) {
-            var exhibit = (ExhibitRoom) room;
+        if (room instanceof ExhibitRoom exhibit) {
             if (artworkRepository.countArtworksByStorage(exhibit) >= exhibit.getCapacity()) {
                 throw new ServiceLayerException(HttpStatus.FORBIDDEN, "The room is full");
             }

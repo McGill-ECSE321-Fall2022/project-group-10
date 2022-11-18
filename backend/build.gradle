@@ -57,27 +57,21 @@ test {
 }
 
 jacocoTestReport {
-    dependsOn test
-
     afterEvaluate {
-        // Exclude DTOs from code coverage
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                    "ca/mcgill/ecse321/museum/dto"
-            ]
-            )
+            fileTree(dir: it, includes : [
+                    "ca/mcgill/ecse321/museum/service/*"
+            ])
         }))
     }
 }
 
 jacocoTestCoverageVerification {
     afterEvaluate {
-        // Exclude DTOs from code coverage
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                    "ca/mcgill/ecse321/museum/dto"
-            ]
-            )
+            fileTree(dir: it, includes : [
+                    "ca/mcgill/ecse321/museum/service/*"
+            ])
         }))
     }
 
