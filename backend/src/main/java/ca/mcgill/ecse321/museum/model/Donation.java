@@ -30,10 +30,6 @@ public class Donation {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setId(long id) {
         this.id = id;
     }

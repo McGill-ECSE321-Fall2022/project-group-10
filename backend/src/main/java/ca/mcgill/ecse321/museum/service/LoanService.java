@@ -40,7 +40,7 @@ public class LoanService {
         Date startDate,
         Date endDate,
         Artwork artwork,
-        Visitor customer
+        Visitor customer    
         //long validatorID
     ) {
         Loan loan = new Loan();
