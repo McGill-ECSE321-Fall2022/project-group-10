@@ -11,11 +11,6 @@ public class ExhibitRoomResponseDto extends RoomResponseDto {
         this.capacity = capacity;
     }
 
-    public ExhibitRoomResponseDto(ExhibitRoom exhibitRoom) {
-        super(exhibitRoom);
-        this.capacity = exhibitRoom.getCapacity();
-    }
-
     public int getCapacity() {
         return capacity;
     }

@@ -127,7 +127,9 @@ public class ArtworkResponseDto {
         artwork.setImageLink(artworkDto.getImageLink());
         artwork.setPrice(artworkDto.getPrice());
         artwork.setAvailable(artworkDto.isAvailable());
-        artwork.setStorage(artworkDto.storage.toModel());
+        if (artworkDto.getStorage() == null) artwork.setStorage(null);
+        else if (artworkDto.getStorage().getClass() == ExhibitRoomResponseDto.class) artwork.setStorage(ExhibitRoomResponseDto.createModel((ExhibitRoomResponseDto) artworkDto.getStorage()));
+        else artwork.setStorage(StorageRoomResponseDto.createModel((StorageRoomResponseDto) artworkDto.getStorage()));
         return artwork;
     }
 }
