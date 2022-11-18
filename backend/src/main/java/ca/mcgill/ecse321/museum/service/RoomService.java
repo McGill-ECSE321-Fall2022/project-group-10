@@ -6,8 +6,10 @@ import javax.transaction.Transactional;
 
 import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.Room;
 import ca.mcgill.ecse321.museum.model.StorageRoom;
@@ -41,7 +43,7 @@ public class RoomService {
     public ExhibitRoom updateExhibitRoom(long id, String name, int capacity) {
         ExhibitRoom room = (ExhibitRoom) roomRepository.findById(id).orElse(null);
 
-        if (room == null) { return null; }
+        if (room == null) { throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such exhibit rooms"); }
 
         room.setName(name);
         room.setCapacity(capacity);
@@ -53,10 +55,9 @@ public class RoomService {
     public StorageRoom updateStorageRoom(long id, String name) {
         StorageRoom room = (StorageRoom) roomRepository.findById(id).orElse(null);
 
-        if (room == null) { return null; }
+        if (room == null) { throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such rooms"); }
 
         room.setName(name);
-
         return roomRepository.save(room);
     }
 

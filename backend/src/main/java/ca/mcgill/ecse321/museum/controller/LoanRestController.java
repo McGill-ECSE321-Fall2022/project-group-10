@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.museum.dto.LoanDto;
+import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.Loan;
 import ca.mcgill.ecse321.museum.service.LoanService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -41,44 +42,39 @@ public class LoanRestController {
 
     @GetMapping(value = {"/loans/{id}"})
     public ResponseEntity<LoanDto> getLoan(@PathVariable long id) {
-        Loan loan = loanService.getLoan(id);
-        if (loan == null) { return new ResponseEntity<LoanDto>(HttpStatus.NOT_FOUND); };
-        return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
+        try {
+            return new ResponseEntity<LoanDto>(new LoanDto(loanService.getLoan(id)), HttpStatus.OK);
+        } catch (ServiceLayerException e) {
+            return new ResponseEntity<LoanDto>(e.getStatus());
+        }
     }
 
     @PutMapping(value = {"/loans/request/{id}"})
     public ResponseEntity<LoanDto> requestLoan(@PathVariable long loanId) {
-        Loan loan = loanService.getLoan(loanId);
-        if (loan == null) { return new ResponseEntity<LoanDto>(HttpStatus.NOT_FOUND); };
-        if (isloanConflicts(loanId)) { return new ResponseEntity<LoanDto>(HttpStatus.CONFLICT); };
-
-        loan = loanService.requestLoan(loanId);
-        return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
+        try {
+            return new ResponseEntity<LoanDto>(new LoanDto(loanService.requestLoan(loanId)), HttpStatus.OK);
+        } catch (ServiceLayerException e) {
+            return new ResponseEntity<LoanDto>(e.getStatus());
+        }
     }
 
     @PutMapping(value = {"/loans/validate/{id}/{validatorId}"})
     public ResponseEntity<LoanDto> validateLoan(@PathVariable long loanId, @PathVariable long validatorId) {
-        Loan loan = loanService.validateLoan(loanId, validatorId);
-        if (loan == null) { return new ResponseEntity<LoanDto>(HttpStatus.NOT_FOUND); };
-        return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
+        try {
+            Loan loan = loanService.validateLoan(loanId, validatorId);
+            return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
+        } catch (ServiceLayerException e) {
+            return new ResponseEntity<LoanDto>(e.getStatus());
+        }
     }
 
     @PutMapping(value = {"/loans/reject/{id}/{validatorId}"})
     public ResponseEntity<LoanDto> rejectLoan(@PathVariable long loanId, @PathVariable long validatorId) {
-        Loan loan = loanService.rejectLoan(loanId, validatorId);
-        if (loan == null) { return new ResponseEntity<LoanDto>(HttpStatus.NOT_FOUND); };
-        return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
-    }
-
-    // Private methods
-    private boolean isloanConflicts(long id) {
-        Loan loan = loanService.getLoan(id);
-        List<Loan> validatedLoans = loanService.getValidatedLoansForArtwork(loan.getArtwork());
-
-        for (Loan validatedLoan : validatedLoans)
-            if (loan.getStartDate().before(validatedLoan.getEndDate()) && validatedLoan.getStartDate().before(loan.getEndDate()))
-                return true;
-
-        return false;
+        try {
+            Loan loan = loanService.rejectLoan(loanId, validatorId);
+            return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
+        } catch (ServiceLayerException e) {
+            return new ResponseEntity<LoanDto>(e.getStatus());
+        }
     }
 }

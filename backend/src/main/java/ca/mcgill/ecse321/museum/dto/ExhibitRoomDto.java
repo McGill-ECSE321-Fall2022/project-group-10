@@ -1,7 +1,5 @@
 package ca.mcgill.ecse321.museum.dto;
 
-import org.springframework.data.annotation.PersistenceCreator;
-
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 
 public class ExhibitRoomDto extends RoomDto {

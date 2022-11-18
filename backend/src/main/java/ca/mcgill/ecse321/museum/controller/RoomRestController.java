@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.museum.dto.ExhibitRoomDto;
 import ca.mcgill.ecse321.museum.dto.StorageRoomDto;
+import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.StorageRoom;
 import ca.mcgill.ecse321.museum.service.RoomService;
@@ -42,21 +43,19 @@ public class RoomRestController {
 
     @PutMapping(value = {"/rooms/exhibitRoom/{id}/{newName}/{newCapacity}"})
     public ResponseEntity<ExhibitRoomDto> updateExhibitRoom(@PathVariable long id, @PathVariable String newName, @PathVariable int newCapacity) {
-        ExhibitRoom exhibitRoom = roomService.updateExhibitRoom(
-            id, newName, newCapacity
-        );
-        if (exhibitRoom == null) 
-            return new ResponseEntity<ExhibitRoomDto>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<ExhibitRoomDto>(new ExhibitRoomDto(exhibitRoom), HttpStatus.OK);
+        try {
+            return new ResponseEntity<ExhibitRoomDto>(new ExhibitRoomDto(roomService.updateExhibitRoom(id, newName, newCapacity)), HttpStatus.OK);
+        } catch (ServiceLayerException e) {
+            return new ResponseEntity<ExhibitRoomDto>(e.getStatus());
+        }
     }
 
     @PutMapping(value = {"/rooms/storageRoom/{id}/{newName}"})
     public ResponseEntity<StorageRoomDto> updateStorageRoom(@PathVariable long id, @PathVariable String newName) {
-        StorageRoom storageRoom = roomService.updateStorageRoom(
-            id, newName
-        );
-        if (storageRoom == null) 
-            return new ResponseEntity<StorageRoomDto>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<StorageRoomDto>(new StorageRoomDto(storageRoom), HttpStatus.OK);
+        try {
+            return new ResponseEntity<StorageRoomDto>(new StorageRoomDto(roomService.updateStorageRoom(id, newName)), HttpStatus.OK);
+        } catch (ServiceLayerException e) {
+            return new ResponseEntity<StorageRoomDto>(e.getStatus());
+        }
     }
 }

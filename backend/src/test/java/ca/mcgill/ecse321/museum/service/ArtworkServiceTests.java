@@ -125,13 +125,13 @@ public class ArtworkServiceTests {
     @Test public void testMoveArtworkToRoom() {
         var room = new ExhibitRoom();
         var artwork = new Artwork();
-        artwork = artworkService.moveArtworkToRoom(artwork, room);
+        artwork = artworkService.moveArtworkToRoom(1, 1);
         assertNotNull(artwork);
         assertEquals(room, artwork.getStorage());
     }
     @Test public void testDeleteArtwork() {
         var artwork = new Artwork();
-        artworkService.deleteArtwork(artwork);
+        artworkService.deleteArtwork(1);
         verify(artworkRepository,times(1)).delete(artwork);
     }
 
