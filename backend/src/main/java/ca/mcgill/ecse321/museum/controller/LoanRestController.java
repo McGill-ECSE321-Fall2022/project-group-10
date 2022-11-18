@@ -5,6 +5,7 @@ import ca.mcgill.ecse321.museum.dto.Request.LoanRequestDto;
 import ca.mcgill.ecse321.museum.dto.Response.LoanResponseDto;
 import ca.mcgill.ecse321.museum.model.Loan;
 import ca.mcgill.ecse321.museum.service.LoanService;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
 @RestController
+@Api(tags = "Loan")
 public class LoanRestController {
 
     @Autowired private LoanService loanService;
