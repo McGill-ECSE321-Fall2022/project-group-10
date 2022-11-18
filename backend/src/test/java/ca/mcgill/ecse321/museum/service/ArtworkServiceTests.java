@@ -225,9 +225,8 @@ public class ArtworkServiceTests {
      * Test Delete Artwork
      */
     @Test public void testDeleteArtwork() {
-        var artwork = new Artwork();
         artworkService.deleteArtwork(1L);
-        verify(artworkRepository,times(1)).delete(artwork);
+        verify(artworkRepository,times(1)).delete(any(Artwork.class));
     }
     /**
      * Test Delete Artwork but Artwork not found
