@@ -12,6 +12,9 @@ plugins {
 
     // Code style
     id 'com.diffplug.spotless' version '6.11.0'
+
+    // Run Postman
+    id "com.github.michaelruocco.gradle-postman-runner" version "0.1.4"
 }
 
 group = 'ca.mcgill.ecse321'
