@@ -36,3 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 backend/target/cucumber-report.html
+
+### Node Modules ###
+node_modules
