@@ -37,6 +37,7 @@ public class ArtworkRestController {
     @PostMapping(value = {"/artworks"})
     public ResponseEntity<ArtworkDto> createArtwork(@RequestBody CreateArtworkRequestBody body) {
         try {
+
             var artwork = artworkService.createArtwork(
                     body.getTitle(),
                     body.getAuthor(),
@@ -52,6 +53,13 @@ public class ArtworkRestController {
         }
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get artwork")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Artwork returned"),
+            @ApiResponse(code = 400, message = "No such artwork")
+    }
+    )
     @GetMapping(value = {"/artworks/{id}"})
     public ResponseEntity<ArtworkDto> getArtwork(@PathVariable long id) throws IllegalArgumentException {
         try {
@@ -62,6 +70,13 @@ public class ArtworkRestController {
         }
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get all artworks")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Artworks returned"),
+            @ApiResponse(code = 400, message = "No such artwork")
+    }
+    )
     @GetMapping(value = {"/artworks"})
     public ResponseEntity<List<ArtworkDto>> getAllArtworks() throws IllegalArgumentException {
         try {
@@ -73,6 +88,13 @@ public class ArtworkRestController {
         }
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Delete artwork")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Artwork deleted"),
+            @ApiResponse(code = 400, message = "No such artwork")
+    }
+    )
     @DeleteMapping(value = {"/artworks/{id}"})
     public ResponseEntity deleteArtwork(@PathVariable long id) throws IllegalArgumentException {
         try {
@@ -83,6 +105,13 @@ public class ArtworkRestController {
         }
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Move artwork to room")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Artwork moved"),
+            @ApiResponse(code = 400, message = "No such artwork/room")
+    }
+    )
     @PutMapping(value = {"/artworks/move/{id}"})
     public ResponseEntity<ArtworkDto> moveArtworkToRoom(@PathVariable long id, @RequestParam long roomId) throws IllegalArgumentException {
         try {
