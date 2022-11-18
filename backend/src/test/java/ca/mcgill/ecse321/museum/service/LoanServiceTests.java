@@ -51,23 +51,33 @@ public class LoanServiceTests {
     @InjectMocks
     private LoanService loanService;
 
-    private static final Long LOAN_KEY = Long.valueOf(0);
+    private static final Long LOAN_KEY_EMPTY = Long.valueOf(0);
+    private static final Long LOAN_KEY_COMPLETE = Long.valueOf(1);
 
     @BeforeEach
     public void setMockOutput() {
         lenient().when(loanRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) -> {
-            if(invocation.getArgument(0).equals(LOAN_KEY)) {
+            if(invocation.getArgument(0).equals(LOAN_KEY_EMPTY)) {
                 Loan loan = new Loan();
-                loan.setId(LOAN_KEY);
+                loan.setId(LOAN_KEY_EMPTY);
                 return Optional.of(loan);
-            } else {
+            } else if (invocation.getArgument(0).equals(LOAN_KEY_COMPLETE)) {
+                Loan loan = new Loan();
+                loan.setId(LOAN_KEY_COMPLETE);
+                loan.setStatus(LoanStatus.INCART);
+                Artwork artwork = new Artwork();
+                artwork.setId(Long.valueOf(1));
+                loan.setArtwork(artwork);
+                return Optional.of(loan);
+            }
+            else {
                 throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such artwork");
             }
         });
 
         lenient().when(loanRepository.findAll()).thenAnswer ( (InvocationOnMock invocation) -> {
             Loan loan = new Loan();
-            loan.setId(LOAN_KEY);
+            loan.setId(LOAN_KEY_EMPTY);
             return List.of(loan);
         });
         
@@ -75,7 +85,14 @@ public class LoanServiceTests {
         Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
             return invocation.getArgument(0);
         };
+
+        Answer<?> returnNull = (InvocationOnMock invocation) -> {
+            return null;
+        };
+
         lenient().when(loanRepository.save(any(Loan.class))).thenAnswer(returnParameterAsAnswer);
+
+        // when delete is called, just return null
         
     }
 
@@ -116,9 +133,9 @@ public class LoanServiceTests {
     }
 
     @Test public void testGetLoan() {
-        Loan loan = loanService.getLoan(LOAN_KEY);
+        Loan loan = loanService.getLoan(LOAN_KEY_EMPTY);
         assertNotNull(loan);
-        assertEquals(LOAN_KEY, loan.getId());
+        assertEquals(LOAN_KEY_EMPTY, loan.getId());
     }
 
     @Test public void testGetArtworkFail() {
@@ -135,10 +152,11 @@ public class LoanServiceTests {
         List<Loan> loans = loanService.getAllLoans();
         assertNotNull(loans);
         assertNotNull(loans.get(0));
-        assertEquals(LOAN_KEY, loans.get(0).getId());
+        assertEquals(LOAN_KEY_EMPTY, loans.get(0).getId());
         assertEquals(1, loans.size());
     }
 
+    // request loan success
     @Test public void requestLoan() {
         // Mock Artwork
         lenient().when(artworkRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) ->{
@@ -154,22 +172,105 @@ public class LoanServiceTests {
             return Optional.of(visitor);
         });
 
-        float price = 100f;
-        Date startDate = new Date(0);
-        Date endDate = new Date(1000);
-        Long artworkId = Long.valueOf(1);
-        Long visitorId = Long.valueOf(1);
-
-        Loan loan = loanService.createLoan(price, startDate, endDate, artworkId, visitorId);
-        assertEquals(LOAN_KEY, loan.getId());
-        loan = loanService.requestLoan(LOAN_KEY);
+        Loan loan = loanService.requestLoan(LOAN_KEY_COMPLETE);
 
         assertNotNull(loan);
         assertEquals(LoanStatus.PENDING, loan.getStatus());
     }
 
+    // request loan fail
+    @Test public void requestLoanFail() {
+        try {
+            loanService.requestLoan(LOAN_KEY_EMPTY);
+            fail();
+        }
+        catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    // validate loan success
+    @Test public void validateLoan() {
+        // Mock Artwork
+        lenient().when(artworkRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) ->{
+            Artwork artwork = new Artwork();
+            artwork.setId(Long.valueOf(1));
+            return Optional.of(artwork);
+        });
+
+        // Mock Visitor
+        lenient().when(personRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) ->{
+            ca.mcgill.ecse321.museum.model.Visitor visitor = new ca.mcgill.ecse321.museum.model.Visitor();
+            visitor.setId(Long.valueOf(1));
+            return Optional.of(visitor);
+        });
+
+        // Mock Employee
+        lenient().when(administratorRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) ->{
+            Employee employee = new Employee();
+            employee.setId(Long.valueOf(1));
+            return Optional.of(employee);
+        });
+
+        Loan loan = loanService.validateLoan(LOAN_KEY_COMPLETE, 1L);
+
+        assertNotNull(loan);
+        assertEquals(LoanStatus.VALIDATED, loan.getStatus());
+    }
+
+    // validate loan fail
+    @Test public void validateLoanFail() {
+        try {
+            loanService.validateLoan(LOAN_KEY_EMPTY, 1L);
+            fail();
+        }
+        catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        }
+    }
+
+    // reject loan success
+    @Test public void denyLoan() {
+        // Mock Artwork
+        lenient().when(artworkRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) ->{
+            Artwork artwork = new Artwork();
+            artwork.setId(Long.valueOf(1));
+            return Optional.of(artwork);
+        });
+
+        // Mock Visitor
+        lenient().when(personRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) ->{
+            ca.mcgill.ecse321.museum.model.Visitor visitor = new ca.mcgill.ecse321.museum.model.Visitor();
+            visitor.setId(Long.valueOf(1));
+            return Optional.of(visitor);
+        });
+
+        // Mock Employee
+        lenient().when(administratorRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) ->{
+            Employee employee = new Employee();
+            employee.setId(Long.valueOf(1));
+            return Optional.of(employee);
+        });
+
+        Loan loan = loanService.rejectLoan(LOAN_KEY_COMPLETE, 1L);
+
+        assertNotNull(loan);
+        assertEquals(LoanStatus.DENIED, loan.getStatus());
+    }
+
+    // reject loan fail
+    @Test public void denyLoanFail() {
+        try {
+            loanService.rejectLoan(LOAN_KEY_EMPTY, 1L);
+            fail();
+        }
+        catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        }
+    }
+
     @Test public void testDeleteLoan() {
-        loanService.deleteLoan(LOAN_KEY);
-        verify(loanRepository, times(1)).deleteById(LOAN_KEY);
+        loanService.deleteLoan(LOAN_KEY_EMPTY);
+        verify(loanRepository, times(1)).deleteById(LOAN_KEY_EMPTY);
     }
 }

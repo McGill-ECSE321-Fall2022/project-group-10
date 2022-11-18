@@ -115,6 +115,9 @@ public class LoanService {
 
         if (loan == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such loan");
 
+        Artwork artwork = loan.getArtwork();
+        if (artwork == null) throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "No passed artwork");
+
         List<Loan> validatedLoans = loanRepository.findByArtworkAndStatus(loan.getArtwork().getId(), LoanStatus.VALIDATED);
 
         for (Loan validatedLoan : validatedLoans)
