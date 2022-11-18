@@ -1,36 +1,29 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.museum.model.Administrator;
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.Donation;
 import ca.mcgill.ecse321.museum.model.Employee;
 import ca.mcgill.ecse321.museum.model.Visitor;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @SpringBootTest
 public class DonationRepositoryTests {
-    @Autowired
-    DonationRepository donationRepository;
-    @Autowired
-    VisitorRepository visitorRepository;
-    @Autowired
-    AdministratorRepository administratorRepository;
-    @Autowired
-    ArtworkRepository artworkRepository;
-
+    @Autowired DonationRepository donationRepository;
+    @Autowired VisitorRepository visitorRepository;
+    @Autowired AdministratorRepository administratorRepository;
+    @Autowired ArtworkRepository artworkRepository;
 
     @AfterEach
     public void clearDatabase() {
@@ -38,7 +31,6 @@ public class DonationRepositoryTests {
         visitorRepository.deleteAll();
         administratorRepository.deleteAll();
         artworkRepository.deleteAll();
-
     }
 
     @Test
@@ -52,7 +44,6 @@ public class DonationRepositoryTests {
         Administrator validator = new Employee();
 
         List<Artwork> artworks = new ArrayList<>();
-
 
         Artwork art = new Artwork();
         Artwork art2 = new Artwork();
@@ -74,7 +65,7 @@ public class DonationRepositoryTests {
         donation.setDonor(donor);
         donation.setValidator(validator);
 
-        // Save objects to repositories 
+        // Save objects to repositories
 
         art = artworkRepository.save(art);
         art2 = artworkRepository.save(art2);
@@ -82,9 +73,8 @@ public class DonationRepositoryTests {
         validator = administratorRepository.save(validator);
         donation = donationRepository.save(donation);
 
-        //get donation ID
+        // get donation ID
         long donid = donation.getId();
-
 
         // Read object from database
         donation = donationRepository.findById(donid).orElse(null);

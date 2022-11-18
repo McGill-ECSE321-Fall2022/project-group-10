@@ -1,22 +1,20 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.util.List;
+import ca.mcgill.ecse321.museum.model.Employee;
+import ca.mcgill.ecse321.museum.model.Loan;
+import ca.mcgill.ecse321.museum.model.Owner;
+import ca.mcgill.ecse321.museum.model.Visitor;
 import java.util.ArrayList;
-
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import ca.mcgill.ecse321.museum.model.Visitor;
-import ca.mcgill.ecse321.museum.model.Employee;
-import ca.mcgill.ecse321.museum.model.Owner;
-
-import ca.mcgill.ecse321.museum.model.Loan;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 public class PersonRepositoryTest {
@@ -38,7 +36,7 @@ public class PersonRepositoryTest {
 
         // Create attribute
         boolean isActive = true;
-        
+
         // Create reference (one-to-many)
         List<Loan> loans = new ArrayList<Loan>();
         Loan myLoan = new Loan();
@@ -48,7 +46,7 @@ public class PersonRepositoryTest {
 
         // Set attribute and reference
         visitor.setActive(isActive);
-        
+
         // Save object
         visitor = personRepository.save(visitor);
         long id = visitor.getId();
@@ -69,7 +67,7 @@ public class PersonRepositoryTest {
 
         // Create attribute
         float salary = 100;
-        
+
         // Create reference (one-to-many)
         List<Loan> loans = new ArrayList<Loan>();
         Loan myLoan = new Loan();
@@ -79,7 +77,7 @@ public class PersonRepositoryTest {
 
         // Set attribute and reference
         employee.setSalary(salary);
-        
+
         // Save object
         employee = personRepository.save(employee);
         long id = employee.getId();
@@ -100,7 +98,7 @@ public class PersonRepositoryTest {
 
         // Create attribute
         String email = "bigboss@museum.com";
-        
+
         // Create reference (one-to-many)
         List<Loan> loans = new ArrayList<Loan>();
         Loan myLoan = new Loan();
@@ -110,7 +108,7 @@ public class PersonRepositoryTest {
 
         // Set attribute and reference
         owner.setEmail(email);
-        
+
         // Save object
         owner = personRepository.save(owner);
         long id = owner.getId();

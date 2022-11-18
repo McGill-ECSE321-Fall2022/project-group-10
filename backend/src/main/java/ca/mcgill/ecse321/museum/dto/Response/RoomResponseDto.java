@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Response;
 
 public abstract class RoomResponseDto {
@@ -8,7 +9,7 @@ public abstract class RoomResponseDto {
     public RoomResponseDto(long id, String name) {
         this.id = id;
         this.name = name;
-    } 
+    }
 
     public long getId() {
         return id;

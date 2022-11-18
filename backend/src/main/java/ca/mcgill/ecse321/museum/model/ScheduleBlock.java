@@ -1,40 +1,34 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.model;
 
-import org.springframework.lang.NonNull;
-
-import javax.persistence.*;
 import java.sql.Date;
 import java.util.*;
+import javax.persistence.*;
+import org.springframework.lang.NonNull;
 
 @Entity
 // line 28 "../../../../..//MuseumSystem.ump"
 public class ScheduleBlock {
 
-    //------------------------
+    // ------------------------
     // ENUMERATIONS
-    //------------------------
+    // ------------------------
 
-    //ScheduleBlock Attributes
-    @Id
-    @GeneratedValue
-    private long id;
+    // ScheduleBlock Attributes
+    @Id @GeneratedValue private long id;
 
-    //------------------------
+    // ------------------------
     // MEMBER VARIABLES
-    //------------------------
-    @NonNull
-    private Date startDate = new Date(0);
-    @NonNull
-    private Date endDate = new Date(0);
+    // ------------------------
+    @NonNull private Date startDate = new Date(0);
+    @NonNull private Date endDate = new Date(0);
     private float visitFees;
     private int visitCapacity;
-    
+
     private ScheduleEvent event;
 
-    @ManyToMany
-    private List<Administrator> admins;
-    @ManyToMany
-    private List<Visitor> visitors;
+    @ManyToMany private List<Administrator> admins;
+    @ManyToMany private List<Visitor> visitors;
 
     public Long getId() {
         return id;
@@ -111,6 +105,10 @@ public class ScheduleBlock {
     public void setVisitors(List<Visitor> visitors) {
         this.visitors = visitors;
     }
-    
-    public enum ScheduleEvent {MUSEUM_OPEN, MUSEUM_RESTORATION, MUSEUM_MEETING}
+
+    public enum ScheduleEvent {
+        MUSEUM_OPEN,
+        MUSEUM_RESTORATION,
+        MUSEUM_MEETING
+    }
 }

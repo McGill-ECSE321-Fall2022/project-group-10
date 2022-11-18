@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.exception;
 
 import org.springframework.http.ResponseEntity;
@@ -8,9 +9,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ServiceLayerExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(ServiceLayerException.class)
-	public ResponseEntity<String> handleEventRegistrationException(ServiceLayerException e) {
-		return new ResponseEntity<String>(e.getMessage(), e.getStatus());
-	}
-	
+    @ExceptionHandler(ServiceLayerException.class)
+    public ResponseEntity<String> handleEventRegistrationException(ServiceLayerException e) {
+        return new ResponseEntity<String>(e.getMessage(), e.getStatus());
+    }
 }

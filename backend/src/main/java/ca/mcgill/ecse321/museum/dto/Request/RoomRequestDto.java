@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Request;
 
 public abstract class RoomRequestDto {
@@ -8,7 +9,7 @@ public abstract class RoomRequestDto {
     public RoomRequestDto(long id, String name) {
         this.id = id;
         this.name = name;
-    } 
+    }
 
     public long getId() {
         return id;

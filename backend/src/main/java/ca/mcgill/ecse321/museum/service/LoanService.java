@@ -1,64 +1,57 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.service;
-
-import java.sql.Date;
-import java.util.List;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.Administrator;
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.Loan;
-import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.model.Loan.LoanStatus;
+import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
-import ca.mcgill.ecse321.museum.repository.PersonRepository;
 import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
 import ca.mcgill.ecse321.museum.repository.LoanRepository;
+import ca.mcgill.ecse321.museum.repository.PersonRepository;
+import java.sql.Date;
+import java.util.List;
+import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 @Service
 public class LoanService {
 
-    @Autowired
-    LoanRepository loanRepository;
+    @Autowired LoanRepository loanRepository;
 
-    @Autowired
-    PersonRepository personRepository;
+    @Autowired PersonRepository personRepository;
 
-    @Autowired
-    AdministratorRepository administratorRepository;
-    
-    @Autowired
-    ArtworkRepository artworkRepository;
+    @Autowired AdministratorRepository administratorRepository;
+
+    @Autowired ArtworkRepository artworkRepository;
 
     @Transactional
     public Loan createLoan(
-        float price,
-        Date startDate,
-        Date endDate,
-        Long artworkId,
-        Long customerId
-    ) {
+            float price, Date startDate, Date endDate, Long artworkId, Long customerId) {
         Loan loan = new Loan();
         loan.setPrice(price);
         loan.setStatus(LoanStatus.INCART);
-    
-        if (startDate == null ) throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Start date cannot be null");
+
+        if (startDate == null)
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Start date cannot be null");
         loan.setStartDate(startDate);
 
-        if (endDate == null ) throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "End date cannot be null");
+        if (endDate == null)
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "End date cannot be null");
         loan.setEndDate(endDate);
 
         Visitor customer = (Visitor) personRepository.findById(customerId).orElse(null);
-        if (personRepository.findById(customerId).orElse(null) == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such customer");
+        if (personRepository.findById(customerId).orElse(null) == null)
+            throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such customer");
         loan.setCustomer(customer);
 
         Artwork artwork = (Artwork) artworkRepository.findById(artworkId).orElse(null);
-        if (artwork == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such artwork");
+        if (artwork == null)
+            throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such artwork");
         loan.setArtwork(artwork);
 
         return loanRepository.save(loan);
@@ -79,7 +72,8 @@ public class LoanService {
     @Transactional
     public List<Loan> getValidatedLoansForArtwork(Long artworkId) {
         Artwork artwork = artworkRepository.findById(artworkId).orElse(null);
-        if (artwork == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such artwork");
+        if (artwork == null)
+            throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such artwork");
         return loanRepository.findByArtworkAndStatus(artwork.getId(), LoanStatus.VALIDATED);
     }
 
@@ -115,15 +109,22 @@ public class LoanService {
         if (loan == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such loan");
 
         Artwork artwork = loan.getArtwork();
-        if (artwork == null) throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "No passed artwork");
+        if (artwork == null)
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "No passed artwork");
 
-        if (!loan.getArtwork().isAvailable()) throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Artwork is not available for loan");
+        if (!loan.getArtwork().isAvailable())
+            throw new ServiceLayerException(
+                    HttpStatus.BAD_REQUEST, "Artwork is not available for loan");
 
-        List<Loan> validatedLoans = loanRepository.findByArtworkAndStatus(loan.getArtwork().getId(), LoanStatus.VALIDATED);
+        List<Loan> validatedLoans =
+                loanRepository.findByArtworkAndStatus(
+                        loan.getArtwork().getId(), LoanStatus.VALIDATED);
 
         for (Loan validatedLoan : validatedLoans)
-            if (loan.getStartDate().before(validatedLoan.getEndDate()) && validatedLoan.getStartDate().before(loan.getEndDate()))
-                throw new ServiceLayerException(HttpStatus.CONFLICT, "Loan conflicts with another validated loan");
+            if (loan.getStartDate().before(validatedLoan.getEndDate())
+                    && validatedLoan.getStartDate().before(loan.getEndDate()))
+                throw new ServiceLayerException(
+                        HttpStatus.CONFLICT, "Loan conflicts with another validated loan");
 
         loan.setStatus(LoanStatus.PENDING);
         return loanRepository.save(loan);
@@ -133,9 +134,11 @@ public class LoanService {
     public Loan editLoan(Long id, Date startDate, Date endDate) {
         Loan loan = loanRepository.findById(id).orElse(null);
 
-        if (startDate == null ) throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Start date cannot be null");
+        if (startDate == null)
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Start date cannot be null");
 
-        if (endDate == null ) throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "End date cannot be null");
+        if (endDate == null)
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "End date cannot be null");
 
         if (loan == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such loan");
 

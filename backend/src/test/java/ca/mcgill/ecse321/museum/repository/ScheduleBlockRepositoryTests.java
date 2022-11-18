@@ -1,22 +1,21 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import ca.mcgill.ecse321.museum.model.Administrator;
+import ca.mcgill.ecse321.museum.model.Employee;
+import ca.mcgill.ecse321.museum.model.ScheduleBlock;
+import ca.mcgill.ecse321.museum.model.Visitor;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import ca.mcgill.ecse321.museum.model.Administrator;
-import ca.mcgill.ecse321.museum.model.Employee;
-import ca.mcgill.ecse321.museum.model.ScheduleBlock;
-import ca.mcgill.ecse321.museum.model.Visitor;
 
 @SpringBootTest
 public class ScheduleBlockRepositoryTests {
@@ -39,7 +38,7 @@ public class ScheduleBlockRepositoryTests {
         ScheduleBlock scheduleBlock = new ScheduleBlock();
         Administrator admin = new Employee();
         Visitor visitor = new Visitor();
-        
+
         // Set visitor attribute
         String email = "harry.leib@gmail.com";
         visitor.setEmail(email);
@@ -86,5 +85,4 @@ public class ScheduleBlockRepositoryTests {
         assertEquals(1, scheduleBlock.getAdmins().size());
         assertEquals(adminId, scheduleBlock.getAdmins().get(0).getId());
     }
-    
 }
