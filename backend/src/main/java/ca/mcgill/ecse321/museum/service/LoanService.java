@@ -149,7 +149,9 @@ public class LoanService {
     }
 
     @Transactional
-    public void deleteLoan(Loan loan) {
+    public void deleteLoan(Long loanId) {
+        Loan loan = loanRepository.findById(loanId).orElse(null);
+        if (loan == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such loan");
         loanRepository.delete(loan);
     }
 }
