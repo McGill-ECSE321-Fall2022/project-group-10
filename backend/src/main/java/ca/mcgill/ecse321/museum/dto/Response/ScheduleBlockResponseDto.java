@@ -112,13 +112,20 @@ public class ScheduleBlockResponseDto {
 
         // Get admin IDs associated with this schedule block
         List<Long> adminsIds = new ArrayList<Long>();
-        for (Administrator admin : scheduleBlock.getAdmins()) {
-            adminsIds.add(admin.getId());
+        if (scheduleBlock.getAdmins() != null) {
+            for (Administrator admin : scheduleBlock.getAdmins()) {
+                adminsIds.add(admin.getId());
+            }
         }
         scheduleBlockDto.setAdminIds(adminsIds);
 
         // Get number of visitors associated with this schedule block
-        scheduleBlockDto.setVisitSize(scheduleBlock.getVisitors().size());
+        if (scheduleBlock.getVisitors() != null) {
+            scheduleBlockDto.setVisitSize(scheduleBlock.getVisitors().size());
+        } else {
+            scheduleBlockDto.setVisitSize(0);
+        }
+        
 
         return scheduleBlockDto;
     }
