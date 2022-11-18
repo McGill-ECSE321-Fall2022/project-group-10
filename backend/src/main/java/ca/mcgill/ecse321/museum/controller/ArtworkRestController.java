@@ -85,7 +85,8 @@ public class ArtworkRestController {
     @ApiOperation("Move artwork to room")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Artwork moved"),
-            @ApiResponse(code = 404, message = "No such artwork/room")
+            @ApiResponse(code = 404, message = "No such artwork/room"),
+            @ApiResponse(code = 403, message = "The room is full")
     }
     )
     @PutMapping(value = {"/artworks/move/{id}"})
