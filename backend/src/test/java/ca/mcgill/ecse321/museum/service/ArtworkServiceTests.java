@@ -195,29 +195,43 @@ public class ArtworkServiceTests {
         assertEquals(HttpStatus.FORBIDDEN,exception.getStatus());
         assertEquals("The room is full",exception.getMessage());
     }
+    /**
+     * Test Move Artwork to a Storage Room
+     */
     @Test public void testMoveArtworkToStorage() {
         var artwork = new Artwork();
         artwork = artworkService.moveArtworkToRoom(1L, 4L);
         assertNotNull(artwork);
         assertEquals(4, artwork.getStorage().getId());
     }
+    /**
+     * Test Move Artwork but Artwork not found
+     */
     @Test public void testMoveArtworkButArtworkDoesNotExist() {
         ServiceLayerException exception = assertThrows(ServiceLayerException.class, () -> artworkService.moveArtworkToRoom(2, 2));
         assertEquals(HttpStatus.NOT_FOUND,exception.getStatus());
         assertEquals("No such artwork",exception.getMessage());
     }
+    /**
+     * Test Move Artwork but Room not found
+     */
     @Test public void testMoveArtworkButRoomDoesNotExist() {
         ServiceLayerException exception = assertThrows(ServiceLayerException.class, () -> artworkService.moveArtworkToRoom(1, 5));
         assertEquals(HttpStatus.NOT_FOUND,exception.getStatus());
         assertEquals("No such room",exception.getMessage());
     }
 
+    /**
+     * Test Delete Artwork
+     */
     @Test public void testDeleteArtwork() {
         var artwork = new Artwork();
         artworkService.deleteArtwork(1L);
         verify(artworkRepository,times(1)).delete(artwork);
     }
-
+    /**
+     * Test Delete Artwork but Artwork not found
+     */
     @Test public void testDeleteArtworkDoesNotExist() {
         var artwork = new Artwork();
         ServiceLayerException exception = assertThrows(ServiceLayerException.class, () -> artworkService.deleteArtwork(2L));
