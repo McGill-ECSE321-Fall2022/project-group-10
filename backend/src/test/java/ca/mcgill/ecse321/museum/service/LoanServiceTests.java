@@ -271,6 +271,6 @@ public class LoanServiceTests {
 
     @Test public void testDeleteLoan() {
         loanService.deleteLoan(LOAN_KEY_EMPTY);
-        verify(loanRepository, times(1)).deleteById(LOAN_KEY_EMPTY);
+        verify(loanRepository, times(1)).delete(any(Loan.class));
     }
 }
