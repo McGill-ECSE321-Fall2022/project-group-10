@@ -14,7 +14,6 @@ import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.Room;
 import ca.mcgill.ecse321.museum.model.StorageRoom;
 import ca.mcgill.ecse321.museum.repository.RoomRepository;
-import net.bytebuddy.implementation.bytecode.Throw;
 
 @Service
 public class RoomService {
