@@ -48,6 +48,8 @@ public class ArtworkServiceTests {
                 return Optional.of(artwork);
         });
 
+        lenient().when(artworkRepository.findById(2L)).thenReturn(Optional.empty());
+
         lenient().when(artworkRepository.findAll()).thenAnswer ( (InvocationOnMock invocation) -> {
             var artwork = new Artwork();
             artwork.setId(ARTWORK_KEY);
@@ -127,8 +129,8 @@ public class ArtworkServiceTests {
      * Test GetArtwork and artwork does not exist
      */
     @Test public void testGetArtworkFail() {
-        lenient().when(artworkRepository.findById(2L)).thenReturn(Optional.empty());
-        Exception exception = assertThrows(ServiceLayerException.class, () -> artworkService.getArtwork(2L));
+        ServiceLayerException exception = assertThrows(ServiceLayerException.class, () -> artworkService.getArtwork(2L));
+        assertEquals(HttpStatus.NOT_FOUND,exception.getStatus());
         assertEquals("No such artwork", exception.getMessage());
     }
 
@@ -160,9 +162,33 @@ public class ArtworkServiceTests {
 
     }
 
-    @Test public void testMoveArtworkToFullRoom() {}
+    @Test public void testMoveArtworkToFullRoom() {
+        var exhibit = new ExhibitRoom();
+        exhibit.setId(2);
+        exhibit.setCapacity(200);
+        exhibit.setName("Exhibit");
+
+        lenient().when(roomRepository.findById(2L)).thenReturn(Optional.of(exhibit));
+        lenient().when(artworkRepository.countArtworksByStorage(exhibit)).thenReturn(200L);
+
+        ServiceLayerException exception = assertThrows(ServiceLayerException.class, () -> artworkService.moveArtworkToRoom(1, 2));
+        assertEquals(HttpStatus.FORBIDDEN,exception.getStatus());
+        assertEquals("The room is full",exception.getMessage());
+    }
     @Test public void testMoveArtworkToStorage() {}
-    @Test public void testMoveArtworkButArtworkDoesNotExist() {}
+    @Test public void testMoveArtworkButArtworkDoesNotExist() {
+        var exhibit = new ExhibitRoom();
+        exhibit.setId(2);
+        exhibit.setCapacity(200);
+        exhibit.setName("Exhibit");
+
+        lenient().when(roomRepository.findById(2L)).thenReturn(Optional.of(exhibit));
+        lenient().when(artworkRepository.countArtworksByStorage(exhibit)).thenReturn(200L);
+
+        ServiceLayerException exception = assertThrows(ServiceLayerException.class, () -> artworkService.moveArtworkToRoom(1, 2));
+        assertEquals(HttpStatus.FORBIDDEN,exception.getStatus());
+        assertEquals("The room is full",exception.getMessage());
+    }
     @Test public void testMoveArtworkButRoomDoesNotExist() {}
 
     @Test public void testDeleteArtwork() {
