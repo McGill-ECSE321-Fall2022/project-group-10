@@ -63,8 +63,7 @@ public class LoanServiceTests {
                                 loan.setArtwork(artwork);
                                 return Optional.of(loan);
                             } else {
-                                throw new ServiceLayerException(
-                                        HttpStatus.NOT_FOUND, "No such artwork");
+                                return Optional.empty();
                             }
                         });
 
