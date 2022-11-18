@@ -1,39 +1,35 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.model;
 
-import org.springframework.lang.NonNull;
-
-import javax.persistence.*;
 import java.sql.Date;
+import javax.persistence.*;
+import org.springframework.lang.NonNull;
 
 @Entity
 // line 79 "../../../../..//MuseumSystem.ump"
 public class Loan {
 
-    //------------------------
+    // ------------------------
     // MEMBER VARIABLES
-    //------------------------
+    // ------------------------
 
-    //Loan Attributes
-    @Id
-    @GeneratedValue
-    private long id;
+    // Loan Attributes
+    @Id @GeneratedValue private long id;
     private float price;
     private LoanStatus status;
-    @NonNull
-    private Date startDate = new Date(0);
-    @NonNull
-    private Date endDate = new Date(0);
+    @NonNull private Date startDate = new Date(0);
+    @NonNull private Date endDate = new Date(0);
 
-    //Loan Associations
-    @ManyToOne
-    private Visitor customer;
-    @ManyToOne
-    private Administrator validator;
-    @ManyToOne
-    private Artwork artwork;
+    // Loan Associations
+    @ManyToOne private Visitor customer;
+    @ManyToOne private Administrator validator;
+    @ManyToOne private Artwork artwork;
 
     public enum LoanStatus {
-        INCART, PENDING, VALIDATED, DENIED
+        INCART,
+        PENDING,
+        VALIDATED,
+        DENIED
     }
 
     public Long getId() {

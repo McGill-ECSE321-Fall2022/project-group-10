@@ -1,7 +1,7 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Request;
 
 import ca.mcgill.ecse321.museum.model.Loan.LoanStatus;
-
 import java.sql.Date;
 
 public class LoanRequestDto {

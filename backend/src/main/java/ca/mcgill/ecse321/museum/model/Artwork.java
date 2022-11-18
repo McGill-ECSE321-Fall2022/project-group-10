@@ -1,38 +1,31 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.model;
 
+import java.sql.Date;
+import javax.persistence.*;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
-
-import javax.persistence.*;
-import java.sql.Date;
 
 @Entity
 // line 116 "../../../../..//MuseumSystem.ump"
 public class Artwork {
 
-    //------------------------
+    // ------------------------
     // MEMBER VARIABLES
-    //------------------------
+    // ------------------------
 
-    //Artwork Attributes
-    @Id
-    @GeneratedValue
-    private long id;
-    @NonNull
-    private String title = "defaultTitle";
-    @NonNull
-    private String author = "defaultAuthor";
-    @NonNull
-    private Date creationDate = new Date(0);
-    @NonNull
-    private String description = "defaultDescription";
+    // Artwork Attributes
+    @Id @GeneratedValue private long id;
+    @NonNull private String title = "defaultTitle";
+    @NonNull private String author = "defaultAuthor";
+    @NonNull private Date creationDate = new Date(0);
+    @NonNull private String description = "defaultDescription";
     @Nullable // We may have artworks without links
     private String imageLink;
     private float price;
     private boolean isAvailable;
 
-    @ManyToOne
-    private Room storage;
+    @ManyToOne private Room storage;
 
     public Long getId() {
         return id;

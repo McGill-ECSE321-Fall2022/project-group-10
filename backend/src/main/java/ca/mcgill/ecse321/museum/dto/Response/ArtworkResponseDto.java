@@ -1,10 +1,10 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Response;
-
-import java.sql.Date;
 
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.StorageRoom;
+import java.sql.Date;
 
 public class ArtworkResponseDto {
 
@@ -19,8 +19,7 @@ public class ArtworkResponseDto {
 
     private RoomResponseDto storage;
 
-    public ArtworkResponseDto() {
-    }
+    public ArtworkResponseDto() {}
 
     public Long getId() {
         return id;
@@ -111,8 +110,12 @@ public class ArtworkResponseDto {
         artworkDto.setAvailable(artwork.isAvailable());
 
         if (artwork.getStorage() == null) artworkDto.setStorage(null);
-        else if (artwork.getStorage().getClass() == ExhibitRoom.class) artworkDto.setStorage(ExhibitRoomResponseDto.createDto((ExhibitRoom) artwork.getStorage()));
-        else artworkDto.setStorage(StorageRoomResponseDto.createDto((StorageRoom) artwork.getStorage()));
+        else if (artwork.getStorage().getClass() == ExhibitRoom.class)
+            artworkDto.setStorage(
+                    ExhibitRoomResponseDto.createDto((ExhibitRoom) artwork.getStorage()));
+        else
+            artworkDto.setStorage(
+                    StorageRoomResponseDto.createDto((StorageRoom) artwork.getStorage()));
         return artworkDto;
     }
 
@@ -128,8 +131,14 @@ public class ArtworkResponseDto {
         artwork.setPrice(artworkDto.getPrice());
         artwork.setAvailable(artworkDto.isAvailable());
         if (artworkDto.getStorage() == null) artwork.setStorage(null);
-        else if (artworkDto.getStorage().getClass() == ExhibitRoomResponseDto.class) artwork.setStorage(ExhibitRoomResponseDto.createModel((ExhibitRoomResponseDto) artworkDto.getStorage()));
-        else artwork.setStorage(StorageRoomResponseDto.createModel((StorageRoomResponseDto) artworkDto.getStorage()));
+        else if (artworkDto.getStorage().getClass() == ExhibitRoomResponseDto.class)
+            artwork.setStorage(
+                    ExhibitRoomResponseDto.createModel(
+                            (ExhibitRoomResponseDto) artworkDto.getStorage()));
+        else
+            artwork.setStorage(
+                    StorageRoomResponseDto.createModel(
+                            (StorageRoomResponseDto) artworkDto.getStorage()));
         return artwork;
     }
 }

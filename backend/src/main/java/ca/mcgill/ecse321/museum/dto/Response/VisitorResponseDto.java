@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Response;
 
 import ca.mcgill.ecse321.museum.model.Visitor;
@@ -6,7 +7,8 @@ public class VisitorResponseDto extends PersonResponseDto {
 
     private boolean isActive;
 
-    public VisitorResponseDto(boolean isActive, String firstName, String lastName, String email, String password) {
+    public VisitorResponseDto(
+            boolean isActive, String firstName, String lastName, String email, String password) {
         super(firstName, lastName, email, password);
         this.isActive = isActive;
     }
@@ -28,14 +30,14 @@ public class VisitorResponseDto extends PersonResponseDto {
 
     public static VisitorResponseDto createDto(Visitor visitor) {
         if (visitor == null) return null;
-        VisitorResponseDto visitorDto = new VisitorResponseDto(
-            visitor.isActive(),
-            visitor.getFirstName(),
-            visitor.getLastName(),
-            visitor.getEmail(),
-            visitor.getPassword()
-        );
-        
+        VisitorResponseDto visitorDto =
+                new VisitorResponseDto(
+                        visitor.isActive(),
+                        visitor.getFirstName(),
+                        visitor.getLastName(),
+                        visitor.getEmail(),
+                        visitor.getPassword());
+
         return visitorDto;
     }
 }
