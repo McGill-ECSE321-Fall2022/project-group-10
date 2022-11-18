@@ -45,7 +45,7 @@ public class LoanRestController {
         try {
             return new ResponseEntity<LoanDto>(new LoanDto(loanService.getLoan(id)), HttpStatus.OK);
         } catch (ServiceLayerException e) {
-            return new ResponseEntity<LoanDto>(HttpStatus.OK);
+            return new ResponseEntity<LoanDto>(e.getStatus());
         }
     }
 
@@ -54,7 +54,7 @@ public class LoanRestController {
         try {
             return new ResponseEntity<LoanDto>(new LoanDto(loanService.requestLoan(loanId)), HttpStatus.OK);
         } catch (ServiceLayerException e) {
-            return new ResponseEntity<LoanDto>(HttpStatus.OK);
+            return new ResponseEntity<LoanDto>(e.getStatus());
         }
     }
 
@@ -64,7 +64,7 @@ public class LoanRestController {
             Loan loan = loanService.validateLoan(loanId, validatorId);
             return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
         } catch (ServiceLayerException e) {
-            return new ResponseEntity<LoanDto>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<LoanDto>(e.getStatus());
         }
     }
 
@@ -74,7 +74,7 @@ public class LoanRestController {
             Loan loan = loanService.rejectLoan(loanId, validatorId);
             return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
         } catch (ServiceLayerException e) {
-            return new ResponseEntity<LoanDto>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<LoanDto>(e.getStatus());
         }
     }
 }
