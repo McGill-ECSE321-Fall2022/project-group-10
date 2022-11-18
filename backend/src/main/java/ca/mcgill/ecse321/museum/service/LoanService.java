@@ -90,7 +90,6 @@ public class LoanService {
 
         if (loan == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such loan");
         if (admin == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such admin");
-
         loan.setValidator(admin);
         loan.setStatus(LoanStatus.VALIDATED);
         return loanRepository.save(loan);
