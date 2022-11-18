@@ -56,40 +56,34 @@ test {
     finalizedBy jacocoTestCoverageVerification
 }
 
-//jacocoTestReport {
-//    dependsOn test
-//
-//    afterEvaluate {
-//        // Exclude DTOs from code coverage
-//        classDirectories.setFrom(files(classDirectories.files.collect {
-//            fileTree(dir: it, exclude: [
-//                    "ca/mcgill/ecse321/museum/dto"
-//            ]
-//            )
-//        }))
-//    }
-//}
-//
-//jacocoTestCoverageVerification {
-//    afterEvaluate {
-//        // Exclude DTOs from code coverage
-//        classDirectories.setFrom(files(classDirectories.files.collect {
-//            fileTree(dir: it, exclude: [
-//                    "ca/mcgill/ecse321/museum/dto"
-//            ]
-//            )
-//        }))
-//    }
-//
-//    // Enforce a minimum of 70% instruction coverage
-//    violationRules {
-//        rule {
-//            limit {
-//                minimum = 0.7
-//            }
-//        }
-//    }
-//}
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, includes : [
+                    "ca/mcgill/ecse321/museum/service/*"
+            ])
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, includes : [
+                    "ca/mcgill/ecse321/museum/service/*"
+            ])
+        }))
+    }
+
+    // Enforce a minimum of 70% instruction coverage
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.7
+            }
+        }
+    }
+}
 
 // Enforce a coding style
 spotless {
