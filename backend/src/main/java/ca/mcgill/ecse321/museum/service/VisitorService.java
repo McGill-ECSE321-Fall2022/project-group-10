@@ -36,6 +36,7 @@ public class VisitorService {
         visitor.setLastName(lastName);
         visitor.setEmail(email);
         visitor.setPassword(password);
+        visitor.setActive(true);
         return visitorRepository.save(visitor);
     }
 
@@ -99,6 +100,20 @@ public class VisitorService {
         if (visitor == null) { throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such visitor"); }
 
         visitor.setActive(false);
+        visitorRepository.save(visitor);
+    }
+
+    /**
+     * Reactivate a visitor
+     * @param id id of the visitor to activate
+     */
+    @Transactional
+    public void reactivateVisitor(long id) {
+        Visitor visitor = visitorRepository.findById(id).orElse(null);
+
+        if (visitor == null) { throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such visitor"); }
+
+        visitor.setActive(true);
         visitorRepository.save(visitor);
     }
 }
