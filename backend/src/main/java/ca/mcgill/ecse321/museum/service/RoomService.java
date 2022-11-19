@@ -50,6 +50,28 @@ public class RoomService {
     }
 
     @Transactional
+    public ExhibitRoom getExhibitRoom(long id) {
+        ExhibitRoom room = (ExhibitRoom) roomRepository.findById(id).orElse(null);
+
+        if (room == null) {
+            throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such exhibit rooms");
+        }
+
+        return room;
+    }
+
+    @Transactional
+    public StorageRoom getStorageRoom(long id) {
+        StorageRoom room = (StorageRoom) roomRepository.findById(id).orElse(null);
+
+        if (room == null) {
+            throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such storage rooms");
+        }
+
+        return room;
+    }
+
+    @Transactional
     public StorageRoom updateStorageRoom(long id, String name) {
         StorageRoom room = (StorageRoom) roomRepository.findById(id).orElse(null);
 
@@ -67,17 +89,24 @@ public class RoomService {
     }
 
     @Transactional
-    public Room getRoom(long id) {
-        return roomRepository.findById(id).orElse(null);
-    }
+    public void deleteRoom(long id) {
+        Room room = roomRepository.findById(id).orElse(null);
 
-    @Transactional
-    public void deleteRoom(Room room) {
+        if (room == null) {
+            throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such rooms");
+        }
+
         roomRepository.delete(room);
     }
 
     @Transactional
-    public long countArtworksInExhibitRoom(ExhibitRoom room) {
+    public long countArtworksInExhibitRoom(long id) {
+        ExhibitRoom room = (ExhibitRoom) roomRepository.findById(id).orElse(null);
+
+        if (room == null) {
+            throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such exhibit rooms");
+        }
+
         return artworkRepository.countArtworksByStorage(room);
     }
 }
