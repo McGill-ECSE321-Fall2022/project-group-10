@@ -200,7 +200,7 @@ public class AdministratorController {
             value = {
                 @ApiResponse(code = 200, message = "Owners returned")
             })
-    @GetMapping(value = {"/administrator/employe/"})
+    @GetMapping(value = {"/administrator/owner/"})
     public ResponseEntity<List<OwnerResponseDto>> getAllOwners()
             throws IllegalArgumentException {
         var owners = administratorService.getAllOwners();
