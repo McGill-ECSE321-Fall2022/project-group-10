@@ -183,7 +183,7 @@ public class DonationServiceTests {
         List<Donation> donations = donationService.getAllDonations();
         assertNotNull(donations);
         assertNotNull(donations.get(0));
-        assertEquals(DONATION_KEY_VALID,donations.get(0).getId());
+        assertEquals(DONATION_KEY_INVALID,donations.get(0).getId());
         assertEquals(1,donations.size());
     }
 
