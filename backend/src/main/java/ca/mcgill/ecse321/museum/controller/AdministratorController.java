@@ -122,7 +122,7 @@ public class AdministratorController {
             value = {
                 @ApiResponse(code = 200, message = "Employees returned")
             })
-    @GetMapping(value = {"/administrator/employe/"})
+    @GetMapping(value = {"/administrator/employee"})
     public ResponseEntity<List<EmployeeResponseDto>> getAllEmployees()
             throws IllegalArgumentException {
         var employees = administratorService.getAllEmployees();
@@ -200,7 +200,7 @@ public class AdministratorController {
             value = {
                 @ApiResponse(code = 200, message = "Owners returned")
             })
-    @GetMapping(value = {"/administrator/owner/"})
+    @GetMapping(value = {"/administrator/owner"})
     public ResponseEntity<List<OwnerResponseDto>> getAllOwners()
             throws IllegalArgumentException {
         var owners = administratorService.getAllOwners();
