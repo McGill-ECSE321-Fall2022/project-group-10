@@ -67,20 +67,19 @@ public class AdministratorServiceTests {
                 .when(administratorRepository.findByEmail(anyString()))
                 .thenAnswer(
                     (InvocationOnMock invocation) -> {
+                        List<Administrator> administrators = new ArrayList<Administrator>();
                         if (invocation.getArgument(0).equals("first@email.com")) {
                             Employee employee = new Employee();
                             employee.setId(EMPLOYEE_KEY);
                             employee.setEmail("first@email.com");
-                            return Optional.of(employee);
+                            administrators.add(employee);
                         } else if (invocation.getArgument(0).equals("second@email.com")) {
                             Owner owner = new Owner();
                             owner.setId(OWNER_KEY);
                             owner.setEmail("second@email.com");
-                            return Optional.of(owner);
-                        } else {
-                            List<Administrator> administrators = new ArrayList<Administrator>();
-                            return administrators;
+                            administrators.add(owner);
                         }
+                        return administrators;
                     }
                 );
         
