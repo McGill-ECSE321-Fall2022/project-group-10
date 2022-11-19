@@ -1,7 +1,7 @@
 /* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Request;
 
-public abstract class VisitorRequestDto {
+public class VisitorRequestDto {
 
     // Person Attributes
     private String firstName;
