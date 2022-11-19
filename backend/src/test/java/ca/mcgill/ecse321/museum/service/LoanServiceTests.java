@@ -67,6 +67,7 @@ public class LoanServiceTests {
                 loan.setStatus(LoanStatus.INCART);
                 Artwork artwork = new Artwork();
                 artwork.setId(Long.valueOf(1));
+                artwork.setAvailable(true);
                 loan.setArtwork(artwork);
                 return Optional.of(loan);
             }
@@ -90,10 +91,7 @@ public class LoanServiceTests {
             return null;
         };
 
-        lenient().when(loanRepository.save(any(Loan.class))).thenAnswer(returnParameterAsAnswer);
-
-        // when delete is called, just return null
-        
+        lenient().when(loanRepository.save(any(Loan.class))).thenAnswer(returnParameterAsAnswer);        
     }
 
     @Test
@@ -158,20 +156,6 @@ public class LoanServiceTests {
 
     // request loan success
     @Test public void requestLoan() {
-        // Mock Artwork
-        lenient().when(artworkRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) ->{
-            Artwork artwork = new Artwork();
-            artwork.setId(Long.valueOf(1));
-            return Optional.of(artwork);
-        });
-
-        // Mock Visitor
-        lenient().when(personRepository.findById(anyLong())).thenAnswer( (InvocationOnMock invocation) ->{
-            ca.mcgill.ecse321.museum.model.Visitor visitor = new ca.mcgill.ecse321.museum.model.Visitor();
-            visitor.setId(Long.valueOf(1));
-            return Optional.of(visitor);
-        });
-
         Loan loan = loanService.requestLoan(LOAN_KEY_COMPLETE);
 
         assertNotNull(loan);
