@@ -13,17 +13,6 @@ public class DonationRequestDto {
     Long validatorID;
     Long artworkID;
 
-    public DonationRequestDto(Long id, String description, boolean validated, Long donorID, Long validatorID, Long artworkID){
-
-        this.id=id;
-        this.description=description;
-        this.validated=validated;
-        this.donorID=donorID;
-        this.validatorID=validatorID;
-        this.artworkID=artworkID;
-
-    }
-
     public Long getId(){
         return id;
     }
