@@ -21,7 +21,7 @@ import ca.mcgill.ecse321.museum.repository.PersonRepository;
 import ca.mcgill.ecse321.museum.repository.VisitorRepository;
 import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
 import ca.mcgill.ecse321.museum.repository.DonationRepository;
-
+import ca.mcgill.ecse321.museum.service.ArtworkService;
 
 @Service
 public class DonationService {
@@ -41,7 +41,9 @@ VisitorRepository visitorRepository;
 @Autowired
 AdministratorRepository administratorRepository;
 
-@Autowired ArtworkService artworkService;
+@Autowired
+ArtworkService artworkService;
+
 
 @Transactional
 public Donation createDonation(
@@ -79,10 +81,11 @@ public List<Donation> getAllDonations() {
 public Donation validateDonation(long id, long validatorID, float price,String title,String author,String imageLink,Date creationDate, Boolean isAvailable)
 {
     Donation donation = donationRepository.findById(id).orElse(null);
+    if(donation == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "no such donation");
     String description = donation.getDescription();
     Artwork artwork = artworkService.createArtwork(title,author,creationDate,description,imageLink,price,isAvailable);
     Administrator validator = administratorRepository.findById(validatorID).orElse(null);
-    if(donation == null || validator==null) return null;
+    if(validator == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "no such validator");
     donation.setValidated(true);
     donation.setValidator(validator);
     donation.setArtworks(artwork);
