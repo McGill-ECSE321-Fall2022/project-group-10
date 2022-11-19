@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 @RestController
 @Api(tags = "Schedule Block")
-public class ScheduleBlockController {
+public class ScheduleBlockRestController {
 
     @Autowired private ScheduleBlockService scheduleBlockService;
 

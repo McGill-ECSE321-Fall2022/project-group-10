@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RestController
 @Api(tags = "Administrator")
-public class AdministratorController {
+public class AdministratorRestController {
     
     @Autowired private AdministratorService administratorService;
 
