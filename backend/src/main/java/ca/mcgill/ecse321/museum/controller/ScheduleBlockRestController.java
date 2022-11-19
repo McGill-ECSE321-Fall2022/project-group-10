@@ -10,6 +10,7 @@ import ca.mcgill.ecse321.museum.model.ScheduleBlock;
 import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.service.ScheduleBlockService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
@@ -32,6 +34,8 @@ public class ScheduleBlockRestController {
 
     @Autowired private ScheduleBlockService scheduleBlockService;
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation("Create schedule block")
     @PostMapping(value = {"/scheduleBlock"})
     public ResponseEntity<ScheduleBlockResponseDto> createScheduleBlock(
             @RequestBody ScheduleBlockRequestDto body) {
@@ -53,6 +57,8 @@ public class ScheduleBlockRestController {
                 ScheduleBlockResponseDto.createDto(scheduleBlock), HttpStatus.CREATED);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Update schedule block")
     @PutMapping(value = {"/scheduleBlock/{id}"})
     public ResponseEntity<ScheduleBlockResponseDto> updateScheduleBlock(
             @RequestBody ScheduleBlockRequestDto body, @PathVariable long id) {
@@ -75,6 +81,8 @@ public class ScheduleBlockRestController {
                 ScheduleBlockResponseDto.createDto(scheduleBlock), HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Delete schedule block")
     @DeleteMapping(value = {"/scheduleBlock/{id}"})
     public ResponseEntity<ScheduleBlockResponseDto> deleteScheduleBlock(@PathVariable long id) {
         // Delete schedule block
@@ -83,6 +91,8 @@ public class ScheduleBlockRestController {
         return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get schedule block")
     @GetMapping(value = {"/scheduleBlock/{id}"})
     public ResponseEntity<ScheduleBlockResponseDto> getScheduleBlock(@PathVariable long id) {
         // Get schedule block
@@ -92,6 +102,8 @@ public class ScheduleBlockRestController {
                 ScheduleBlockResponseDto.createDto(scheduleBlock), HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get all schedule blocks")
     @GetMapping(value = {"/scheduleBlock"})
     public ResponseEntity<Iterable<ScheduleBlockResponseDto>> getAllScheduleBlocks() {
         // Get all schedule blocks
@@ -109,6 +121,8 @@ public class ScheduleBlockRestController {
                 scheduleBlockResponseDtos, HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get schedule block between dates")
     @GetMapping(value = {"/scheduleBlock/dates/{startDate}/{endDate}"})
     public ResponseEntity<Iterable<ScheduleBlockResponseDto>> getScheduleBlocksBetweenDates(
             @PathVariable String startDate, @PathVariable String endDate) {
@@ -145,6 +159,8 @@ public class ScheduleBlockRestController {
                 scheduleBlockResponseDtos, HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get visitor on schedule block")
     @GetMapping(value = {"/scheduleBlock/{id}/visitors"})
     public ResponseEntity<Iterable<VisitorResponseDto>> getVisitorsOnScheduleBlock(
             @PathVariable long id) {
@@ -161,6 +177,8 @@ public class ScheduleBlockRestController {
         return new ResponseEntity<Iterable<VisitorResponseDto>>(visitorResponseDtos, HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Add visitor to schedule block")
     @PostMapping(value = {"/scheduleBlock/{scheduleId}/visitors/{visitorId}"})
     public ResponseEntity<ScheduleBlockResponseDto> addVisitorToScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long visitorId) {
@@ -174,6 +192,8 @@ public class ScheduleBlockRestController {
         return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Remove visitor from schedule block")
     @DeleteMapping(value = {"/scheduleBlock/{scheduleId}/visitors/{visitorId}"})
     public ResponseEntity<ScheduleBlockResponseDto> removeVisitorFromScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long visitorId) {
@@ -187,6 +207,8 @@ public class ScheduleBlockRestController {
         return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get staff on schedule block")
     @GetMapping(value = {"/scheduleBlock/{id}/staff"})
     public ResponseEntity<Iterable<AdministratorResponseDto>> getStaffOnScheduleBlock(
             @PathVariable long id) {
@@ -205,6 +227,8 @@ public class ScheduleBlockRestController {
                 staffResponseDtos, HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Add staff to schedule block")
     @PostMapping(value = {"/scheduleBlock/{scheduleId}/staff/{staffId}"})
     public ResponseEntity<ScheduleBlockResponseDto> addStaffToScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long staffId) {
@@ -218,6 +242,8 @@ public class ScheduleBlockRestController {
         return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Remove staff from schedule block")
     @DeleteMapping(value = {"/scheduleBlock/{scheduleId}/staff/{staffId}"})
     public ResponseEntity<ScheduleBlockResponseDto> removeStaffFromScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long staffId) {

@@ -36,7 +36,7 @@ public class AdministratorRestController {
     @ApiResponses(
         value = {
             @ApiResponse(code = 201, message = "Employee successfully created"),
-            @ApiResponse(code = 404, message = "No such employee")
+            @ApiResponse(code = 400, message = "No such employee")
         }
     )
     @PostMapping(value = {"/administrator/employee"})

@@ -9,6 +9,7 @@ import ca.mcgill.ecse321.museum.model.ExhibitRoom;
 import ca.mcgill.ecse321.museum.model.StorageRoom;
 import ca.mcgill.ecse321.museum.service.RoomService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
@@ -31,6 +33,8 @@ public class RoomRestController {
 
     @Autowired private RoomService roomService;
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation("Create exhibit room")
     @PostMapping(value = {"/rooms/exhibitRoom"})
     public ResponseEntity<ExhibitRoomResponseDto> createExhibitRoom(
             @RequestBody ExhibitRoomRequestDto body) throws IllegalArgumentException {
@@ -39,6 +43,8 @@ public class RoomRestController {
                 ExhibitRoomResponseDto.createDto(exhibitRoom), HttpStatus.CREATED);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation("Create storage room")
     @PostMapping(value = {"/rooms/storageRoom"})
     public ResponseEntity<StorageRoomResponseDto> createStorageRoom(
             @RequestBody StorageRoomRequestDto body) throws IllegalArgumentException {
@@ -47,6 +53,8 @@ public class RoomRestController {
                 StorageRoomResponseDto.createDto(storageRoom), HttpStatus.CREATED);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Update exhibit room")
     @PutMapping(value = {"/rooms/exhibitRoom/{id}/{newName}/{newCapacity}"})
     public ResponseEntity<ExhibitRoomResponseDto> updateExhibitRoom(
             @PathVariable long id, @PathVariable String newName, @PathVariable int newCapacity)
@@ -57,6 +65,8 @@ public class RoomRestController {
                 HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Update storage room")
     @PutMapping(value = {"/rooms/storageRoom/{id}/{newName}"})
     public ResponseEntity<StorageRoomResponseDto> updateStorageRoom(
             @PathVariable long id, @PathVariable String newName)
@@ -66,6 +76,8 @@ public class RoomRestController {
                 HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get exhibit room")
     @GetMapping(value = {"/rooms/exhibitRoom/{id}"})
     public ResponseEntity<ExhibitRoomResponseDto> getExhibitRoom(
             @PathVariable long id) throws IllegalArgumentException {
@@ -75,6 +87,8 @@ public class RoomRestController {
         );
     }
     
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get storage room")
     @GetMapping(value = {"/rooms/storageRoom/{id}"})
     public ResponseEntity<StorageRoomResponseDto> getStorageRoom(
             @PathVariable long id) throws IllegalArgumentException {
@@ -83,7 +97,8 @@ public class RoomRestController {
             HttpStatus.OK
         );
     }
-    
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get all exhibit rooms")
     @GetMapping(value = {"/rooms/exhibitRoom"})
     public ResponseEntity<List<ExhibitRoomResponseDto>> getAllExhibitRooms()
         throws IllegalArgumentException {
@@ -96,6 +111,8 @@ public class RoomRestController {
         );
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get all storage rooms")
     @GetMapping(value = {"/rooms/storageRoom"})
     public ResponseEntity<List<StorageRoomResponseDto>> getAllStorageRooms()
         throws IllegalArgumentException {
@@ -108,12 +125,16 @@ public class RoomRestController {
         );
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get count of artworks in exhibit room")
     @GetMapping(value = {"/rooms/exhibitRoom/{id}/count"})
     public ResponseEntity<Long> getCountArtworksInExhibitRoom(@PathVariable long id) 
         throws IllegalArgumentException{
             return new ResponseEntity<Long>((Long) roomService.countArtworksInExhibitRoom(id), HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Delete room")
     @DeleteMapping(value = {"/rooms/{id}"})
     public ResponseEntity<String> deleteRoom(@PathVariable long id)
         throws IllegalArgumentException {
