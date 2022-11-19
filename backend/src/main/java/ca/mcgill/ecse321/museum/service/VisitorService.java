@@ -27,7 +27,7 @@ public class VisitorService {
     public Visitor createVisitor(String firstName, String lastName, String email, String password) {
         var visitor = new Visitor();
 
-        if (visitorRepository.findByEmail(email) != null) {
+        if (visitorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
@@ -57,7 +57,7 @@ public class VisitorService {
         if (visitor == null)
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "Visitor not found");
 
-        if (visitor.getEmail() != email && visitorRepository.findByEmail(email) != null) {
+        if (visitor.getEmail() != email && visitorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
