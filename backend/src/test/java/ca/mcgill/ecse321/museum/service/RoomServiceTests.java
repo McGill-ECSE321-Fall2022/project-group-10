@@ -23,6 +23,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoProperties.Storage;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
@@ -53,6 +54,18 @@ public class RoomServiceTests {
                 return Optional.empty();
             }
         });
+
+        lenient()
+                .when(roomRepository.findAll())
+                .thenAnswer(
+                    (InvocationOnMock invocation) -> {
+                        ExhibitRoom exhibit= new ExhibitRoom();
+                        exhibit.setId(EXHIBIT_LONG);
+                        StorageRoom storage = new StorageRoom();
+                        storage.setId(STORAGE_LONG);
+                        return List.of(exhibit, storage);
+                    }
+                );
 
         // when save, return instance
         lenient().when(roomRepository.save(any(ExhibitRoom.class))).thenAnswer((InvocationOnMock invocation) -> {
@@ -161,12 +174,24 @@ public class RoomServiceTests {
         assertEquals(newRoomName, updatedStorageRoom.getName());
     }
 
-    // Test get all rooms
+    // Test get all exhibit rooms
     @Test
-    public void testGetAllRooms() {
-        List<Room> rooms = roomService.getAllRooms();
+    public void testGetAllExhibitRooms() {
+        List<ExhibitRoom> rooms = roomService.getAllExhibitRooms();
         assertNotNull(rooms);
-        assertEquals(0, rooms.size());
+        assertNotNull(rooms.get(0));
+        assertEquals(EXHIBIT_LONG, rooms.get(0).getId());
+        assertEquals(1, rooms.size());
+    }
+
+    // Test get all storage rooms
+    @Test
+    public void testGetAllStorageRooms() {
+        List<StorageRoom> rooms = roomService.getAllStorageRooms();
+        assertNotNull(rooms);
+        assertNotNull(rooms.get(0));
+        assertEquals(STORAGE_LONG, rooms.get(0).getId());
+        assertEquals(1, rooms.size());
     }
 
     // Test delete exhibit room

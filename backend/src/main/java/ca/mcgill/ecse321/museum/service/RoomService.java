@@ -7,6 +7,8 @@ import ca.mcgill.ecse321.museum.model.Room;
 import ca.mcgill.ecse321.museum.model.StorageRoom;
 import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
 import ca.mcgill.ecse321.museum.repository.RoomRepository;
+
+import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,8 +86,23 @@ public class RoomService {
     }
 
     @Transactional
-    public List<Room> getAllRooms() {
-        return roomRepository.findAll();
+    public List<ExhibitRoom> getAllExhibitRooms() {
+        List<Room> rooms = roomRepository.findAll();
+        List<ExhibitRoom> exhibitRooms = new ArrayList<ExhibitRoom>();
+        for (Room room : rooms) {
+            if (room instanceof ExhibitRoom) exhibitRooms.add((ExhibitRoom) room);
+        }
+        return exhibitRooms;
+    }
+
+    @Transactional
+    public List<StorageRoom> getAllStorageRooms() {
+        List<Room> rooms = roomRepository.findAll();
+        List<StorageRoom> storageRooms = new ArrayList<StorageRoom>();
+        for (Room room : rooms) {
+            if (room instanceof StorageRoom) storageRooms.add((StorageRoom) room);
+        }
+        return storageRooms;
     }
 
     @Transactional
