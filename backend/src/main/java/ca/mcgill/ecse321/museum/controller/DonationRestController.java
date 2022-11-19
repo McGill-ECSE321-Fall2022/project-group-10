@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.museum.controller;
 
 import java.sql.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,8 +30,6 @@ public class DonationRestController {
     public ResponseEntity<DonationResponseDto> createDonation(@RequestBody DonationRequestDto body){
         if (body == null) { return new ResponseEntity<DonationResponseDto>(HttpStatus.BAD_REQUEST); };
         Donation donation = donationService.createDonation(
-            body.getId(),
-            body.getValidated(),
             body.getDescription(),
             body.getDonorID()
         );
