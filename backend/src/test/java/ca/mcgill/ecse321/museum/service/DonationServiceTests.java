@@ -172,11 +172,10 @@ public class DonationServiceTests {
         Donation donation = donationService.validateDonation(DONATION_KEY_INVALID, VALIDATOR_KEY, price, title, author, imagelink, creationDate, isAvailable);
 
         assertNotNull(donation);
-        assertEquals(true, donation.isValidated());
-        assertEquals(author,donation.getArtworks().getAuthor());
-        assertEquals(price,donation.getArtworks().getPrice());
-        
+        assertNotNull(donation.getArtworks());
+        assertEquals(true, donation.isValidated());    
     }
+
     //Test deleting a donation
     @Test
     public void testDeleteDonation(){
