@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.mcgill.ecse321.museum.dto.Request.ExhibitRoomRequestDto;
+import ca.mcgill.ecse321.museum.dto.Request.StorageRoomRequestDto;
 import ca.mcgill.ecse321.museum.dto.Response.ExhibitRoomResponseDto;
 import ca.mcgill.ecse321.museum.dto.Response.StorageRoomResponseDto;
 import ca.mcgill.ecse321.museum.model.ExhibitRoom;
@@ -24,7 +26,7 @@ public class RoomRestController {
     private RoomService roomService;
 
     @PostMapping(value = {"/rooms/exhibitRoom"})
-    public ResponseEntity<ExhibitRoomResponseDto> createExhibitRoom(@RequestBody ExhibitRoomResponseDto body) {
+    public ResponseEntity<ExhibitRoomResponseDto> createExhibitRoom(@RequestBody ExhibitRoomRequestDto body) {
         ExhibitRoom exhibitRoom = roomService.createExhibitRoom(
             body.getName(),
             body.getCapacity()
@@ -33,7 +35,7 @@ public class RoomRestController {
     }
 
     @PostMapping(value = {"/rooms/storageRoom"})
-    public ResponseEntity<StorageRoomResponseDto> createStorageRoom(@RequestBody StorageRoomResponseDto body) {
+    public ResponseEntity<StorageRoomResponseDto> createStorageRoom(@RequestBody StorageRoomRequestDto body) {
         StorageRoom storageRoom = roomService.createStorageRoom(
             body.getName()
         );
