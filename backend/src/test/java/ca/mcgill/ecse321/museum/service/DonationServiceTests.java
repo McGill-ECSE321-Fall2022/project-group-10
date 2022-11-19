@@ -24,6 +24,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
+import ca.mcgill.ecse321.museum.service.ArtworkService;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -33,6 +34,7 @@ public class DonationServiceTests {
     @Mock private AdministratorRepository administratorRepository;
     @Mock private ArtworkRepository artworkRepository;
     @Mock private DonationRepository donationRepository;
+    @Mock private ArtworkService artworkService;
 
     @InjectMocks private DonationService donationService;
 
@@ -124,8 +126,17 @@ public class DonationServiceTests {
                 return Optional.of(visitor);
             });
 
-        }
+        
+        lenient()
+                .when(artworkService.createArtwork(anyString(), anyString(), any(Date.class), anyString(), anyString(), anyFloat(), anyBoolean()))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                        ca.mcgill.ecse321.museum.model.Artwork artwork = new ca.mcgill.ecse321.museum.model.Artwork();
 
+                        return Optional.of(artwork);
+                        });
+                 
+                    }
     //Test creating a Donation
     @Test
     public void testCreatDonationComplete(){
@@ -160,7 +171,7 @@ public class DonationServiceTests {
     }
     //Test deleting a donation
     @Test
-    public void deleteDonation(){
+    public void testDeleteDonation(){
         donationService.deleteDonation(DONATION_KEY_INVALID);
         verify(donationRepository, times(1)).delete(any(Donation.class));
 
@@ -168,14 +179,12 @@ public class DonationServiceTests {
 
     //Test getting all donations
     @Test
-    public void getAlldocations(){
+    public void testGetAllDonations(){
         List<Donation> donations = donationService.getAllDonations();
         assertNotNull(donations);
         assertNotNull(donations.get(0));
         assertEquals(DONATION_KEY_VALID,donations.get(0).getId());
         assertEquals(1,donations.size());
-
-
     }
 
 
