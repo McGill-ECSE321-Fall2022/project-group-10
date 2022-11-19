@@ -32,7 +32,7 @@ public class AdministratorService {
     public Employee createEmployee(String firstName, String lastName, String email, String password, float salary){
         Employee employee = new Employee();
 
-        if (administratorRepository.findByEmail(email) != null) {
+        if (administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
@@ -57,7 +57,7 @@ public class AdministratorService {
     public Owner createOwner(String firstName, String lastName, String email, String password){
         Owner owner = new Owner();
 
-        if (administratorRepository.findByEmail(email) != null) {
+        if (administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
@@ -84,7 +84,7 @@ public class AdministratorService {
         
         if (employee == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "Employee not found");
         
-        if (employee.getEmail() != email && administratorRepository.findByEmail(email) != null) {
+        if (employee.getEmail() != email && administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
@@ -112,7 +112,7 @@ public class AdministratorService {
         
         if (owner == null) throw new ServiceLayerException(HttpStatus.NOT_FOUND, "Employee not found");
         
-        if (owner.getEmail() != email && administratorRepository.findByEmail(email) != null) {
+        if (owner.getEmail() != email && administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
