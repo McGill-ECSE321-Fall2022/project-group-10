@@ -45,7 +45,15 @@ public class DonationRestController {
 
     @PutMapping(value = {"/donations/validate/{donationId}/{validatorId}"})
     public ResponseEntity<DonationResponseDto> validateDonation(
-            @PathVariable Long donationId, @PathVariable Long validatorId,@PathVariable float price,@PathVariable String title,@PathVariable String author,@PathVariable String imageLink,@PathVariable Date creationDate, @PathVariable boolean isAvailable) {
+            @PathVariable Long donationId, @PathVariable Long validatorId,@RequestBody DonationRequestDto body) {
+
+        float price = body.getPrice();
+        String title = body.getTitle();
+        String author = body.getAuthor();
+        String imageLink = body.getimageLink();
+        Date creationDate = body.getDate();
+        Boolean isAvailable = body.getisAvailable();
+        
         Donation donation = donationService.validateDonation(donationId, validatorId, price, title, author, imageLink, creationDate, isAvailable);
         return new ResponseEntity<DonationResponseDto>(DonationResponseDto.createDto(donation), HttpStatus.OK);
     }
