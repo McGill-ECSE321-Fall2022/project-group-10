@@ -13,47 +13,44 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse321.museum.service.DonationService;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import ca.mcgill.ecse321.museum.dto.DonationDto;
+import ca.mcgill.ecse321.museum.dto.Request.DonationRequestDto;
+import ca.mcgill.ecse321.museum.dto.Response.DonationResponseDto;
 import ca.mcgill.ecse321.museum.model.Donation;
 
 
 @CrossOrigin(origins = "*")
 @RestController
-
+@Api(tags = "Donation")
 public class DonationRestController {
     @Autowired
     private DonationService donationService;
 
     @PostMapping(value = {"/donations"})
-    public ResponseEntity<DonationDto> createDonation(@RequestBody DonationDto body){
-        if (body == null) { return new ResponseEntity<DonationDto>(HttpStatus.BAD_REQUEST); };
+    public ResponseEntity<DonationResponseDto> createDonation(@RequestBody DonationRequestDto body){
+        if (body == null) { return new ResponseEntity<DonationResponseDto>(HttpStatus.BAD_REQUEST); };
         Donation donation = donationService.createDonation(
             body.getId(),
             body.getValidated(),
             body.getDescription(),
-            body.getDonor().toModel()
+            body.getDonorID()
         );
-        return new ResponseEntity<DonationDto>(new DonationDto(donation), HttpStatus.CREATED); 
+        return new ResponseEntity<DonationResponseDto>(
+            DonationResponseDto.createDto(donation), HttpStatus.CREATED);
     }
     
     @GetMapping(value = {"/Donations/{id}"})
-    public ResponseEntity<DonationDto> getDonation(@PathVariable long id){
-        Donation donation = donationService.getDonation(id);
-        if (donation == null) { return new ResponseEntity<DonationDto>(HttpStatus.NOT_FOUND); };
-        return new ResponseEntity<DonationDto>(new DonationDto(donation),HttpStatus.OK);
-        
+    public ResponseEntity<DonationResponseDto> getLoan(@PathVariable Long id) {
+        return new ResponseEntity<DonationResponseDto>(
+                DonationResponseDto.createDto(donationService.getDonation(id)), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/loans/validate/{id}"})
-    public ResponseEntity<DonationDto> validateLoan(@PathVariable long donationId,@PathVariable long validatorID,@PathVariable float price,@PathVariable String title,@PathVariable String author,@PathVariable String imageLink,@PathVariable Date creationDate,@PathVariable Boolean isAvailable) {
-        Donation donation = donationService.validateDonation(donationId, validatorID, price, title, author, imageLink, creationDate, isAvailable );
-
-
-        if (donation == null) { return new ResponseEntity<DonationDto>(HttpStatus.NOT_FOUND); };
-        return new ResponseEntity<DonationDto>(new DonationDto(donation), HttpStatus.OK);
-
-
+    @PutMapping(value = {"/Donations/validate/{donationId}/{validatorId}"})
+    public ResponseEntity<DonationResponseDto> validateDonation(
+            @PathVariable Long loanId, @PathVariable Long validatorId,@PathVariable float price,@PathVariable String title,@PathVariable String author,@PathVariable String imageLink,@PathVariable Date creationDate, @PathVariable boolean isAvailable) {
+        Donation donation = donationService.validateDonation(loanId, validatorId, price, title, author, imageLink, creationDate, isAvailable);
+        return new ResponseEntity<DonationResponseDto>(DonationResponseDto.createDto(donation), HttpStatus.OK);
     }
 
     

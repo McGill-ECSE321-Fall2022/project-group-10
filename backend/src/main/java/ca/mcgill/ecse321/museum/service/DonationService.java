@@ -6,9 +6,10 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import ca.mcgill.ecse321.museum.controller.body.CreateArtworkRequestBody;
+import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.Administrator;
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.Donation;
@@ -45,22 +46,11 @@ AdministratorRepository administratorRepository;
 
 @Transactional
 public Donation createDonation(
-  //  float price,
-    //LoanStatus status,
-   // Date startDate,
-   // Date endDate,
-   // Artwork artwork,
-   // Visitor customer
-    //long validatorID
+  
     long id,
     boolean validated,
     String description,
-    Visitor donor
-   // String title,
-   // String author,
-   // Date creationdate,
-   // String imagelink
-    //Administrator validator
+    Long donorID
 
 ){
 
@@ -68,8 +58,12 @@ public Donation createDonation(
 
     Donation donation = new Donation();
     donation.setDescription(description);
-    donation.setDonor(donor);
+
     donation.setId(id);
+    Visitor donor = (Visitor) personRepository.findById(donorID).orElse(null);
+    if (personRepository.findById(donorID).orElse(null) == null)
+        throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such customer");
+    donation.setDonor(donor);
     donation.setValidated(false);
     //donation.setArtworks(artwork);
    // donation.setValidator(validator);
