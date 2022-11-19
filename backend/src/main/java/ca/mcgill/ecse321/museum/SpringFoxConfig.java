@@ -30,7 +30,8 @@ public class SpringFoxConfig {
     }
 
     public ApiInfo buildApiInfo() {
-        Contact marwan = new Contact("Marwan Kanaan","marwannumberone.com","marwannumberone.gmail.com");
+        Contact marwan =
+                new Contact("Marwan Kanaan", "marwannumberone.com", "marwannumberone.gmail.com");
 
         return new ApiInfoBuilder()
                 .title("Marwan's Museum System REST API")

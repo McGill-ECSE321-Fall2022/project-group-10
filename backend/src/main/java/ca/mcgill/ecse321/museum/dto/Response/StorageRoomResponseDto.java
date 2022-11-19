@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Response;
 
 import ca.mcgill.ecse321.museum.model.StorageRoom;
@@ -24,10 +25,8 @@ public class StorageRoomResponseDto extends RoomResponseDto {
     }
 
     public static StorageRoomResponseDto createDto(StorageRoom storageRoom) {
-        StorageRoomResponseDto storageRoomDto = new StorageRoomResponseDto(
-            storageRoom.getId(),
-            storageRoom.getName()
-        );
+        StorageRoomResponseDto storageRoomDto =
+                new StorageRoomResponseDto(storageRoom.getId(), storageRoom.getName());
         return storageRoomDto;
     }
 }

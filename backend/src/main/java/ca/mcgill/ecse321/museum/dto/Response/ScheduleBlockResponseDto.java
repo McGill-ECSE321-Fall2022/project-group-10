@@ -1,15 +1,15 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Response;
-
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 import ca.mcgill.ecse321.museum.model.Administrator;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock.ScheduleEvent;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScheduleBlockResponseDto {
-    
+
     // =========================
     // Attributes
     // =========================
@@ -100,7 +100,9 @@ public class ScheduleBlockResponseDto {
     // =========================
 
     public static ScheduleBlockResponseDto createDto(ScheduleBlock scheduleBlock) {
-        if (scheduleBlock == null) { return null; }
+        if (scheduleBlock == null) {
+            return null;
+        }
 
         ScheduleBlockResponseDto scheduleBlockDto = new ScheduleBlockResponseDto();
         scheduleBlockDto.setId(scheduleBlock.getId());
@@ -125,9 +127,7 @@ public class ScheduleBlockResponseDto {
         } else {
             scheduleBlockDto.setVisitSize(0);
         }
-        
 
         return scheduleBlockDto;
     }
-
 }

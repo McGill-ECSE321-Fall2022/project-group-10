@@ -1,30 +1,24 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.repository;
 
-import java.sql.Date;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ca.mcgill.ecse321.museum.model.*;
 import ca.mcgill.ecse321.museum.model.Loan.LoanStatus;
-
+import java.sql.Date;
+import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.transaction.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 public class LoanRepositoryTests {
-    @Autowired
-    LoanRepository loanRepository;
-    @Autowired
-    AdministratorRepository administratorRepository;
-    @Autowired
-    VisitorRepository visitorRepository;
-    @Autowired
-    ArtworkRepository artworkRepository;
-    
+    @Autowired LoanRepository loanRepository;
+    @Autowired AdministratorRepository administratorRepository;
+    @Autowired VisitorRepository visitorRepository;
+    @Autowired ArtworkRepository artworkRepository;
+
     @AfterEach
     public void clearDatabase() {
         loanRepository.deleteAll();

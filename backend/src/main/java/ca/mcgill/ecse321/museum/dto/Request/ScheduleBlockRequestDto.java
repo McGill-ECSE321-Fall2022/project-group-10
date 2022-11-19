@@ -1,8 +1,8 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Request;
 
-import java.sql.Date;
-
 import ca.mcgill.ecse321.museum.model.ScheduleBlock.ScheduleEvent;
+import java.sql.Date;
 
 public class ScheduleBlockRequestDto {
     private Date startDate;
@@ -50,5 +50,4 @@ public class ScheduleBlockRequestDto {
     public void setEvent(ScheduleEvent event) {
         this.event = event;
     }
-
 }

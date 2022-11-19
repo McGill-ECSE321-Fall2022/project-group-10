@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.model;
 
 import javax.persistence.*;
@@ -6,11 +7,11 @@ import javax.persistence.*;
 // line 95 "../../../../..//MuseumSystem.ump"
 public class Visitor extends Person {
 
-    //------------------------
+    // ------------------------
     // MEMBER VARIABLES
-    //------------------------
+    // ------------------------
 
-    //Visitor Attributes
+    // Visitor Attributes
     private boolean isActive;
 
     public boolean isActive() {
