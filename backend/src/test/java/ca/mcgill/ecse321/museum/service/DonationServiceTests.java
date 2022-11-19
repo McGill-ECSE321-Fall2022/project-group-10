@@ -126,14 +126,22 @@ public class DonationServiceTests {
                 return Optional.of(visitor);
             });
 
+        lenient()
+            .when(administratorRepository.findById(anyLong()))
+            .thenAnswer(
+                     (InvocationOnMock invocation) -> {
+                    ca.mcgill.ecse321.museum.model.Administrator administrator =
+                    new ca.mcgill.ecse321.museum.model.Employee();
+            administrator.setId(Long.valueOf(DONOR_KEY));
+            return Optional.of(administrator);
+        });
         
         lenient()
                 .when(artworkService.createArtwork(anyString(), anyString(), any(Date.class), anyString(), anyString(), anyFloat(), anyBoolean()))
                 .thenAnswer(
                         (InvocationOnMock invocation) -> {
                         ca.mcgill.ecse321.museum.model.Artwork artwork = new ca.mcgill.ecse321.museum.model.Artwork();
-
-                        return Optional.of(artwork);
+                        return artwork;
                         });
                  
                     }
