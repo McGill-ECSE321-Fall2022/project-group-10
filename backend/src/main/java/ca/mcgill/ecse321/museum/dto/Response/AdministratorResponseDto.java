@@ -6,8 +6,8 @@ import ca.mcgill.ecse321.museum.model.Administrator;
 public class AdministratorResponseDto extends PersonResponseDto {
 
     public AdministratorResponseDto(
-            String firstName, String lastName, String email, String password) {
-        super(firstName, lastName, email, password);
+            String firstName, String lastName, String email, String password, Long id) {
+        super(firstName, lastName, email, password, id);
     }
 
     public static AdministratorResponseDto createDto(Administrator administrator) {
@@ -18,7 +18,8 @@ public class AdministratorResponseDto extends PersonResponseDto {
                         administrator.getFirstName(),
                         administrator.getLastName(),
                         administrator.getEmail(),
-                        administrator.getPassword());
+                        administrator.getPassword(),
+                        administrator.getId());
 
         return administratorDto;
     }

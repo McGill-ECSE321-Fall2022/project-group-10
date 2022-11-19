@@ -8,8 +8,8 @@ public class VisitorResponseDto extends PersonResponseDto {
     private boolean isActive;
 
     public VisitorResponseDto(
-            boolean isActive, String firstName, String lastName, String email, String password) {
-        super(firstName, lastName, email, password);
+            boolean isActive, String firstName, String lastName, String email, String password, Long id) {
+        super(firstName, lastName, email, password, id);
         this.isActive = isActive;
     }
 
@@ -36,7 +36,8 @@ public class VisitorResponseDto extends PersonResponseDto {
                         visitor.getFirstName(),
                         visitor.getLastName(),
                         visitor.getEmail(),
-                        visitor.getPassword());
+                        visitor.getPassword(),
+                        visitor.getId());
 
         return visitorDto;
     }

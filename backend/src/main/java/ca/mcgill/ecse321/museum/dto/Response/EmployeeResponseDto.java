@@ -14,8 +14,9 @@ public class EmployeeResponseDto extends AdministratorResponseDto {
             String firstName,
             String lastName,
             String email,
-            String password) {
-        super(firstName, lastName, email, password);
+            String password,
+            Long id) {
+        super(firstName, lastName, email, password, id);
         this.isActive = isActive;
         this.salary = salary;
     }
@@ -53,7 +54,8 @@ public class EmployeeResponseDto extends AdministratorResponseDto {
                         employee.getFirstName(),
                         employee.getLastName(),
                         employee.getEmail(),
-                        employee.getPassword());
+                        employee.getPassword(),
+                        employee.getId());
 
         return employeeDto;
     }

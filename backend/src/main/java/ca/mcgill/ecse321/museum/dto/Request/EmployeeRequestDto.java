@@ -7,17 +7,17 @@ public class EmployeeRequestDto {
     private String lastName;
     private String email;
     private String password;
-    private long id;
+    private Long id;
 
     // Employee Attribute
     private boolean isActive;
     private float salary;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
