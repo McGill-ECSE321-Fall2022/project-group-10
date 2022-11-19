@@ -1,0 +1,457 @@
+{
+	"info": {
+		"_postman_id": "0e1a1ab3-4642-45a0-8b76-fc9ea9c20622",
+		"name": "Administrator Integration Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateEmployee1-Complete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"a.b@email.com\",\r\n  \"firstName\": \"a\",\r\n  \"lastName\": \"b\",\r\n  \"password\": \"mypassword\",\r\n  \"salary\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateEmployee1-DuplicateEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"a.b@email.com\",\r\n  \"firstName\": \"c\",\r\n  \"lastName\": \"d\",\r\n  \"password\": \"mypassword\",\r\n  \"salary\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateOwner2-Complete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"c.d@email.com\",\r\n  \"firstName\": \"c\",\r\n  \"lastName\": \"d\",\r\n  \"password\": \"mypassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/owner",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"owner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateOwner2-DuplicateEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"c.d@email.com\",\r\n  \"firstName\": \"e\",\r\n  \"lastName\": \"f\",\r\n  \"password\": \"mypassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/owner",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"owner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditEmployee1-Complete",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"a\",\r\n    \"lastName\": \"b\",\r\n    \"email\": \"newemail@email.com\",\r\n    \"password\": \"mypassword\",\r\n    \"id\": 1,\r\n    \"salary\": 10.0,\r\n    \"active\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditEmployee1-DuplicateEmail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"a\",\r\n    \"lastName\": \"b\",\r\n    \"email\": \"c.d@email.com\",\r\n    \"password\": \"newpassword\",\r\n    \"id\": 1,\r\n    \"salary\": 10.0,\r\n    \"active\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditOwner2-Complete",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"newemail2@email.com\",\r\n  \"firstName\": \"c\",\r\n  \"lastName\": \"d\",\r\n  \"password\": \"mypassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/owner/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"owner",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditOwner2-DuplicateEmail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"newemail@email.com\",\r\n  \"firstName\": \"c\",\r\n  \"lastName\": \"d\",\r\n  \"password\": \"newpassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/owner/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"owner",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeactivateEmployee1-Complete",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/deactivate/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"deactivate",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeactivateEmployee1000-NonExistant",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/deactivate/1000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"deactivate",
+						"1000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmployee1-Complete",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmployee1000-NonExistant",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/1000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"1000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOwner2-Complete",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/owner/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"owner",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOwner2000-NonExistant",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/owner/2000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"owner",
+						"2000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ReactivateEmployee1-Complete",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/reactivate/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"reactivate",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ReactivateEmployee1000-NonExistant",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/reactivate/1000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"reactivate",
+						"1000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmployee-All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOwner-All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
