@@ -38,15 +38,15 @@ public class DonationRestController {
     }
     
     @GetMapping(value = {"/donations/{id}"})
-    public ResponseEntity<DonationResponseDto> getLoan(@PathVariable Long id) {
+    public ResponseEntity<DonationResponseDto> getDonation(@PathVariable Long id) {
         return new ResponseEntity<DonationResponseDto>(
                 DonationResponseDto.createDto(donationService.getDonation(id)), HttpStatus.OK);
     }
 
     @PutMapping(value = {"/donations/validate/{donationId}/{validatorId}"})
     public ResponseEntity<DonationResponseDto> validateDonation(
-            @PathVariable Long loanId, @PathVariable Long validatorId,@PathVariable float price,@PathVariable String title,@PathVariable String author,@PathVariable String imageLink,@PathVariable Date creationDate, @PathVariable boolean isAvailable) {
-        Donation donation = donationService.validateDonation(loanId, validatorId, price, title, author, imageLink, creationDate, isAvailable);
+            @PathVariable Long donationId, @PathVariable Long validatorId,@PathVariable float price,@PathVariable String title,@PathVariable String author,@PathVariable String imageLink,@PathVariable Date creationDate, @PathVariable boolean isAvailable) {
+        Donation donation = donationService.validateDonation(donationId, validatorId, price, title, author, imageLink, creationDate, isAvailable);
         return new ResponseEntity<DonationResponseDto>(DonationResponseDto.createDto(donation), HttpStatus.OK);
     }
 

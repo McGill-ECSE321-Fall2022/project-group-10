@@ -51,14 +51,13 @@ public Donation createDonation(
     Long donorID
 ){
     Donation donation = new Donation();
+    donation.setValidated(false);
     donation.setDescription(description);
 
     Visitor donor = (Visitor) personRepository.findById(donorID).orElse(null);
     if (personRepository.findById(donorID).orElse(null) == null)
         throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such customer");
     donation.setDonor(donor);
-
-    donation.setValidated(false);
     return donationRepository.save(donation);
 }
 
