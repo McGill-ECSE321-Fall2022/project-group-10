@@ -82,10 +82,6 @@ public class LoanServiceTests {
                     return invocation.getArgument(0);
                 };
 
-        Answer<?> returnNull =
-                (InvocationOnMock invocation) -> {
-                    return null;
-                };
 
         lenient().when(loanRepository.save(any(Loan.class))).thenAnswer(returnParameterAsAnswer);
     }
