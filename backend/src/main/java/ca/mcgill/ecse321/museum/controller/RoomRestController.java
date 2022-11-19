@@ -10,10 +10,15 @@ import ca.mcgill.ecse321.museum.model.StorageRoom;
 import ca.mcgill.ecse321.museum.service.RoomService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,7 +33,7 @@ public class RoomRestController {
 
     @PostMapping(value = {"/rooms/exhibitRoom"})
     public ResponseEntity<ExhibitRoomResponseDto> createExhibitRoom(
-            @RequestBody ExhibitRoomRequestDto body) {
+            @RequestBody ExhibitRoomRequestDto body) throws IllegalArgumentException {
         ExhibitRoom exhibitRoom = roomService.createExhibitRoom(body.getName(), body.getCapacity());
         return new ResponseEntity<ExhibitRoomResponseDto>(
                 ExhibitRoomResponseDto.createDto(exhibitRoom), HttpStatus.CREATED);
@@ -36,7 +41,7 @@ public class RoomRestController {
 
     @PostMapping(value = {"/rooms/storageRoom"})
     public ResponseEntity<StorageRoomResponseDto> createStorageRoom(
-            @RequestBody StorageRoomRequestDto body) {
+            @RequestBody StorageRoomRequestDto body) throws IllegalArgumentException {
         StorageRoom storageRoom = roomService.createStorageRoom(body.getName());
         return new ResponseEntity<StorageRoomResponseDto>(
                 StorageRoomResponseDto.createDto(storageRoom), HttpStatus.CREATED);
@@ -44,7 +49,8 @@ public class RoomRestController {
 
     @PutMapping(value = {"/rooms/exhibitRoom/{id}/{newName}/{newCapacity}"})
     public ResponseEntity<ExhibitRoomResponseDto> updateExhibitRoom(
-            @PathVariable long id, @PathVariable String newName, @PathVariable int newCapacity) {
+            @PathVariable long id, @PathVariable String newName, @PathVariable int newCapacity)
+            throws IllegalArgumentException {
         return new ResponseEntity<ExhibitRoomResponseDto>(
                 ExhibitRoomResponseDto.createDto(
                         roomService.updateExhibitRoom(id, newName, newCapacity)),
@@ -53,9 +59,66 @@ public class RoomRestController {
 
     @PutMapping(value = {"/rooms/storageRoom/{id}/{newName}"})
     public ResponseEntity<StorageRoomResponseDto> updateStorageRoom(
-            @PathVariable long id, @PathVariable String newName) {
+            @PathVariable long id, @PathVariable String newName)
+            throws IllegalArgumentException {
         return new ResponseEntity<StorageRoomResponseDto>(
                 StorageRoomResponseDto.createDto(roomService.updateStorageRoom(id, newName)),
                 HttpStatus.OK);
     }
+
+    @GetMapping(value = {"/rooms/exhibitRoom/{id}"})
+    public ResponseEntity<ExhibitRoomResponseDto> getExhibitRoom(
+            @PathVariable long id) throws IllegalArgumentException {
+        return new ResponseEntity<ExhibitRoomResponseDto>(
+            ExhibitRoomResponseDto.createDto(roomService.getExhibitRoom(id)),
+            HttpStatus.OK
+        );
+    }
+    
+    @GetMapping(value = {"/rooms/storageRoom/{id}"})
+    public ResponseEntity<StorageRoomResponseDto> getStorageRoom(
+            @PathVariable long id) throws IllegalArgumentException {
+        return new ResponseEntity<StorageRoomResponseDto>(
+            StorageRoomResponseDto.createDto(roomService.getStorageRoom(id)),
+            HttpStatus.OK
+        );
+    }
+    
+    @GetMapping(value = {"/rooms/exhibitRoom"})
+    public ResponseEntity<List<ExhibitRoomResponseDto>> getAllExhibitRooms()
+        throws IllegalArgumentException {
+        var rooms = roomService.getAllExhibitRooms();
+        var ExhibitRoomResponseDtos =
+            rooms.stream().map(exhibitRoom -> ExhibitRoomResponseDto.createDto(exhibitRoom));
+        return new ResponseEntity<List<ExhibitRoomResponseDto>>(
+            ExhibitRoomResponseDtos.toList(),
+            HttpStatus.OK
+        );
+    }
+
+    @GetMapping(value = {"/rooms/storageRoom"})
+    public ResponseEntity<List<StorageRoomResponseDto>> getAllStorageRooms()
+        throws IllegalArgumentException {
+        var rooms = roomService.getAllStorageRooms();
+        var StorageRoomResponseDtos =
+            rooms.stream().map(storageRoom -> StorageRoomResponseDto.createDto(storageRoom));
+        return new ResponseEntity<List<StorageRoomResponseDto>>(
+            StorageRoomResponseDtos.toList(),
+            HttpStatus.OK
+        );
+    }
+
+    @GetMapping(value = {"/rooms/exhibitRoom/{id}/count"})
+    public ResponseEntity<Long> getCountArtworksInExhibitRoom(@PathVariable long id) 
+        throws IllegalArgumentException{
+            return new ResponseEntity<Long>((Long) roomService.countArtworksInExhibitRoom(id), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = {"/rooms/{id}"})
+    public ResponseEntity<String> deleteRoom(@PathVariable long id)
+        throws IllegalArgumentException {
+        roomService.deleteRoom(id);
+        return new ResponseEntity<String>("Room successfully deleted", HttpStatus.OK);
+    }
+    
 }
