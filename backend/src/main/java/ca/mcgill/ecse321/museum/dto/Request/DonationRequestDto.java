@@ -2,36 +2,28 @@ package ca.mcgill.ecse321.museum.dto.Request;
 
 public class DonationRequestDto {
 
-    private long id;
-    private String description;
-    private boolean validated;
+    Long id;
+    String description;
+    boolean validated;
     //private String title;
     //private String author;
     //private boolean isAvailable;
     //private String imageLink;
-    private Long donorID;
-    private Long validatorID;
-    private Long artworkID;
+    Long donorID;
+    Long validatorID;
+    Long artworkID;
 
-   /*  public DonationRequestDto (Donation donation){
-        this.id=donation.getId();
-        this.description=donation.getDescription();
-        this.validated=donation.isValidated();
-        this.donor= new VisitorDto(donation.getDonor());
+    public DonationRequestDto(Long id, String description, boolean validated, Long donorID, Long validatorID, Long artworkID){
 
+        this.id=id;
+        this.description=description;
+        this.validated=validated;
+        this.donorID=donorID;
+        this.validatorID=validatorID;
+        this.artworkID=artworkID;
 
-        if(validated){
-        if(donation.getValidator().getClass()== Administrator.class){
-            this.validator = new OwnerDto((Owner)donation.getValidator());  
-          } else {
-            this.validator = new EmployeeDto((Employee)donation.getValidator());
-            }
-
-        this.artwork = new ArtworkDto(donation.getArtworks());
-        }
-        
     }
-*/
+
     public Long getId(){
         return id;
     }
