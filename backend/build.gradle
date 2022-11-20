@@ -10,7 +10,30 @@ plugins {
 	id 'com.diffplug.spotless' version '6.11.0'
 
 	// Run Postman
-	id "com.github.michaelruocco.gradle-postman-runner" version "0.1.4"
+	//id "com.github.michaelruocco.gradle-postman-runner" version "0.1.4"
+
+	// Node plugin (used to run gradle-postman-runner)
+	id "com.github.node-gradle.node" version "3.5.0"
+}
+
+node {
+	download = true
+}
+
+task installNewman(type: NpmTask) {
+	args = ['install', 'newman', '--save-dev']
+}
+
+// Needs to run in parallel with bootRun
+task postman(type: NpxTask) {
+	dependsOn installNewman
+	command = 'newman'
+	args = [
+			'run',
+			'--bail', 'true',
+            "src/test/resources/postman/Administrator_Integration_Tests.postman_collection.json",
+            "src/test/resources/postman/Artwork_Integration_Tests.postman_collection.json"
+	]
 }
 
 group = 'ca.mcgill.ecse321'

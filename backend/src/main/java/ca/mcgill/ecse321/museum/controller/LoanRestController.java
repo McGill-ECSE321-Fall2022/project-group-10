@@ -7,9 +7,7 @@ import ca.mcgill.ecse321.museum.model.Loan;
 import ca.mcgill.ecse321.museum.service.LoanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,12 +59,8 @@ public class LoanRestController {
     @GetMapping(value = {"/loans"})
     public ResponseEntity<List<LoanResponseDto>> getAllLoans() {
         var loans = loanService.getAllLoans();
-        var LoanResponseDtos =
-        loans.stream().map(loan -> LoanResponseDto.createDto(loan));
-        return new ResponseEntity<List<LoanResponseDto>>(
-            LoanResponseDtos.toList(),
-            HttpStatus.OK
-        );
+        var LoanResponseDtos = loans.stream().map(loan -> LoanResponseDto.createDto(loan));
+        return new ResponseEntity<List<LoanResponseDto>>(LoanResponseDtos.toList(), HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.OK)

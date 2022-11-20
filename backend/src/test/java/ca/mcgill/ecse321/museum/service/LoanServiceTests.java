@@ -82,7 +82,6 @@ public class LoanServiceTests {
                     return invocation.getArgument(0);
                 };
 
-
         lenient().when(loanRepository.save(any(Loan.class))).thenAnswer(returnParameterAsAnswer);
     }
 

@@ -1,4 +1,6 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.service;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -24,12 +26,11 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
-import ca.mcgill.ecse321.museum.service.ArtworkService;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class DonationServiceTests {
-    
+
     @Mock private PersonRepository personRepository;
     @Mock private AdministratorRepository administratorRepository;
     @Mock private ArtworkRepository artworkRepository;
@@ -39,24 +40,21 @@ public class DonationServiceTests {
     @InjectMocks private DonationService donationService;
 
     private static final Long DONATION_KEY_INVALID = Long.valueOf(1);
-    private static final Long DONATION_KEY_VALID= Long.valueOf(2);
+    private static final Long DONATION_KEY_VALID = Long.valueOf(2);
     private static final Long DONOR_KEY = Long.valueOf(3);
     private static final Long VALIDATOR_KEY = Long.valueOf(4);
     private static final Long ARTWORK_KEY = Long.valueOf(5);
-    //code that is executed before every test
+    // code that is executed before every test
     @BeforeEach
-    public void setMockOutput(){
+    public void setMockOutput() {
         lenient()
                 .when(donationRepository.findAll())
                 .thenAnswer(
-                    (InvocationOnMock invocation) -> {
-                        Donation donation =new Donation();
-                        donation.setId(DONATION_KEY_INVALID);
-                        return List.of(donation);
-
-                    });
-
-
+                        (InvocationOnMock invocation) -> {
+                            Donation donation = new Donation();
+                            donation.setId(DONATION_KEY_INVALID);
+                            return List.of(donation);
+                        });
 
         // Whenever anything is saved, just return the parameter object
         Answer<?> returnParameterAsAnswer =
@@ -64,14 +62,15 @@ public class DonationServiceTests {
                     return invocation.getArgument(0);
                 };
 
-
-        lenient().when(donationRepository.save(any(Donation.class))).thenAnswer(returnParameterAsAnswer);
-        //Donation that has not be validated yet
+        lenient()
+                .when(donationRepository.save(any(Donation.class)))
+                .thenAnswer(returnParameterAsAnswer);
+        // Donation that has not be validated yet
         lenient()
                 .when(donationRepository.findById(DONATION_KEY_INVALID))
                 .thenAnswer(
                         (InvocationOnMock invocation) -> {
-                            String description ="This artwork is of an apple";
+                            String description = "This artwork is of an apple";
                             Donation donation = new Donation();
                             donation.setDescription(description);
                             Visitor donor = new Visitor();
@@ -79,17 +78,14 @@ public class DonationServiceTests {
                             donation.setId(DONATION_KEY_INVALID);
                             donation.setDonor(donor);
                             return Optional.of(donation);
+                        });
 
-                        }
-                );
-
-        //Donation that has beeen validated
+        // Donation that has beeen validated
         lenient()
                 .when(donationRepository.findById(DONATION_KEY_VALID))
                 .thenAnswer(
                         (InvocationOnMock invocation) -> {
-
-                            String description ="This artwork is of Joey";
+                            String description = "This artwork is of Joey";
                             Donation donation = new Donation();
                             donation.setDescription(description);
                             donation.setValidated(true);
@@ -101,67 +97,72 @@ public class DonationServiceTests {
                             validator.setId(VALIDATOR_KEY);
                             donation.setValidator(validator);
                             return Optional.of(donation);
-
-                        }
-                );
+                        });
         // Mock Artwork
         lenient()
                 .when(artworkRepository.findById(anyLong()))
                 .thenAnswer(
                         (InvocationOnMock invocation) -> {
-                        Artwork artwork = new Artwork();
-                        artwork.setId(ARTWORK_KEY);
-                return Optional.of(artwork);
-            });
-        //donation that has been validated
-    
+                            Artwork artwork = new Artwork();
+                            artwork.setId(ARTWORK_KEY);
+                            return Optional.of(artwork);
+                        });
+        // donation that has been validated
+
         // Mock Visitor
         lenient()
                 .when(personRepository.findById(anyLong()))
                 .thenAnswer(
-                         (InvocationOnMock invocation) -> {
-                        ca.mcgill.ecse321.museum.model.Visitor visitor =
-                        new ca.mcgill.ecse321.museum.model.Visitor();
-                visitor.setId(Long.valueOf(DONOR_KEY));
-                return Optional.of(visitor);
-            });
+                        (InvocationOnMock invocation) -> {
+                            ca.mcgill.ecse321.museum.model.Visitor visitor =
+                                    new ca.mcgill.ecse321.museum.model.Visitor();
+                            visitor.setId(Long.valueOf(DONOR_KEY));
+                            return Optional.of(visitor);
+                        });
 
         lenient()
-            .when(administratorRepository.findById(anyLong()))
-            .thenAnswer(
-                     (InvocationOnMock invocation) -> {
-                    ca.mcgill.ecse321.museum.model.Administrator administrator =
-                    new ca.mcgill.ecse321.museum.model.Employee();
-            administrator.setId(Long.valueOf(DONOR_KEY));
-            return Optional.of(administrator);
-        });
-        
-        lenient()
-                .when(artworkService.createArtwork(anyString(), anyString(), any(Date.class), anyString(), anyString(), anyFloat(), anyBoolean()))
+                .when(administratorRepository.findById(anyLong()))
                 .thenAnswer(
                         (InvocationOnMock invocation) -> {
-                        ca.mcgill.ecse321.museum.model.Artwork artwork = new ca.mcgill.ecse321.museum.model.Artwork();
-                        return artwork;
+                            ca.mcgill.ecse321.museum.model.Administrator administrator =
+                                    new ca.mcgill.ecse321.museum.model.Employee();
+                            administrator.setId(Long.valueOf(DONOR_KEY));
+                            return Optional.of(administrator);
                         });
-                 
-                    }
-    //Test creating a Donation
+
+        lenient()
+                .when(
+                        artworkService.createArtwork(
+                                anyString(),
+                                anyString(),
+                                any(Date.class),
+                                anyString(),
+                                anyString(),
+                                anyFloat(),
+                                anyBoolean()))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                            ca.mcgill.ecse321.museum.model.Artwork artwork =
+                                    new ca.mcgill.ecse321.museum.model.Artwork();
+                            return artwork;
+                        });
+    }
+    // Test creating a Donation
     @Test
-    public void testCreatDonationComplete(){
+    public void testCreatDonationComplete() {
 
+        String description = "This artwork is of an apple";
+        Donation donation = donationService.createDonation(description, DONOR_KEY);
 
-    String description ="This artwork is of an apple";
-    Donation donation = donationService.createDonation(description, DONOR_KEY);
+        assertNotNull(donation);
+        assertEquals(description, donation.getDescription());
+        assertEquals(false, donation.isValidated());
+        assertEquals(DONOR_KEY, donation.getDonor().getId());
+    }
 
-    assertNotNull(donation);
-    assertEquals(description,donation.getDescription());
-    assertEquals(false,donation.isValidated());
-    assertEquals(DONOR_KEY,donation.getDonor().getId());
-}
-
-    //Test validating a donation 
+    // Test validating a donation
     @Test
-    public void testValidateDonation(){
+    public void testValidateDonation() {
         String author = "Keith Crochetiere";
         String title = "Banana";
         float price = 50;
@@ -169,30 +170,36 @@ public class DonationServiceTests {
         Date creationDate = new Date(1337137);
         Boolean isAvailable = true;
 
-        Donation donation = donationService.validateDonation(DONATION_KEY_INVALID, VALIDATOR_KEY, price, title, author, imagelink, creationDate, isAvailable);
+        Donation donation =
+                donationService.validateDonation(
+                        DONATION_KEY_INVALID,
+                        VALIDATOR_KEY,
+                        price,
+                        title,
+                        author,
+                        imagelink,
+                        creationDate,
+                        isAvailable);
 
         assertNotNull(donation);
         assertNotNull(donation.getArtworks());
-        assertEquals(true, donation.isValidated());    
+        assertEquals(true, donation.isValidated());
     }
 
-    //Test deleting a donation
+    // Test deleting a donation
     @Test
-    public void testDeleteDonation(){
+    public void testDeleteDonation() {
         donationService.deleteDonation(DONATION_KEY_INVALID);
         verify(donationRepository, times(1)).delete(any(Donation.class));
-
     }
 
-    //Test getting all donations
+    // Test getting all donations
     @Test
-    public void testGetAllDonations(){
+    public void testGetAllDonations() {
         List<Donation> donations = donationService.getAllDonations();
         assertNotNull(donations);
         assertNotNull(donations.get(0));
-        assertEquals(DONATION_KEY_INVALID,donations.get(0).getId());
-        assertEquals(1,donations.size());
+        assertEquals(DONATION_KEY_INVALID, donations.get(0).getId());
+        assertEquals(1, donations.size());
     }
-
-
 }

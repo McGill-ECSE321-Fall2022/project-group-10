@@ -5,7 +5,8 @@ import ca.mcgill.ecse321.museum.model.Owner;
 
 public class OwnerResponseDto extends AdministratorResponseDto {
 
-    public OwnerResponseDto(String firstName, String lastName, String email, String password, Long id) {
+    public OwnerResponseDto(
+            String firstName, String lastName, String email, String password, Long id) {
         super(firstName, lastName, email, password, id);
     }
 
