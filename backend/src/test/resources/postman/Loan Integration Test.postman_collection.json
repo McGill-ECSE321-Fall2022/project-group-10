@@ -1,10 +1,37 @@
 {
 	"info": {
-		"_postman_id": "135b4c87-4679-4655-bd67-f380479551df",
-		"name": "Donation Integration Test",
+		"_postman_id": "d99821a4-6763-45e6-8b15-1a0298700b3d",
+		"name": "Loan Integration Test",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "CreateArtwork",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"author\": \"RTX 3090\",\n  \"creationDate\": \"2022-11-18\",\n  \"description\": \"This is AI generated art\",\n  \"imageLink\": \"yeet.com\",\n  \"price\": 100,\n  \"title\": \"A dog with a horse's mouth\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/artworks",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks"
+					]
+				}
+			},
+			"response": []
+		},
 		{
 			"name": "CreateVisitor",
 			"request": {
@@ -63,13 +90,13 @@
 			"response": []
 		},
 		{
-			"name": "CreateDonation",
+			"name": "CreateLoan",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"description\": \"string\",\r\n  \"donorID\": 1\r\n}",
+					"raw": "{\r\n  \"artworkId\": 1,\r\n  \"customerId\": 2,\r\n  \"endDate\": \"2022-11-20\",\r\n  \"price\": 100,\r\n  \"startDate\": \"2022-11-20\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -77,39 +104,39 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8081/donations",
+					"raw": "localhost:8081/loans",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"donations"
+						"loans"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "GetDonationSuccess",
+			"name": "GetLoanSuccess",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8081/donations/3",
+					"raw": "localhost:8081/loans/4",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"donations",
-						"3"
+						"loans",
+						"4"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "GetDonationFail",
+			"name": "GetLoanFail",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -126,13 +153,13 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8081/donations/100",
+					"raw": "localhost:8081/loans/100",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"donations",
+						"loans",
 						"100"
 					]
 				}
@@ -140,13 +167,13 @@
 			"response": []
 		},
 		{
-			"name": "ValidateDonationSuccess",
+			"name": "ValidateLoanSuccess",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"price\": 30,\r\n    \"title\": \"Cool art\",\r\n    \"author\": \"Keith Crochtiere\",\r\n    \"imageLink\": \"Www.321bestclassever.com\",\r\n    \"creationDate\": \"1981-05-09\",\r\n    \"isAvailable\": true\r\n\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -154,16 +181,16 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8081/donations/validate/3/2",
+					"raw": "localhost:8081/loans/validate/4/3",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"donations",
+						"loans",
 						"validate",
-						"3",
-						"2"
+						"4",
+						"3"
 					],
 					"query": [
 						{
@@ -177,7 +204,7 @@
 			"response": []
 		},
 		{
-			"name": "ValidateDonationFailure",
+			"name": "ValidateLoanFailure",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -191,13 +218,13 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8081/donations/validate/100/3",
+					"raw": "localhost:8081/loans/validate/100/3",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"donations",
+						"loans",
 						"validate",
 						"100",
 						"3"
@@ -207,7 +234,7 @@
 			"response": []
 		},
 		{
-			"name": "DeleteDonationSuccess",
+			"name": "DeleteLoanSuccess",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -221,21 +248,21 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8081/donations/3",
+					"raw": "localhost:8081/loans/4",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"donations",
-						"3"
+						"loans",
+						"4"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "DeleteDonationFailure",
+			"name": "DeleteLoanFailure",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -249,13 +276,13 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8081/donations/100",
+					"raw": "localhost:8081/loans/100",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"donations",
+						"loans",
 						"100"
 					]
 				}

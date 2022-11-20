@@ -5,11 +5,11 @@ import ca.mcgill.ecse321.museum.model.ScheduleBlock.ScheduleEvent;
 import java.sql.Date;
 
 public class ScheduleBlockRequestDto {
-    private Date startDate;
-    private Date endDate;
-    private float visitFees;
-    private int visitCapacity;
-    private ScheduleEvent event;
+    Date startDate;
+    Date endDate;
+    float visitFees;
+    int visitCapacity;
+    ScheduleEvent event;
 
     public Date getStartDate() {
         return startDate;
