@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.museum.dto.Request;
 
+import java.sql.Date;
+
 public class DonationRequestDto {
 
     Long id;
@@ -12,6 +14,38 @@ public class DonationRequestDto {
     Long donorID;
     Long validatorID;
     Long artworkID;
+
+
+    Long price;
+    String title;
+    String author;
+    String imagelink;
+    Date creationDate;
+    boolean isAvailable;
+
+    public boolean getisAvailable(){
+        return isAvailable;
+    }
+
+    public Date getDate(){
+        return creationDate;
+    }
+
+    public String getimageLink(){
+        return imagelink;
+    }
+
+    public String getAuthor(){
+        return author;
+    }
+
+
+    public String getTitle(){
+        return title;
+    }
+    public Long getPrice(){
+        return price;
+    }
 
     public Long getId(){
         return id;

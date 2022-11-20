@@ -62,7 +62,7 @@ public class VisitorRestController {
                 @ApiResponse(code = 200, message = "Visitor edited"),
                 @ApiResponse(code = 404, message = "No such visitor")
             })
-    @PutMapping(value = {"/visitor/{id}"})
+    @PutMapping(value = {"/visitor/edit/{id}"})
     public ResponseEntity<VisitorResponseDto> editVisitor(@RequestBody VisitorRequestDto body)
         throws IllegalArgumentException {
         visitorService.editVisitor(

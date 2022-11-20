@@ -75,8 +75,9 @@ public class DonationResponseDto {
         if(donation.isValidated()){
         if (donation.getValidator() == null) donationDto.validator = null;
         else if (donation.getValidator().getClass() == Administrator.class)
-            donationDto.validator = OwnerResponseDto.createDto((Owner) donation.getValidator());
-        else donationDto.validator = EmployeeResponseDto.createDto((Employee) donation.getValidator());
+            donationDto.validator = OwnerResponseDto.createDto(donation.getValidator()); //remove case to owner
+         else donationDto.validator = EmployeeResponseDto.createDto( donation.getValidator());
+        
         }
         if(donation.isValidated())donationDto.artwork=ArtworkResponseDto.createDto(donation.getArtworks());
         else donationDto.artwork=null;
