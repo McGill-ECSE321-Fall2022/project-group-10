@@ -7,12 +7,12 @@ The team will analyze and translate the clients requirements into a working requ
 ## Team Members
 | Name      | Github Username | Roles | Deliverable 1 (hours worked) | Deliverable 2 (hours worked) 
 | ----------- | ----------- | ----------- | ----------- | ----------- |
-| Eduard Anton      | PersoSirEduard       | Requirements, Use-cases, Tests, Documentation, Domain Model,  ScheduleBlock classes| 15 | 13
+| Eduard Anton      | PersoSirEduard       | Requirements, Use-cases, Tests, Documentation, Domain Model,  ScheduleBlock classes| 15 | 11
 | Keith Crochtiere   | khc1100        | Requirements, Use-cases, Tests, Documentation, Donation classes | 8 | 9
-| Joseph Saliba   | JosephSaliba01        | Requirements, Use-cases, Tests, Documentation, Domain Model, Room and Loan classes | 15 | 14
+| Joseph Saliba   | JosephSaliba01        | Requirements, Use-cases, Tests, Documentation, Domain Model, Room and Loan classes | 15 | 12
 | Adam Simard   | Simard302        | Requirements, Use-cases, Tests, Documentation, Wiki, Administrator classes | 8 | 9
-| Alex Turianskyj   | Al3X-T        | Requirements, Use-cases, Tests, Documentation, Visitor classes | 8 | 10
-| Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation, Project Setup, Model Classes, Artwork classes | 10 | 11
+| Alex Turianskyj   | Al3X-T        | Requirements, Use-cases, Tests, Documentation, Visitor classes | 8 | 16
+| Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation, Project Setup, Model Classes, Artwork classes | 10 | 15
 
 ## Index
 [Deliverable 1 Project Report](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Deliverable-1-Project-Report)
