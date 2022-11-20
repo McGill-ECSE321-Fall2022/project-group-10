@@ -6,7 +6,7 @@ The team will analyze and translate the clients requirements into a working requ
 
 ## Team Members
 | Name      | Github Username | Roles | Deliverable 1 (hours worked) | Deliverable 2 (hours worked) 
-| ----------- | ----------- | ----------- | ----------- |
+| ----------- | ----------- | ----------- | ----------- | ----------- |
 | Eduard Anton      | PersoSirEduard       | Requirements, Use-cases, Tests, Documentation, Domain Model,  ScheduleBlock classes| 15 | 13
 | Keith Crochtiere   | khc1100        | Requirements, Use-cases, Tests, Documentation, Donation classes | 8 | 9
 | Joseph Saliba   | JosephSaliba01        | Requirements, Use-cases, Tests, Documentation, Domain Model, Room and Loan classes | 15 | 14
