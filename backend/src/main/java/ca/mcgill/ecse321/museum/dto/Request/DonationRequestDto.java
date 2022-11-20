@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.dto.Request;
 
 import java.sql.Date;
@@ -7,14 +8,13 @@ public class DonationRequestDto {
     Long id;
     String description;
     boolean validated;
-    //private String title;
-    //private String author;
-    //private boolean isAvailable;
-    //private String imageLink;
+    // private String title;
+    // private String author;
+    // private boolean isAvailable;
+    // private String imageLink;
     Long donorID;
     Long validatorID;
     Long artworkID;
-
 
     Long price;
     String title;
@@ -23,51 +23,51 @@ public class DonationRequestDto {
     Date creationDate;
     boolean isAvailable;
 
-    public boolean getisAvailable(){
+    public boolean getisAvailable() {
         return isAvailable;
     }
 
-    public Date getDate(){
+    public Date getDate() {
         return creationDate;
     }
 
-    public String getimageLink(){
+    public String getimageLink() {
         return imagelink;
     }
 
-    public String getAuthor(){
+    public String getAuthor() {
         return author;
     }
 
-
-    public String getTitle(){
+    public String getTitle() {
         return title;
     }
-    public Long getPrice(){
+
+    public Long getPrice() {
         return price;
     }
 
-    public Long getId(){
+    public Long getId() {
         return id;
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return description;
     }
 
-    public boolean getValidated(){
+    public boolean getValidated() {
         return validated;
     }
 
-    public Long getDonorID(){
+    public Long getDonorID() {
         return donorID;
     }
 
-    public Long getValidatorID(){
+    public Long getValidatorID() {
         return validatorID;
     }
 
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -75,13 +75,12 @@ public class DonationRequestDto {
         return artworkID;
     }
 
-    
-    /* 
+    /*
     public void setDescription(String description){
         this.description=description;
     }
 
-    
+
 
     public void setValidated(boolean validated){
         this.validated=validated;
@@ -91,7 +90,7 @@ public class DonationRequestDto {
         this.donor=donor;
     }
 
-    
+
 
     public void setValidator(AdministratorDto validator){
         this.validator=validator;
@@ -102,6 +101,5 @@ public class DonationRequestDto {
     public void setArtwork(ArtworkDto artwork){
         this.artwork=artwork;
     }*/
-
 
 }

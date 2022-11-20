@@ -1,16 +1,19 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
+import ca.mcgill.ecse321.museum.model.ScheduleBlock;
+import ca.mcgill.ecse321.museum.model.ScheduleBlock.ScheduleEvent;
+import ca.mcgill.ecse321.museum.repository.ScheduleBlockRepository;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,21 +26,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.TestPropertySource;
-
-import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
-import ca.mcgill.ecse321.museum.model.Administrator;
-import ca.mcgill.ecse321.museum.model.Employee;
-import ca.mcgill.ecse321.museum.model.Person;
-import ca.mcgill.ecse321.museum.model.ScheduleBlock;
-import ca.mcgill.ecse321.museum.model.Visitor;
-import ca.mcgill.ecse321.museum.model.ScheduleBlock.ScheduleEvent;
-import ca.mcgill.ecse321.museum.repository.ScheduleBlockRepository;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class ScheduleBlockServiceTests {
-    
+
     @Mock private ScheduleBlockRepository scheduleBlockRepository;
 
     @InjectMocks private ScheduleBlockService scheduleBlockService;
@@ -66,8 +59,9 @@ public class ScheduleBlockServiceTests {
                         });
 
         // ScheduleBlock 2 exists
-        lenient().when(scheduleBlockRepository.findById(SCHEDULEBLOCK_KEY+1))
-        .thenAnswer(
+        lenient()
+                .when(scheduleBlockRepository.findById(SCHEDULEBLOCK_KEY + 1))
+                .thenAnswer(
                         (InvocationOnMock invocation) -> {
                             var scheduleBlock = new ScheduleBlock();
 
@@ -82,8 +76,9 @@ public class ScheduleBlockServiceTests {
                         });
 
         // ScheduleBlock 3 exists
-        lenient().when(scheduleBlockRepository.findById(SCHEDULEBLOCK_KEY+2))
-        .thenAnswer(
+        lenient()
+                .when(scheduleBlockRepository.findById(SCHEDULEBLOCK_KEY + 2))
+                .thenAnswer(
                         (InvocationOnMock invocation) -> {
                             var scheduleBlock = new ScheduleBlock();
 
@@ -112,7 +107,7 @@ public class ScheduleBlockServiceTests {
                             scheduleBlock1.setEvent(ScheduleEvent.MUSEUM_OPEN);
 
                             var scheduleBlock2 = new ScheduleBlock();
-                            scheduleBlock2.setId(SCHEDULEBLOCK_KEY+1);
+                            scheduleBlock2.setId(SCHEDULEBLOCK_KEY + 1);
 
                             scheduleBlock2.setStartDate(Date.valueOf("2020-02-01"));
                             scheduleBlock2.setEndDate(Date.valueOf("2020-02-02"));
@@ -121,7 +116,7 @@ public class ScheduleBlockServiceTests {
                             scheduleBlock2.setEvent(ScheduleEvent.MUSEUM_OPEN);
 
                             var scheduleBlock3 = new ScheduleBlock();
-                            scheduleBlock3.setId(SCHEDULEBLOCK_KEY+2);
+                            scheduleBlock3.setId(SCHEDULEBLOCK_KEY + 2);
                             scheduleBlock3.setStartDate(Date.valueOf("2020-02-05"));
                             scheduleBlock3.setEndDate(Date.valueOf("2020-02-08"));
                             scheduleBlock3.setVisitFees(0);
@@ -133,7 +128,10 @@ public class ScheduleBlockServiceTests {
 
         // List of all schedule blocks is a list between two dates
         lenient()
-                .when(scheduleBlockRepository.findScheduleBlockByStartDateGreaterThanEqualAndEndDateLessThanEqual(Date.valueOf("2020-01-01"), Date.valueOf("2020-02-02")))
+                .when(
+                        scheduleBlockRepository
+                                .findScheduleBlockByStartDateGreaterThanEqualAndEndDateLessThanEqual(
+                                        Date.valueOf("2020-01-01"), Date.valueOf("2020-02-02")))
                 .thenAnswer(
                         (InvocationOnMock invocation) -> {
                             var scheduleBlock1 = new ScheduleBlock();
@@ -146,7 +144,7 @@ public class ScheduleBlockServiceTests {
                             scheduleBlock1.setEvent(ScheduleEvent.MUSEUM_OPEN);
 
                             var scheduleBlock2 = new ScheduleBlock();
-                            scheduleBlock2.setId(SCHEDULEBLOCK_KEY+1);
+                            scheduleBlock2.setId(SCHEDULEBLOCK_KEY + 1);
 
                             scheduleBlock2.setStartDate(Date.valueOf("2020-02-01"));
                             scheduleBlock2.setEndDate(Date.valueOf("2020-02-02"));
@@ -177,7 +175,9 @@ public class ScheduleBlockServiceTests {
         float visitFees = 10.0f;
         int visitCapacity = 100;
 
-        var scheduleBlock = scheduleBlockService.createScheduleBlock(startDate, endDate, event, visitFees, visitCapacity);
+        var scheduleBlock =
+                scheduleBlockService.createScheduleBlock(
+                        startDate, endDate, event, visitFees, visitCapacity);
 
         assertNotNull(scheduleBlock);
         assertEquals(startDate, scheduleBlock.getStartDate());
@@ -208,9 +208,10 @@ public class ScheduleBlockServiceTests {
     public void testGetScheduleBlockDoesNotExist() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.getScheduleBlock(SCHEDULEBLOCK_KEY+3));
-        
-                        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.getScheduleBlock(SCHEDULEBLOCK_KEY + 3));
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such schedule block", exception.getMessage());
     }
 
@@ -222,7 +223,9 @@ public class ScheduleBlockServiceTests {
         float visitFees = 8.0f;
         int visitCapacity = 120;
 
-        var scheduleBlock = scheduleBlockService.updateScheduleBlock(SCHEDULEBLOCK_KEY, startDate, endDate, event, visitFees, visitCapacity);
+        var scheduleBlock =
+                scheduleBlockService.updateScheduleBlock(
+                        SCHEDULEBLOCK_KEY, startDate, endDate, event, visitFees, visitCapacity);
 
         assertNotNull(scheduleBlock);
         assertEquals(SCHEDULEBLOCK_KEY, scheduleBlock.getId());
@@ -231,7 +234,6 @@ public class ScheduleBlockServiceTests {
         assertEquals(event, scheduleBlock.getEvent());
         assertEquals(visitFees, scheduleBlock.getVisitFees());
         assertEquals(visitCapacity, scheduleBlock.getVisitCapacity());
-
     }
 
     @Test
@@ -245,8 +247,16 @@ public class ScheduleBlockServiceTests {
 
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.updateScheduleBlock(SCHEDULEBLOCK_KEY+3, startDate, endDate, event, visitFees, visitCapacity));
-                        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+                        ServiceLayerException.class,
+                        () ->
+                                scheduleBlockService.updateScheduleBlock(
+                                        SCHEDULEBLOCK_KEY + 3,
+                                        startDate,
+                                        endDate,
+                                        event,
+                                        visitFees,
+                                        visitCapacity));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such schedule block", exception.getMessage());
     }
 
@@ -260,8 +270,9 @@ public class ScheduleBlockServiceTests {
     public void testDeleteScheduleBlockDoesNotExist() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.deleteScheduleBlock(SCHEDULEBLOCK_KEY+3));
-                        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.deleteScheduleBlock(SCHEDULEBLOCK_KEY + 3));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such schedule block", exception.getMessage());
     }
 
@@ -270,7 +281,8 @@ public class ScheduleBlockServiceTests {
         var scheduleBlocks = scheduleBlockService.getAllScheduleBlocks();
 
         assertNotNull(scheduleBlocks);
-        int count = 0; for (ScheduleBlock scheduleBlock : scheduleBlocks) count++;
+        int count = 0;
+        for (ScheduleBlock scheduleBlock : scheduleBlocks) count++;
         assertEquals(3, count);
     }
 
@@ -282,8 +294,8 @@ public class ScheduleBlockServiceTests {
         var scheduleBlocks = scheduleBlockService.getScheduleBlocksBetweenDates(startDate, endDate);
 
         assertNotNull(scheduleBlocks);
-        int count = 0; for (ScheduleBlock scheduleBlock : scheduleBlocks) count++;
+        int count = 0;
+        for (ScheduleBlock scheduleBlock : scheduleBlocks) count++;
         assertEquals(2, count);
     }
-
 }

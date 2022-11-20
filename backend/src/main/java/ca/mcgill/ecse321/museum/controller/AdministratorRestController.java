@@ -1,6 +1,5 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.controller;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import ca.mcgill.ecse321.museum.dto.Request.EmployeeRequestDto;
 import ca.mcgill.ecse321.museum.dto.Request.OwnerRequestDto;
@@ -10,19 +9,18 @@ import ca.mcgill.ecse321.museum.model.Employee;
 import ca.mcgill.ecse321.museum.model.Owner;
 import ca.mcgill.ecse321.museum.service.AdministratorService;
 import io.swagger.annotations.*;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin(origins = "*")
 @RestController
 @Api(tags = "Administrator")
 public class AdministratorRestController {
-    
+
     @Autowired private AdministratorService administratorService;
 
     /*
@@ -34,23 +32,22 @@ public class AdministratorRestController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Create Employee")
     @ApiResponses(
-        value = {
-            @ApiResponse(code = 201, message = "Employee successfully created"),
-            @ApiResponse(code = 400, message = "No such employee")
-        }
-    )
+            value = {
+                @ApiResponse(code = 201, message = "Employee successfully created"),
+                @ApiResponse(code = 400, message = "No such employee")
+            })
     @PostMapping(value = {"/administrator/employee"})
-    public ResponseEntity<EmployeeResponseDto> createEmployee(@RequestBody EmployeeRequestDto body) {
-        Employee employee = administratorService.createEmployee(
-            body.getFirstName(),
-            body.getLastName(),
-            body.getEmail(),
-            body.getPassword(),
-            body.getSalary()
-        );
+    public ResponseEntity<EmployeeResponseDto> createEmployee(
+            @RequestBody EmployeeRequestDto body) {
+        Employee employee =
+                administratorService.createEmployee(
+                        body.getFirstName(),
+                        body.getLastName(),
+                        body.getEmail(),
+                        body.getPassword(),
+                        body.getSalary());
         return new ResponseEntity<EmployeeResponseDto>(
-            EmployeeResponseDto.createDto(employee), HttpStatus.CREATED
-        );
+                EmployeeResponseDto.createDto(employee), HttpStatus.CREATED);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -62,15 +59,14 @@ public class AdministratorRestController {
             })
     @PutMapping(value = {"/administrator/employee/{id}"})
     public ResponseEntity<EmployeeResponseDto> editEmployee(@RequestBody EmployeeRequestDto body)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         administratorService.editEmployee(
-            body.getId(), 
-            body.getFirstName(), 
-            body.getLastName(), 
-            body.getEmail(), 
-            body.getPassword(), 
-            body.getSalary()
-        );
+                body.getId(),
+                body.getFirstName(),
+                body.getLastName(),
+                body.getEmail(),
+                body.getPassword(),
+                body.getSalary());
         return new ResponseEntity<EmployeeResponseDto>(HttpStatus.OK);
     }
 
@@ -83,7 +79,7 @@ public class AdministratorRestController {
             })
     @PutMapping(value = {"/administrator/employee/deactivate/{id}"})
     public ResponseEntity<EmployeeResponseDto> deactivateEmployee(@PathVariable long id)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         administratorService.deactivateEmployee(id);
         return new ResponseEntity<EmployeeResponseDto>(HttpStatus.OK);
     }
@@ -97,7 +93,7 @@ public class AdministratorRestController {
             })
     @PutMapping(value = {"/administrator/employee/reactivate/{id}"})
     public ResponseEntity<EmployeeResponseDto> reactivateEmployee(@PathVariable long id)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         administratorService.reactivateEmployee(id);
         return new ResponseEntity<EmployeeResponseDto>(HttpStatus.OK);
     }
@@ -118,19 +114,15 @@ public class AdministratorRestController {
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get all employees")
-    @ApiResponses(
-            value = {
-                @ApiResponse(code = 200, message = "Employees returned")
-            })
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Employees returned")})
     @GetMapping(value = {"/administrator/employee"})
     public ResponseEntity<List<EmployeeResponseDto>> getAllEmployees()
             throws IllegalArgumentException {
         var employees = administratorService.getAllEmployees();
-        var EmployeeResponseDtos = 
-            employees.stream().map(employee -> EmployeeResponseDto.createDto(employee));
+        var EmployeeResponseDtos =
+                employees.stream().map(employee -> EmployeeResponseDto.createDto(employee));
         return new ResponseEntity<List<EmployeeResponseDto>>(
-            EmployeeResponseDtos.toList(), HttpStatus.OK
-        );
+                EmployeeResponseDtos.toList(), HttpStatus.OK);
     }
 
     /*
@@ -142,22 +134,20 @@ public class AdministratorRestController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Create Owner")
     @ApiResponses(
-        value = {
-            @ApiResponse(code = 201, message = "Owner successfully created"),
-            @ApiResponse(code = 404, message = "No such owner")
-        }
-    )
+            value = {
+                @ApiResponse(code = 201, message = "Owner successfully created"),
+                @ApiResponse(code = 404, message = "No such owner")
+            })
     @PostMapping(value = {"/administrator/owner"})
     public ResponseEntity<OwnerResponseDto> createOwner(@RequestBody OwnerRequestDto body) {
-        Owner owner = administratorService.createOwner(
-            body.getFirstName(),
-            body.getLastName(),
-            body.getEmail(),
-            body.getPassword()
-        );
+        Owner owner =
+                administratorService.createOwner(
+                        body.getFirstName(),
+                        body.getLastName(),
+                        body.getEmail(),
+                        body.getPassword());
         return new ResponseEntity<OwnerResponseDto>(
-            OwnerResponseDto.createDto(owner), HttpStatus.CREATED
-        );
+                OwnerResponseDto.createDto(owner), HttpStatus.CREATED);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -169,14 +159,13 @@ public class AdministratorRestController {
             })
     @PutMapping(value = {"/administrator/owner/{id}"})
     public ResponseEntity<OwnerResponseDto> editOwner(@RequestBody OwnerRequestDto body)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         administratorService.editOwner(
-            body.getId(), 
-            body.getFirstName(), 
-            body.getLastName(), 
-            body.getEmail(), 
-            body.getPassword()
-        );
+                body.getId(),
+                body.getFirstName(),
+                body.getLastName(),
+                body.getEmail(),
+                body.getPassword());
         return new ResponseEntity<OwnerResponseDto>(HttpStatus.OK);
     }
 
@@ -196,18 +185,12 @@ public class AdministratorRestController {
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get all owners")
-    @ApiResponses(
-            value = {
-                @ApiResponse(code = 200, message = "Owners returned")
-            })
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Owners returned")})
     @GetMapping(value = {"/administrator/owner"})
-    public ResponseEntity<List<OwnerResponseDto>> getAllOwners()
-            throws IllegalArgumentException {
+    public ResponseEntity<List<OwnerResponseDto>> getAllOwners() throws IllegalArgumentException {
         var owners = administratorService.getAllOwners();
-        var OwnerResponseDtos = 
-            owners.stream().map(owner -> OwnerResponseDto.createDto(owner));
+        var OwnerResponseDtos = owners.stream().map(owner -> OwnerResponseDto.createDto(owner));
         return new ResponseEntity<List<OwnerResponseDto>>(
-            OwnerResponseDtos.toList(), HttpStatus.OK
-        );
+                OwnerResponseDtos.toList(), HttpStatus.OK);
     }
 }
