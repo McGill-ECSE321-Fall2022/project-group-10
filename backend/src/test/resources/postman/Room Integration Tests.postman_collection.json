@@ -67,7 +67,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8081/rooms/storageRoom/9",
+					"raw": "localhost:8081/rooms/storageRoom/12",
 					"host": [
 						"localhost"
 					],
@@ -75,7 +75,7 @@
 					"path": [
 						"rooms",
 						"storageRoom",
-						"9"
+						"12"
 					]
 				}
 			},
@@ -126,7 +126,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8081/rooms/exhibitRoom/10",
+					"raw": "localhost:8081/rooms/exhibitRoom/13",
 					"host": [
 						"localhost"
 					],
@@ -134,7 +134,7 @@
 					"path": [
 						"rooms",
 						"exhibitRoom",
-						"10"
+						"13"
 					]
 				}
 			},
@@ -185,7 +185,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "localhost:8081/rooms/storageRoom/9/RTX 2080",
+					"raw": "localhost:8081/rooms/storageRoom/12/RTX 2080",
 					"host": [
 						"localhost"
 					],
@@ -193,7 +193,7 @@
 					"path": [
 						"rooms",
 						"storageRoom",
-						"9",
+						"12",
 						"RTX 2080"
 					]
 				}
@@ -227,7 +227,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "localhost:8081/rooms/exhibitRoom/10/RTX 2080/12",
+					"raw": "localhost:8081/rooms/exhibitRoom/13/RTX 2080/12",
 					"host": [
 						"localhost"
 					],
@@ -235,7 +235,7 @@
 					"path": [
 						"rooms",
 						"exhibitRoom",
-						"10",
+						"13",
 						"RTX 2080",
 						"12"
 					]
@@ -271,7 +271,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8081/rooms/exhibitRoom/10/count",
+					"raw": "localhost:8081/rooms/exhibitRoom/13/count",
 					"host": [
 						"localhost"
 					],
@@ -279,7 +279,7 @@
 					"path": [
 						"rooms",
 						"exhibitRoom",
-						"10",
+						"13",
 						"count"
 					]
 				}
@@ -287,7 +287,7 @@
 			"response": []
 		},
 		{
-			"name": "GetExhibitRoomArtworkCountSuccess Copy",
+			"name": "GetExhibitRoomArtworkCountFail",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -313,14 +313,14 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8081/rooms/10",
+					"raw": "localhost:8081/rooms/12",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
 						"rooms",
-						"10"
+						"12"
 					]
 				}
 			},
