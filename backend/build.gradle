@@ -28,8 +28,8 @@ task postman(type: NpxTask) {
 	args = [
 			'run',
 			'--bail', 'true',
-            "src/test/resources/postman/Integration_Tests_All.postman_collection.json"
-    ]
+			"src/test/resources/postman/Integration_Tests_All.postman_collection.json"
+	]
 }
 
 group = 'ca.mcgill.ecse321'
