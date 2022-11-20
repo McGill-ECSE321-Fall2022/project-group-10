@@ -6,15 +6,25 @@ import java.sql.Date;
 
 public class LoanRequestDto {
 
-    private Long id;
-    private float price;
-    private LoanStatus status;
-    private Date startDate;
-    private Date endDate;
+    Long id;
+    float price;
+    LoanStatus status;
+    Date startDate;
+    Date endDate;
 
-    private Long customerId;
-    private Long validatorId;
-    private Long artworkId;
+    Long customerId;
+    Long validatorId;
+    Long artworkId;
+
+    public LoanRequestDto(float price, LoanStatus status, Date startDate, Date endDate, Long customerId, Long validatorId, Long artworkId) {
+        this.price = price;
+        this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.customerId = customerId;
+        this.validatorId = validatorId;
+        this.artworkId = artworkId;
+    }
 
     public Long getId() {
         return id;
