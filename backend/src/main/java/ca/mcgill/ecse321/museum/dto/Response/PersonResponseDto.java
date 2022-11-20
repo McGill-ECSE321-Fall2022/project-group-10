@@ -10,7 +10,8 @@ public abstract class PersonResponseDto {
 
     private Long id;
 
-    public PersonResponseDto(String firstName, String lastName, String email, String password, Long id) {
+    public PersonResponseDto(
+            String firstName, String lastName, String email, String password, Long id) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

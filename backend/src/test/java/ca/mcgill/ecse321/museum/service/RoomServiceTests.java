@@ -13,7 +13,6 @@ import ca.mcgill.ecse321.museum.model.Room;
 import ca.mcgill.ecse321.museum.model.StorageRoom;
 import ca.mcgill.ecse321.museum.repository.ArtworkRepository;
 import ca.mcgill.ecse321.museum.repository.RoomRepository;
-
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,13 +22,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoProperties.Storage;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class RoomServiceTests {
-    
+
     @Mock private RoomRepository roomRepository;
 
     @Mock private ArtworkRepository artworkRepository;
@@ -41,39 +39,47 @@ public class RoomServiceTests {
 
     @BeforeEach
     public void setMockOutput() {
-        lenient().when(roomRepository.findById(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(EXHIBIT_LONG)) {
-                ExhibitRoom room = new ExhibitRoom();
-                room.setId(EXHIBIT_LONG);
-                return Optional.of(room);
-            } else if (invocation.getArgument(0).equals(STORAGE_LONG)) {
-                StorageRoom room = new StorageRoom();
-                room.setId(STORAGE_LONG);
-                return Optional.of(room);
-            } else {
-                return Optional.empty();
-            }
-        });
+        lenient()
+                .when(roomRepository.findById(anyLong()))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                            if (invocation.getArgument(0).equals(EXHIBIT_LONG)) {
+                                ExhibitRoom room = new ExhibitRoom();
+                                room.setId(EXHIBIT_LONG);
+                                return Optional.of(room);
+                            } else if (invocation.getArgument(0).equals(STORAGE_LONG)) {
+                                StorageRoom room = new StorageRoom();
+                                room.setId(STORAGE_LONG);
+                                return Optional.of(room);
+                            } else {
+                                return Optional.empty();
+                            }
+                        });
 
         lenient()
                 .when(roomRepository.findAll())
                 .thenAnswer(
-                    (InvocationOnMock invocation) -> {
-                        ExhibitRoom exhibit= new ExhibitRoom();
-                        exhibit.setId(EXHIBIT_LONG);
-                        StorageRoom storage = new StorageRoom();
-                        storage.setId(STORAGE_LONG);
-                        return List.of(exhibit, storage);
-                    }
-                );
+                        (InvocationOnMock invocation) -> {
+                            ExhibitRoom exhibit = new ExhibitRoom();
+                            exhibit.setId(EXHIBIT_LONG);
+                            StorageRoom storage = new StorageRoom();
+                            storage.setId(STORAGE_LONG);
+                            return List.of(exhibit, storage);
+                        });
 
         // when save, return instance
-        lenient().when(roomRepository.save(any(ExhibitRoom.class))).thenAnswer((InvocationOnMock invocation) -> {
-            return invocation.getArgument(0);
-        });
-        lenient().when(roomRepository.save(any(StorageRoom.class))).thenAnswer((InvocationOnMock invocation) -> {
-            return invocation.getArgument(0);
-        });
+        lenient()
+                .when(roomRepository.save(any(ExhibitRoom.class)))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                            return invocation.getArgument(0);
+                        });
+        lenient()
+                .when(roomRepository.save(any(StorageRoom.class)))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                            return invocation.getArgument(0);
+                        });
     }
 
     // test create exhibit room
@@ -120,18 +126,22 @@ public class RoomServiceTests {
     @Test
     public void testFailGetExhibitRoom() {
         Long id = 3L;
-        assertThrows(ServiceLayerException.class, () -> {
-            roomService.getExhibitRoom(id);
-        });
+        assertThrows(
+                ServiceLayerException.class,
+                () -> {
+                    roomService.getExhibitRoom(id);
+                });
     }
 
     // test fail get storage room
     @Test
     public void testFailGetStorageRoom() {
         Long id = 3L;
-        assertThrows(ServiceLayerException.class, () -> {
-            roomService.getStorageRoom(id);
-        });
+        assertThrows(
+                ServiceLayerException.class,
+                () -> {
+                    roomService.getStorageRoom(id);
+                });
     }
 
     // Test update exhibit room
@@ -139,17 +149,21 @@ public class RoomServiceTests {
     public void testUpdateExhibitRoomComplete() {
 
         // Mock existing exhibit room
-        lenient().when(roomRepository.findById(3L)).thenAnswer ((InvocationOnMock invocation) -> {
-            ExhibitRoom room = new ExhibitRoom();
-            room.setId(3L);
-            room.setName("Exhibit Room 1");
-            room.setCapacity(10);
-            return Optional.of(room);
-        });
+        lenient()
+                .when(roomRepository.findById(3L))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                            ExhibitRoom room = new ExhibitRoom();
+                            room.setId(3L);
+                            room.setName("Exhibit Room 1");
+                            room.setCapacity(10);
+                            return Optional.of(room);
+                        });
 
         String newRoomName = "Exhibit Room 2";
         int newCapacity = 20;
-        ExhibitRoom updatedExhibitRoom = roomService.updateExhibitRoom(3L, newRoomName, newCapacity);
+        ExhibitRoom updatedExhibitRoom =
+                roomService.updateExhibitRoom(3L, newRoomName, newCapacity);
 
         assertNotNull(updatedExhibitRoom);
         assertEquals(newRoomName, updatedExhibitRoom.getName());
@@ -160,12 +174,15 @@ public class RoomServiceTests {
     @Test
     public void testUpdateStorageRoomComplete() {
         // Mock existing storage room
-        lenient().when(roomRepository.findById(4L)).thenAnswer ((InvocationOnMock invocation) -> {
-            StorageRoom room = new StorageRoom();
-            room.setId(4L);
-            room.setName("Storage Room 1");
-            return Optional.of(room);
-        });
+        lenient()
+                .when(roomRepository.findById(4L))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                            StorageRoom room = new StorageRoom();
+                            room.setId(4L);
+                            room.setName("Storage Room 1");
+                            return Optional.of(room);
+                        });
 
         String newRoomName = "Storage Room 2";
         StorageRoom updatedStorageRoom = roomService.updateStorageRoom(4L, newRoomName);
@@ -206,14 +223,17 @@ public class RoomServiceTests {
     public void testCountArtworksInExhibitRoom() {
 
         // Mock artwork
-        lenient().when(artworkRepository.findById(1L)).thenAnswer ((InvocationOnMock invocation) -> {
-            Artwork artwork = new Artwork();
-            artwork.setId(1L);
-            artwork.setTitle("Artwork 1");
-            return Optional.of(artwork);
-        });
+        lenient()
+                .when(artworkRepository.findById(1L))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                            Artwork artwork = new Artwork();
+                            artwork.setId(1L);
+                            artwork.setTitle("Artwork 1");
+                            return Optional.of(artwork);
+                        });
 
         long count = roomService.countArtworksInExhibitRoom(1L);
         assertEquals(0L, count);
-    } 
+    }
 }

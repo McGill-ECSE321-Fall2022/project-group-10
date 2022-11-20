@@ -1,18 +1,22 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.service;
-
-import static org.mockito.Mockito.lenient;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
+import ca.mcgill.ecse321.museum.model.Administrator;
+import ca.mcgill.ecse321.museum.model.Employee;
+import ca.mcgill.ecse321.museum.model.Owner;
+import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,12 +27,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-
-import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
-import ca.mcgill.ecse321.museum.model.Administrator;
-import ca.mcgill.ecse321.museum.model.Employee;
-import ca.mcgill.ecse321.museum.model.Owner;
-import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -44,63 +42,60 @@ public class AdministratorServiceTests {
     @BeforeEach
     public void setMockOutput() {
         lenient()
-            .when(administratorRepository.findById(anyLong()))
-            .thenAnswer(
-                (InvocationOnMock invocation) -> {
-                    if (invocation.getArgument(0).equals(EMPLOYEE_KEY)) {
-                        Employee employee = new Employee();
-                        employee.setId(EMPLOYEE_KEY);
-                        employee.setEmail("first@email.com");
-                        return Optional.of(employee);
-                    } else if (invocation.getArgument(0).equals(OWNER_KEY)) {
-                        Owner owner = new Owner();
-                        owner.setId(OWNER_KEY);
-                        owner.setEmail("second@email.com");
-                        return Optional.of(owner);
-                    } else {
-                        return Optional.empty();
-                    }
-                }
-            );
+                .when(administratorRepository.findById(anyLong()))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                            if (invocation.getArgument(0).equals(EMPLOYEE_KEY)) {
+                                Employee employee = new Employee();
+                                employee.setId(EMPLOYEE_KEY);
+                                employee.setEmail("first@email.com");
+                                return Optional.of(employee);
+                            } else if (invocation.getArgument(0).equals(OWNER_KEY)) {
+                                Owner owner = new Owner();
+                                owner.setId(OWNER_KEY);
+                                owner.setEmail("second@email.com");
+                                return Optional.of(owner);
+                            } else {
+                                return Optional.empty();
+                            }
+                        });
 
-            lenient()
+        lenient()
                 .when(administratorRepository.findByEmail(anyString()))
                 .thenAnswer(
-                    (InvocationOnMock invocation) -> {
-                        List<Administrator> administrators = new ArrayList<Administrator>();
-                        if (invocation.getArgument(0).equals("first@email.com")) {
-                            Employee employee = new Employee();
-                            employee.setId(EMPLOYEE_KEY);
-                            employee.setEmail("first@email.com");
-                            administrators.add(employee);
-                        } else if (invocation.getArgument(0).equals("second@email.com")) {
-                            Owner owner = new Owner();
-                            owner.setId(OWNER_KEY);
-                            owner.setEmail("second@email.com");
-                            administrators.add(owner);
-                        }
-                        return administrators;
-                    }
-                );
-        
-            lenient()
+                        (InvocationOnMock invocation) -> {
+                            List<Administrator> administrators = new ArrayList<Administrator>();
+                            if (invocation.getArgument(0).equals("first@email.com")) {
+                                Employee employee = new Employee();
+                                employee.setId(EMPLOYEE_KEY);
+                                employee.setEmail("first@email.com");
+                                administrators.add(employee);
+                            } else if (invocation.getArgument(0).equals("second@email.com")) {
+                                Owner owner = new Owner();
+                                owner.setId(OWNER_KEY);
+                                owner.setEmail("second@email.com");
+                                administrators.add(owner);
+                            }
+                            return administrators;
+                        });
+
+        lenient()
                 .when(administratorRepository.findAll())
                 .thenAnswer(
-                    (InvocationOnMock invocation) -> {
-                        Employee employee= new Employee();
-                        employee.setId(EMPLOYEE_KEY);
-                        Owner owner = new Owner();
-                        owner.setId(OWNER_KEY);
-                        return List.of(employee, owner);
-                    }
-                );
+                        (InvocationOnMock invocation) -> {
+                            Employee employee = new Employee();
+                            employee.setId(EMPLOYEE_KEY);
+                            Owner owner = new Owner();
+                            owner.setId(OWNER_KEY);
+                            return List.of(employee, owner);
+                        });
 
-            Answer<?> returnParameterAsAnswer =
-                    (InvocationOnMock invocation) -> {
-                        return invocation.getArgument(0);
-                    };
-            
-            lenient()
+        Answer<?> returnParameterAsAnswer =
+                (InvocationOnMock invocation) -> {
+                    return invocation.getArgument(0);
+                };
+
+        lenient()
                 .when(administratorRepository.save(any(Administrator.class)))
                 .thenAnswer(returnParameterAsAnswer);
     }
@@ -114,7 +109,8 @@ public class AdministratorServiceTests {
         String password = "password123";
         float salary = 99999;
         boolean isActive = true;
-        Employee employee = administratorService.createEmployee(firstName, lastName, email, password, salary);
+        Employee employee =
+                administratorService.createEmployee(firstName, lastName, email, password, salary);
         assertNotNull(employee);
         assertEquals(firstName, employee.getFirstName());
         assertEquals(lastName, employee.getLastName());
@@ -124,14 +120,14 @@ public class AdministratorServiceTests {
         assertEquals(isActive, employee.isActive());
     }
 
-    /** Test EditEmployee with the email of another administrator*/
+    /** Test EditEmployee with the email of another administrator */
     @Test
     public void testEditEmployeeFailDupEmail() {
         try {
             Long id = EMPLOYEE_KEY;
             String firstName = "John";
             String lastName = "Doe";
-            String email = "second@email.com";  // Email of owner (OWNER_KEY)
+            String email = "second@email.com"; // Email of owner (OWNER_KEY)
             String password = "password123";
             float salary = 99999;
             administratorService.editEmployee(id, firstName, lastName, email, password, salary);
@@ -141,11 +137,11 @@ public class AdministratorServiceTests {
         }
     }
 
-    /** Test EditEmployee with non-existant id*/
+    /** Test EditEmployee with non-existant id */
     @Test
     public void testEditEmployeeFailNonExistant() {
         try {
-            Long id = NEW_KEY;      // New key (does not exist)
+            Long id = NEW_KEY; // New key (does not exist)
             String firstName = "John";
             String lastName = "Doe";
             String email = "first@email.com";
@@ -158,7 +154,7 @@ public class AdministratorServiceTests {
         }
     }
 
-    /** Test GetEmployee with valid id*/
+    /** Test GetEmployee with valid id */
     @Test
     public void testGetEmployeeValid() {
         Employee employee = administratorService.getEmployee(EMPLOYEE_KEY);
@@ -166,13 +162,13 @@ public class AdministratorServiceTests {
         assertEquals(EMPLOYEE_KEY, employee.getId());
     }
 
-    /** Test GetEmployee with invalid id*/
+    /** Test GetEmployee with invalid id */
     @Test
     public void testGetEmployeeInvalid() {
-        try{
+        try {
             administratorService.getEmployee(NEW_KEY);
             fail();
-        } catch (ServiceLayerException e){
+        } catch (ServiceLayerException e) {
             assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
         }
     }
@@ -199,7 +195,7 @@ public class AdministratorServiceTests {
     public void testDeactivateEmployeeInvalid() {
         try {
             administratorService.deactivateEmployee(NEW_KEY);
-        } catch (ServiceLayerException e){
+        } catch (ServiceLayerException e) {
             assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
         }
     }
@@ -216,14 +212,12 @@ public class AdministratorServiceTests {
     public void testActivateEmployeeInvalid() {
         try {
             administratorService.reactivateEmployee(NEW_KEY);
-        } catch (ServiceLayerException e){
+        } catch (ServiceLayerException e) {
             assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
         }
     }
 
-    /**
-     * Start of the owner tests
-     */
+    /** Start of the owner tests */
 
     /** Test CreateOwner with complete information */
     @Test
@@ -240,14 +234,14 @@ public class AdministratorServiceTests {
         assertEquals(password, owner.getPassword());
     }
 
-    /** Test EditOwner with the email of another administrator*/
+    /** Test EditOwner with the email of another administrator */
     @Test
     public void testEditOwnerFailDupEmail() {
         try {
             Long id = OWNER_KEY;
             String firstName = "John";
             String lastName = "Doe";
-            String email = "first@email.com";  // Email of employee (EMPLOYEE_KEY)
+            String email = "first@email.com"; // Email of employee (EMPLOYEE_KEY)
             String password = "password123";
             administratorService.editOwner(id, firstName, lastName, email, password);
             fail();
@@ -256,11 +250,11 @@ public class AdministratorServiceTests {
         }
     }
 
-    /** Test EditOwnerwith non-existant id*/
+    /** Test EditOwnerwith non-existant id */
     @Test
     public void testEditOwnerFailNonExistant() {
         try {
-            Long id = NEW_KEY;      // New key (does not exist)
+            Long id = NEW_KEY; // New key (does not exist)
             String firstName = "John";
             String lastName = "Doe";
             String email = "first@email.com";
@@ -272,7 +266,7 @@ public class AdministratorServiceTests {
         }
     }
 
-    /** Test GetOwner with valid id*/
+    /** Test GetOwner with valid id */
     @Test
     public void testGetOwnerValid() {
         Owner owner = administratorService.getOwner(OWNER_KEY);
@@ -280,13 +274,13 @@ public class AdministratorServiceTests {
         assertEquals(OWNER_KEY, owner.getId());
     }
 
-    /** Test GetOwner with invalid id*/
+    /** Test GetOwner with invalid id */
     @Test
     public void testGetOwnerInvalid() {
-        try{
+        try {
             administratorService.getOwner(NEW_KEY);
             fail();
-        } catch (ServiceLayerException e){
+        } catch (ServiceLayerException e) {
             assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
         }
     }
@@ -300,5 +294,4 @@ public class AdministratorServiceTests {
         assertEquals(OWNER_KEY, owners.get(0).getId());
         assertEquals(1, owners.size());
     }
-       
 }

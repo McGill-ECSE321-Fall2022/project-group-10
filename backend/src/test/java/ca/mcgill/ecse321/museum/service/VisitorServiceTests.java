@@ -1,18 +1,20 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.service;
-
-import static org.mockito.Mockito.lenient;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
+import ca.mcgill.ecse321.museum.model.Visitor;
+import ca.mcgill.ecse321.museum.repository.VisitorRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,10 +25,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-
-import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
-import ca.mcgill.ecse321.museum.model.Visitor;
-import ca.mcgill.ecse321.museum.repository.VisitorRepository;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -42,61 +40,58 @@ public class VisitorServiceTests {
     @BeforeEach
     public void setMockOutput() {
         lenient()
-            .when(visitorRepository.findById(anyLong()))
-            .thenAnswer(
-                (InvocationOnMock invocation) -> {
-                    if (invocation.getArgument(0).equals(VISITOR_KEY)) {
-                        Visitor visitor = new Visitor();
-                        visitor.setId(VISITOR_KEY);
-                        visitor.setEmail("first@email.com");
-                        return Optional.of(visitor);
-                    } else if (invocation.getArgument(0).equals(VISITOR2_KEY)) {
-                        Visitor visitor = new Visitor();
-                        visitor.setId(VISITOR2_KEY);
-                        visitor.setEmail("second@email.com");
-                        return Optional.of(visitor);
-                    } else {
-                        return Optional.empty();
-                    }
-                }
-            );
+                .when(visitorRepository.findById(anyLong()))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                            if (invocation.getArgument(0).equals(VISITOR_KEY)) {
+                                Visitor visitor = new Visitor();
+                                visitor.setId(VISITOR_KEY);
+                                visitor.setEmail("first@email.com");
+                                return Optional.of(visitor);
+                            } else if (invocation.getArgument(0).equals(VISITOR2_KEY)) {
+                                Visitor visitor = new Visitor();
+                                visitor.setId(VISITOR2_KEY);
+                                visitor.setEmail("second@email.com");
+                                return Optional.of(visitor);
+                            } else {
+                                return Optional.empty();
+                            }
+                        });
 
-            lenient()
+        lenient()
                 .when(visitorRepository.findByEmail(anyString()))
                 .thenAnswer(
-                    (InvocationOnMock invocation) -> {
-                        List<Visitor> visitors = new ArrayList<Visitor>();
-                        if (invocation.getArgument(0).equals("first@email.com")) {
-                            Visitor visitor = new Visitor();
-                            visitor.setId(VISITOR_KEY);
-                            visitor.setEmail("first@email.com");
-                            visitors.add(visitor);
-                        } else if (invocation.getArgument(0).equals("second@email.com")) {
-                            Visitor visitor = new Visitor();
-                            visitor.setId(VISITOR2_KEY);
-                            visitor.setEmail("second@email.com");
-                            visitors.add(visitor);
-                        }
-                        return visitors;
-                    }
-                );
-        
-            lenient()
+                        (InvocationOnMock invocation) -> {
+                            List<Visitor> visitors = new ArrayList<Visitor>();
+                            if (invocation.getArgument(0).equals("first@email.com")) {
+                                Visitor visitor = new Visitor();
+                                visitor.setId(VISITOR_KEY);
+                                visitor.setEmail("first@email.com");
+                                visitors.add(visitor);
+                            } else if (invocation.getArgument(0).equals("second@email.com")) {
+                                Visitor visitor = new Visitor();
+                                visitor.setId(VISITOR2_KEY);
+                                visitor.setEmail("second@email.com");
+                                visitors.add(visitor);
+                            }
+                            return visitors;
+                        });
+
+        lenient()
                 .when(visitorRepository.findAll())
                 .thenAnswer(
-                    (InvocationOnMock invocation) -> {
-                        Visitor visitor = new Visitor();
-                        visitor.setId(VISITOR_KEY);
-                        return List.of(visitor);
-                    }
-                );
+                        (InvocationOnMock invocation) -> {
+                            Visitor visitor = new Visitor();
+                            visitor.setId(VISITOR_KEY);
+                            return List.of(visitor);
+                        });
 
-            Answer<?> returnParameterAsAnswer =
-                    (InvocationOnMock invocation) -> {
-                        return invocation.getArgument(0);
-                    };
-            
-            lenient()
+        Answer<?> returnParameterAsAnswer =
+                (InvocationOnMock invocation) -> {
+                    return invocation.getArgument(0);
+                };
+
+        lenient()
                 .when(visitorRepository.save(any(Visitor.class)))
                 .thenAnswer(returnParameterAsAnswer);
     }
@@ -118,14 +113,14 @@ public class VisitorServiceTests {
         assertEquals(isActive, visitor.isActive());
     }
 
-    /** Test EditVisitor with the email of another visitor*/
+    /** Test EditVisitor with the email of another visitor */
     @Test
     public void testEditVisitorFailDupEmail() {
         try {
             Long id = VISITOR_KEY;
             String firstName = "John";
             String lastName = "Doe";
-            String email = "second@email.com";  // Email of imaginary already existing visitor
+            String email = "second@email.com"; // Email of imaginary already existing visitor
             String password = "password123";
             visitorService.editVisitor(id, firstName, lastName, email, password);
             fail();
@@ -134,11 +129,11 @@ public class VisitorServiceTests {
         }
     }
 
-    /** Test EditVisitor with non-existant id*/
+    /** Test EditVisitor with non-existant id */
     @Test
     public void testEditVisitorFailNonExistant() {
         try {
-            Long id = NEW_KEY;      // New key (does not exist)
+            Long id = NEW_KEY; // New key (does not exist)
             String firstName = "John";
             String lastName = "Doe";
             String email = "first@email.com";
@@ -150,7 +145,7 @@ public class VisitorServiceTests {
         }
     }
 
-    /** Test GetVisitor with valid id*/
+    /** Test GetVisitor with valid id */
     @Test
     public void testGetVisitorValid() {
         Visitor visitor = visitorService.getVisitor(VISITOR_KEY);
@@ -158,13 +153,13 @@ public class VisitorServiceTests {
         assertEquals(VISITOR_KEY, visitor.getId());
     }
 
-    /** Test GetVisitor with invalid id*/
+    /** Test GetVisitor with invalid id */
     @Test
     public void testGetVisitorInvalid() {
-        try{
+        try {
             visitorService.getVisitor(NEW_KEY);
             fail();
-        } catch (ServiceLayerException e){
+        } catch (ServiceLayerException e) {
             assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
         }
     }
@@ -191,7 +186,7 @@ public class VisitorServiceTests {
     public void testDeactivateVisitorInvalid() {
         try {
             visitorService.deactivateVisitor(NEW_KEY);
-        } catch (ServiceLayerException e){
+        } catch (ServiceLayerException e) {
             assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
         }
     }
@@ -208,7 +203,7 @@ public class VisitorServiceTests {
     public void testActivateVisitorInvalid() {
         try {
             visitorService.reactivateVisitor(NEW_KEY);
-        } catch (ServiceLayerException e){
+        } catch (ServiceLayerException e) {
             assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
         }
     }

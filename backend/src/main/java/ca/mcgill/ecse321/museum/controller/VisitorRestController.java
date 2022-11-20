@@ -1,33 +1,25 @@
-
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.controller;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.museum.dto.Request.VisitorRequestDto;
 import ca.mcgill.ecse321.museum.dto.Response.VisitorResponseDto;
-
-import ca.mcgill.ecse321.museum.service.VisitorService;
 import ca.mcgill.ecse321.museum.model.Visitor;
-
+import ca.mcgill.ecse321.museum.service.VisitorService;
+import io.swagger.annotations.*;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import io.swagger.annotations.*;
-
-import java.util.List;
-
-
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
 @RestController
 @Api(tags = "Visitor")
 public class VisitorRestController {
-    
-    @Autowired 
-    private VisitorService visitorService;
+
+    @Autowired private VisitorService visitorService;
 
     /*
      * Post - Create
@@ -37,22 +29,20 @@ public class VisitorRestController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Create Visitor")
     @ApiResponses(
-        value = {
-            @ApiResponse(code = 201, message = "Visitor successfully created"),
-            @ApiResponse(code = 404, message = "No such visitor")
-        }
-    )
+            value = {
+                @ApiResponse(code = 201, message = "Visitor successfully created"),
+                @ApiResponse(code = 404, message = "No such visitor")
+            })
     @PostMapping(value = {"/visitor"})
     public ResponseEntity<VisitorResponseDto> createVisitor(@RequestBody VisitorRequestDto body) {
-        Visitor visitor = visitorService.createVisitor(
-            body.getFirstName(),
-            body.getLastName(),
-            body.getEmail(),
-            body.getPassword()
-        );
+        Visitor visitor =
+                visitorService.createVisitor(
+                        body.getFirstName(),
+                        body.getLastName(),
+                        body.getEmail(),
+                        body.getPassword());
         return new ResponseEntity<VisitorResponseDto>(
-            VisitorResponseDto.createDto(visitor), HttpStatus.CREATED
-        );
+                VisitorResponseDto.createDto(visitor), HttpStatus.CREATED);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -64,14 +54,13 @@ public class VisitorRestController {
             })
     @PutMapping(value = {"/visitor/edit/{id}"})
     public ResponseEntity<VisitorResponseDto> editVisitor(@RequestBody VisitorRequestDto body)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         visitorService.editVisitor(
-            body.getId(), 
-            body.getFirstName(), 
-            body.getLastName(), 
-            body.getEmail(), 
-            body.getPassword() 
-        );
+                body.getId(),
+                body.getFirstName(),
+                body.getLastName(),
+                body.getEmail(),
+                body.getPassword());
         return new ResponseEntity<VisitorResponseDto>(HttpStatus.OK);
     }
 
@@ -91,19 +80,15 @@ public class VisitorRestController {
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get all visitors")
-    @ApiResponses(
-            value = {
-                @ApiResponse(code = 200, message = "Visitors returned")
-            })
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Visitors returned")})
     @GetMapping(value = {"/visitor"})
     public ResponseEntity<List<VisitorResponseDto>> getAllVisitors()
             throws IllegalArgumentException {
         var visitors = visitorService.getAllVisitors();
-        var VisitorResponseDtos = 
-            visitors.stream().map(visitor -> VisitorResponseDto.createDto(visitor));
+        var VisitorResponseDtos =
+                visitors.stream().map(visitor -> VisitorResponseDto.createDto(visitor));
         return new ResponseEntity<List<VisitorResponseDto>>(
-            VisitorResponseDtos.toList(), HttpStatus.OK
-        );
+                VisitorResponseDtos.toList(), HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -115,7 +100,7 @@ public class VisitorRestController {
             })
     @PutMapping(value = {"/visitor/deactivate/{id}"})
     public ResponseEntity<VisitorResponseDto> deactivateVisitor(@PathVariable long id)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         visitorService.deactivateVisitor(id);
         return new ResponseEntity<VisitorResponseDto>(HttpStatus.OK);
     }
@@ -129,7 +114,7 @@ public class VisitorRestController {
             })
     @PutMapping(value = {"/visitor/reactivate/{id}"})
     public ResponseEntity<VisitorResponseDto> reactivateVisitor(@PathVariable long id)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         visitorService.reactivateVisitor(id);
         return new ResponseEntity<VisitorResponseDto>(HttpStatus.OK);
     }

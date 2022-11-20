@@ -8,7 +8,12 @@ public class VisitorResponseDto extends PersonResponseDto {
     private boolean isActive;
 
     public VisitorResponseDto(
-            boolean isActive, String firstName, String lastName, String email, String password, Long id) {
+            boolean isActive,
+            String firstName,
+            String lastName,
+            String email,
+            String password,
+            Long id) {
         super(firstName, lastName, email, password, id);
         this.isActive = isActive;
     }
