@@ -57,7 +57,7 @@ public class AdministratorRestController {
                 @ApiResponse(code = 200, message = "Employee edited"),
                 @ApiResponse(code = 404, message = "No such employee")
             })
-    @PutMapping(value = {"/administrator/employee/{id}"})
+    @PutMapping(value = {"/administrator/employee"})
     public ResponseEntity<EmployeeResponseDto> editEmployee(@RequestBody EmployeeRequestDto body)
             throws IllegalArgumentException {
         administratorService.editEmployee(
@@ -157,7 +157,7 @@ public class AdministratorRestController {
                 @ApiResponse(code = 200, message = "Owner edited"),
                 @ApiResponse(code = 404, message = "No such owner")
             })
-    @PutMapping(value = {"/administrator/owner/{id}"})
+    @PutMapping(value = {"/administrator/owner"})
     public ResponseEntity<OwnerResponseDto> editOwner(@RequestBody OwnerRequestDto body)
             throws IllegalArgumentException {
         administratorService.editOwner(
