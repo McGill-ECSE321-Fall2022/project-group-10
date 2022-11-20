@@ -1,39 +1,29 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.model;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 // line 66 "../../../../..//MuseumSystem.ump"
 public class Donation {
 
-    //------------------------
+    // ------------------------
     // MEMBER VARIABLES
-    //------------------------
+    // ------------------------
 
-    //Donation Attributes
-    @Id
-    @GeneratedValue
-    private long id;
+    // Donation Attributes
+    @Id @GeneratedValue private long id;
     private boolean validated;
+
     private String description;
 
-    //Donation Associations
-    @ManyToOne
-    private MuseumSystem museum;
-    @ManyToOne
-    private Visitor donor;
-    @ManyToOne
-    private Administrator validator;
-    @ManyToMany
-    private List<Artwork> artworks;
+    // Donation Associations
+    @ManyToOne private Visitor donor;
+    @ManyToOne private Administrator validator;
+    @ManyToOne private Artwork artwork;
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public void setId(long id) {
@@ -56,14 +46,6 @@ public class Donation {
         this.description = description;
     }
 
-    public MuseumSystem getMuseum() {
-        return museum;
-    }
-
-    public void setMuseum(MuseumSystem museum) {
-        this.museum = museum;
-    }
-
     public Visitor getDonor() {
         return donor;
     }
@@ -80,11 +62,11 @@ public class Donation {
         this.validator = validator;
     }
 
-    public List<Artwork> getArtworks() {
-        return artworks;
+    public Artwork getArtworks() {
+        return artwork;
     }
 
-    public void setArtworks(List<Artwork> artworks) {
-        this.artworks = artworks;
+    public void setArtworks(Artwork artwork) {
+        this.artwork = artwork;
     }
 }

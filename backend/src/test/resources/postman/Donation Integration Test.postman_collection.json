@@ -1,0 +1,266 @@
+{
+	"info": {
+		"_postman_id": "135b4c87-4679-4655-bd67-f380479551df",
+		"name": "Donation Integration Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateVisitor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"samsprung@gmail.com\",\r\n    \"firstName\": \"Samantha\",\r\n    \"lastName\": \"Sprung\",\r\n    \"password\": \"sammy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/visitor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateEmployee",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"a.b@email.com\",\r\n  \"firstName\": \"a\",\r\n  \"lastName\": \"b\",\r\n  \"password\": \"mypassword\",\r\n  \"salary\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateDonation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"string\",\r\n  \"donorID\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/donations",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDonationSuccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/donations/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDonationFail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/donations/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateDonationSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"price\": 30,\r\n    \"title\": \"Cool art\",\r\n    \"author\": \"Keith Crochtiere\",\r\n    \"imageLink\": \"Www.321bestclassever.com\",\r\n    \"creationDate\": \"1981-05-09\",\r\n    \"isAvailable\": true\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/donations/validate/3/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations",
+						"validate",
+						"3",
+						"2"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateDonationFailure",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"price\": 30,\r\n    \"title\": \"Cool art\",\r\n    \"author\": \"Keith Crochtiere\",\r\n    \"imageLink\": \"Www.321bestclassever.com\",\r\n    \"creationDate\": \"1981-05-09\",\r\n    \"isAvailable\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/donations/validate/100/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations",
+						"validate",
+						"100",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteDonationSuccess",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/donations/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteDonationFailure",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/donations/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations",
+						"100"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

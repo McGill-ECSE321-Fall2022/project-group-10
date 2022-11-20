@@ -1,0 +1,268 @@
+{
+	"info": {
+		"_postman_id": "20499779-9c20-44eb-bc13-bbfe353cc699",
+		"name": "Visitor Integration Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateVisitor1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"brandon.mcgee@gmail.com\",\r\n    \"firstName\": \"Brandon\",\r\n    \"lastName\": \"McGee\",\r\n    \"password\": \"ilikeducks\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/visitor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateVisitor2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"bob.swagger@outlook.com\",\r\n    \"firstName\": \"Bob\",\r\n    \"lastName\": \"Swagger\",\r\n    \"password\": \"securep@ssword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/visitor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetVisitorSuccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetVisitorFail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor/100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditVisitorSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"email\": \"brandon.mcgee@hotmail.com\",\r\n    \"firstName\": \"Brandon\",\r\n    \"lastName\": \"McGee\",\r\n    \"password\": \"ilikeducks\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/visitor/edit/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"edit",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditVisitorFail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"email\": \"bob.swagger@outlook.com\",\r\n    \"firstName\": \"Brandon\",\r\n    \"lastName\": \"McGee\",\r\n    \"password\": \"ilikeducks\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/visitor/edit/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"edit",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllVisitors",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeactivateVisitorSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor/deactivate/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"deactivate",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeactivateVisitorFail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor/deactivate/100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"deactivate",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ReactivateVisitorSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor/reactivate/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"reactivate",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ReactivateVisitorFail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor/reactivate/100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"reactivate",
+						"100"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,2295 @@
+{
+	"info": {
+		"_postman_id": "a4198fe3-4b06-4ddd-a814-d281e2df4877",
+		"name": "Integration_Tests_All",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateEmployee1-Complete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"a.b@email.com\",\r\n  \"firstName\": \"a\",\r\n  \"lastName\": \"b\",\r\n  \"password\": \"mypassword\",\r\n  \"salary\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateEmployee1-DuplicateEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"a.b@email.com\",\r\n  \"firstName\": \"c\",\r\n  \"lastName\": \"d\",\r\n  \"password\": \"mypassword\",\r\n  \"salary\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateOwner2-Complete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"c.d@email.com\",\r\n  \"firstName\": \"c\",\r\n  \"lastName\": \"d\",\r\n  \"password\": \"mypassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/owner",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"owner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateOwner2-DuplicateEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"c.d@email.com\",\r\n  \"firstName\": \"e\",\r\n  \"lastName\": \"f\",\r\n  \"password\": \"mypassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/owner",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"owner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateArtwork1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"author\": \"RTX 3090\",\n  \"creationDate\": \"2022-11-18\",\n  \"description\": \"This is AI generated art\",\n  \"imageLink\": \"yeet.com\",\n  \"price\": 100,\n  \"title\": \"A dog with a horse's mouth\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/artworks",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateArtwork2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"author\": \"Jeff\",\n  \"creationDate\": \"1980-05-09\",\n  \"description\": \"This is AI generated art\",\n  \"imageLink\": \"yeetington.tv\",\n  \"price\": 1000,\n  \"title\": \"My name is\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/artworks",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateVisitor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"samsprung@gmail.com\",\r\n    \"firstName\": \"Samantha\",\r\n    \"lastName\": \"Sprung\",\r\n    \"password\": \"sammy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/visitor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateVisitor2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"bob.swagger@outlook.com\",\r\n    \"firstName\": \"Bob\",\r\n    \"lastName\": \"Swagger\",\r\n    \"password\": \"securep@ssword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/visitor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateDonation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"string\",\r\n  \"donorID\": 6\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/donations",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateLoan",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"artworkId\": 3,\r\n  \"customerId\": 6,\r\n  \"endDate\": \"2022-11-20\",\r\n  \"price\": 100,\r\n  \"startDate\": \"2022-11-20\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/loans",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"loans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateStorageRoom",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"RTX 3090\",\r\n  \"capacity\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/rooms/storageRoom",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"storageRoom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateExhibitRoom",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"RTX 3090\",\r\n  \"capacity\": 6\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateScheduleBlock",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"startDate\": \"2022-11-18\",\r\n  \"endDate\": \"2022-11-25\",\r\n  \"visitFees\": 5,\r\n  \"visitCapacity\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditEmployee1-Complete",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"a\",\r\n    \"lastName\": \"b\",\r\n    \"email\": \"newemail@email.com\",\r\n    \"password\": \"mypassword\",\r\n    \"id\": 1,\r\n    \"salary\": 10.0,\r\n    \"active\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditEmployee1-DuplicateEmail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"a\",\r\n    \"lastName\": \"b\",\r\n    \"email\": \"c.d@email.com\",\r\n    \"password\": \"newpassword\",\r\n    \"id\": 1,\r\n    \"salary\": 10.0,\r\n    \"active\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditOwner2-Complete",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"newemail2@email.com\",\r\n  \"firstName\": \"c\",\r\n  \"lastName\": \"d\",\r\n  \"id\": 2,\r\n  \"password\": \"mypassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/owner",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"owner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditOwner2-DuplicateEmail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"newemail@email.com\",\r\n  \"firstName\": \"c\",\r\n  \"lastName\": \"d\",\r\n  \"password\": \"newpassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/administrator/owner/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"owner",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeactivateEmployee1-Complete",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/deactivate/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"deactivate",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeactivateEmployee1000-NonExistant",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/deactivate/1000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"deactivate",
+						"1000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmployee1-Complete",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmployee1000-NonExistant",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/1000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"1000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOwner2-Complete",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/owner/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"owner",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOwner2000-NonExistant",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/owner/2000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"owner",
+						"2000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ReactivateEmployee1-Complete",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/reactivate/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"reactivate",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ReactivateEmployee1000-NonExistant",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee/reactivate/1000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee",
+						"reactivate",
+						"1000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmployee-All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOwner-All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/administrator/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"administrator",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetArtworkSuccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetArtworkFail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllArtworks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MoveArtworkSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/move/3?roomId=13",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"move",
+						"3"
+					],
+					"query": [
+						{
+							"key": "roomId",
+							"value": "13"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MoveArtwork Artwork does not exist",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/move/54?roomId=13",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"move",
+						"54"
+					],
+					"query": [
+						{
+							"key": "roomId",
+							"value": "13"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MoveArtwork Room does not exist",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/move/3?roomId=100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"move",
+						"3"
+					],
+					"query": [
+						{
+							"key": "roomId",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteArtworkSuccess",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deleted Artwork should not exist",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/artworks/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"artworks",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDonationSuccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/donations/7",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDonationFail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/donations/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateDonationSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"price\": 30,\r\n    \"title\": \"Cool art\",\r\n    \"author\": \"Keith Crochtiere\",\r\n    \"imageLink\": \"Www.321bestclassever.com\",\r\n    \"creationDate\": \"1981-05-09\",\r\n    \"isAvailable\": true\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/donations/validate/7/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations",
+						"validate",
+						"7",
+						"1"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateDonationFailure",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"price\": 30,\r\n    \"title\": \"Cool art\",\r\n    \"author\": \"Keith Crochtiere\",\r\n    \"imageLink\": \"Www.321bestclassever.com\",\r\n    \"creationDate\": \"1981-05-09\",\r\n    \"isAvailable\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/donations/validate/100/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations",
+						"validate",
+						"100",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteDonationSuccess",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/donations/7",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteDonationFailure",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/donations/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"donations",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetLoanSuccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/loans/8",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"loans",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetLoanFail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/loans/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"loans",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateLoanSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/loans/validate/8/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"loans",
+						"validate",
+						"8",
+						"1"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateLoanFailure",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"price\": 30,\r\n    \"title\": \"Cool art\",\r\n    \"author\": \"Keith Crochtiere\",\r\n    \"imageLink\": \"Www.321bestclassever.com\",\r\n    \"creationDate\": \"1981-05-09\",\r\n    \"isAvailable\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/loans/validate/100/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"loans",
+						"validate",
+						"100",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteLoanSuccess",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/loans/8",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"loans",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteLoanFailure",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/loans/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"loans",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetVisitorSuccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetVisitorFail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor/100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditVisitorSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 5,\r\n    \"email\": \"brandon.mcgee@hotmail.com\",\r\n    \"firstName\": \"Brandon\",\r\n    \"lastName\": \"McGee\",\r\n    \"password\": \"ilikeducks\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/visitor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditVisitorFail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 5000,\r\n    \"email\": \"bob.swagger@outlook.com\",\r\n    \"firstName\": \"Brandon\",\r\n    \"lastName\": \"McGee\",\r\n    \"password\": \"ilikeducks\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/visitor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllVisitors",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeactivateVisitorSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor/deactivate/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"deactivate",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeactivateVisitorFail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor/deactivate/100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"deactivate",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ReactivateVisitorSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor/reactivate/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"reactivate",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ReactivateVisitorFail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/visitor/reactivate/100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"visitor",
+						"reactivate",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetScheduleBlockSuccess",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetScheduleBlockFail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetScheduleBlockStaffSuccess",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/9/staff",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"9",
+						"staff"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetScheduleBlockStaffFail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/100/staff",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"100",
+						"staff"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetScheduleBlockVisitorsSuccess",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/9/visitors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"9",
+						"visitors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetScheduleBlockVisitorsFail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/100/visitors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"100",
+						"visitors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllScheduleBlocks",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditScheduleBlockSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"endDate\": \"2022-11-20\",\r\n  \"event\": \"MUSEUM_MEETING\",\r\n  \"startDate\": \"2022-11-20\",\r\n  \"visitCapacity\": 200,\r\n  \"visitFees\": 15\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditScheduleBlockFail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"endDate\": \"2022-11-20\",\r\n  \"event\": \"MUSEUM_MEETING\",\r\n  \"startDate\": \"2022-11-20\",\r\n  \"visitCapacity\": 200,\r\n  \"visitFees\": 15\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddScheduleBlockStaffSuccess",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/9/staff/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"9",
+						"staff",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddScheduleBlockStaffFail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/100/staff/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"100",
+						"staff",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteScheduleBlockStaffSuccess",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/9/staff/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"9",
+						"staff",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteScheduleBlockStaffFail",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/100/staff/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"100",
+						"staff",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddScheduleBlockVisitorsSuccess",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/9/visitors/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"9",
+						"visitors",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddScheduleBlockVisitorsFail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/100/visitors/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"100",
+						"visitors",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteScheduleBlockVisitorsSuccess",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/9/visitors/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"9",
+						"visitors",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteScheduleBlockVisitorsFail",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/100/visitors/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"100",
+						"visitors",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteScheduleBlockSuccess",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteScheduleBlockFail",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/scheduleBlock/100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"scheduleBlock",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStorageRoomSuccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/storageRoom/12",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"storageRoom",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStorageRoomFail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/storageRoom/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"storageRoom",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllStorageRooms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/storageRoom",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"storageRoom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetExhibitRoomSuccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom/13",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom",
+						"13"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetExhibitRoomFail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllExhibitRooms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditStorageRoomSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/storageRoom/12/RTX 2080",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"storageRoom",
+						"12",
+						"RTX 2080"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditStorageRoomFail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/storageRoom/100/RTX 2080",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"storageRoom",
+						"100",
+						"RTX 2080"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditExhibitRoomSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom/13/RTX 2080/12",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom",
+						"13",
+						"RTX 2080",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditExhibitRoomFail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom/100/RTX 2080/12",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom",
+						"100",
+						"RTX 2080",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetExhibitRoomArtworkCountSuccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom/13/count",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom",
+						"13",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetExhibitRoomArtworkCountFail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom/100/count",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom",
+						"100",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteRoomSuccess",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/12",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteRoomFail",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"100"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

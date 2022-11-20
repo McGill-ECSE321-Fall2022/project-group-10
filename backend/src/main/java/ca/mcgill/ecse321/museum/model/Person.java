@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.model;
 
 import javax.persistence.*;
@@ -8,28 +9,24 @@ import javax.persistence.*;
 // line 45 "../../../../..//MuseumSystem.ump"
 public abstract class Person {
 
-    //------------------------
+    // ------------------------
     // MEMBER VARIABLES
-    //------------------------
+    // ------------------------
 
-    //Person Attributes
+    // Person Attributes
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
-    //Person Associations
-    @ManyToOne
-    private MuseumSystem museum;
-    @Id
-    @GeneratedValue
-    private Long id;
+    // Person Associations
+    @Id @GeneratedValue private long id;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -63,13 +60,5 @@ public abstract class Person {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public MuseumSystem getMuseum() {
-        return museum;
-    }
-
-    public void setMuseum(MuseumSystem museum) {
-        this.museum = museum;
     }
 }

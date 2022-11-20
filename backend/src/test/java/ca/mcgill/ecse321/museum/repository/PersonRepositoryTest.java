@@ -1,22 +1,20 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.util.List;
+import ca.mcgill.ecse321.museum.model.Employee;
+import ca.mcgill.ecse321.museum.model.Loan;
+import ca.mcgill.ecse321.museum.model.Owner;
+import ca.mcgill.ecse321.museum.model.Visitor;
 import java.util.ArrayList;
-
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import ca.mcgill.ecse321.museum.model.Visitor;
-import ca.mcgill.ecse321.museum.model.Employee;
-import ca.mcgill.ecse321.museum.model.Owner;
-
-import ca.mcgill.ecse321.museum.model.Loan;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 public class PersonRepositoryTest {
@@ -38,7 +36,7 @@ public class PersonRepositoryTest {
 
         // Create attribute
         boolean isActive = true;
-        
+
         // Create reference (one-to-many)
         List<Loan> loans = new ArrayList<Loan>();
         Loan myLoan = new Loan();
@@ -48,8 +46,7 @@ public class PersonRepositoryTest {
 
         // Set attribute and reference
         visitor.setActive(isActive);
-        visitor.setLoans(loans);
-        
+
         // Save object
         visitor = personRepository.save(visitor);
         long id = visitor.getId();
@@ -59,11 +56,6 @@ public class PersonRepositoryTest {
         // Assert that object has correct attributes
         assertNotNull(visitor);
         assertEquals(isActive, visitor.isActive());
-        assertNotNull(visitor.getLoans());
-        assertEquals(loans.size(), visitor.getLoans().size());
-        for (int i=0; i < loans.size(); i++){
-            assertEquals(loans.get(i).getId(), visitor.getLoans().get(i).getId());
-        }
     }
 
     @Test
@@ -75,7 +67,7 @@ public class PersonRepositoryTest {
 
         // Create attribute
         float salary = 100;
-        
+
         // Create reference (one-to-many)
         List<Loan> loans = new ArrayList<Loan>();
         Loan myLoan = new Loan();
@@ -85,8 +77,7 @@ public class PersonRepositoryTest {
 
         // Set attribute and reference
         employee.setSalary(salary);
-        employee.setAssignedLoans(loans);
-        
+
         // Save object
         employee = personRepository.save(employee);
         long id = employee.getId();
@@ -96,11 +87,6 @@ public class PersonRepositoryTest {
         // Assert that object has correct attributes
         assertNotNull(employee);
         assertEquals(salary, employee.getSalary());
-        assertNotNull(employee.getAssignedLoans());
-        assertEquals(loans.size(), employee.getAssignedLoans().size());
-        for (int i=0; i < loans.size(); i++){
-            assertEquals(loans.get(i).getId(), employee.getAssignedLoans().get(i).getId());
-        }
     }
 
     @Test
@@ -112,7 +98,7 @@ public class PersonRepositoryTest {
 
         // Create attribute
         String email = "bigboss@museum.com";
-        
+
         // Create reference (one-to-many)
         List<Loan> loans = new ArrayList<Loan>();
         Loan myLoan = new Loan();
@@ -122,8 +108,7 @@ public class PersonRepositoryTest {
 
         // Set attribute and reference
         owner.setEmail(email);
-        owner.setAssignedLoans(loans);
-        
+
         // Save object
         owner = personRepository.save(owner);
         long id = owner.getId();
@@ -133,10 +118,5 @@ public class PersonRepositoryTest {
         // Assert that object has correct attributes
         assertNotNull(owner);
         assertEquals(email, owner.getEmail());
-        assertNotNull(owner.getAssignedLoans());
-        assertEquals(loans.size(), owner.getAssignedLoans().size());
-        for (int i=0; i < loans.size(); i++){
-            assertEquals(loans.get(i).getId(), owner.getAssignedLoans().get(i).getId());
-        }
     }
 }

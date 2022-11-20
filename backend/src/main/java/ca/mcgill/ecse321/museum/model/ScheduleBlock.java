@@ -1,37 +1,34 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.model;
 
-import javax.persistence.*;
 import java.sql.Date;
 import java.util.*;
+import javax.persistence.*;
+import org.springframework.lang.NonNull;
 
 @Entity
 // line 28 "../../../../..//MuseumSystem.ump"
 public class ScheduleBlock {
 
-    //------------------------
+    // ------------------------
     // ENUMERATIONS
-    //------------------------
+    // ------------------------
 
-    //ScheduleBlock Attributes
-    @Id
-    @GeneratedValue
-    private long id;
+    // ScheduleBlock Attributes
+    @Id @GeneratedValue private long id;
 
-    //------------------------
+    // ------------------------
     // MEMBER VARIABLES
-    //------------------------
-    private Date startDate;
-    private Date endDate;
+    // ------------------------
+    @NonNull private Date startDate = new Date(0);
+    @NonNull private Date endDate = new Date(0);
     private float visitFees;
     private int visitCapacity;
+
     private ScheduleEvent event;
-    //ScheduleBlock Associations
-    @ManyToMany
-    private List<Administrator> admins;
-    @ManyToMany
-    private List<Visitor> visitors;
-    @ManyToOne
-    private Calendar calendar;
+
+    @ManyToMany private List<Administrator> admins;
+    @ManyToMany private List<Visitor> visitors;
 
     public Long getId() {
         return id;
@@ -50,7 +47,11 @@ public class ScheduleBlock {
     }
 
     public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+        if (startDate != null) {
+            this.startDate = startDate;
+        } else {
+            this.startDate = new Date(0);
+        }
     }
 
     public Date getEndDate() {
@@ -58,7 +59,11 @@ public class ScheduleBlock {
     }
 
     public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+        if (endDate != null) {
+            this.endDate = endDate;
+        } else {
+            this.endDate = new Date(0);
+        }
     }
 
     public float getVisitFees() {
@@ -101,13 +106,9 @@ public class ScheduleBlock {
         this.visitors = visitors;
     }
 
-    public Calendar getCalendar() {
-        return calendar;
+    public enum ScheduleEvent {
+        MUSEUM_OPEN,
+        MUSEUM_RESTORATION,
+        MUSEUM_MEETING
     }
-
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
-    }
-
-    public enum ScheduleEvent {MUSEUM_OPEN, MUSEUM_RESTORATION, MUSEUM_MEETING}
 }

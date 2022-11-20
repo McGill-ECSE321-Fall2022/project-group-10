@@ -1,38 +1,31 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.model;
 
-import javax.persistence.*;
 import java.sql.Date;
-import java.util.*;
+import javax.persistence.*;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 @Entity
 // line 116 "../../../../..//MuseumSystem.ump"
 public class Artwork {
 
-    //------------------------
+    // ------------------------
     // MEMBER VARIABLES
-    //------------------------
+    // ------------------------
 
-    //Artwork Attributes
-    @Id
-    @GeneratedValue
-    private long id;
-    private String title;
-    private String author;
-    private Date creationDate;
-    private String description;
+    // Artwork Attributes
+    @Id @GeneratedValue private long id;
+    @NonNull private String title = "defaultTitle";
+    @NonNull private String author = "defaultAuthor";
+    @NonNull private Date creationDate = new Date(0);
+    @NonNull private String description = "defaultDescription";
+    @Nullable // We may have artworks without links
     private String imageLink;
     private float price;
     private boolean isAvailable;
 
-    //Artwork Associations
-    @ManyToOne
-    private MuseumSystem museum;
-    @ManyToMany
-    private List<Loan> loans;
-    @ManyToMany
-    private List<Donation> donations;
-    @ManyToOne
-    private Room storage;
+    @ManyToOne private Room storage;
 
     public Long getId() {
         return id;
@@ -51,7 +44,11 @@ public class Artwork {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        if (title != null) {
+            this.title = title;
+        } else {
+            this.title = "defaultTitle";
+        }
     }
 
     public String getAuthor() {
@@ -59,7 +56,11 @@ public class Artwork {
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        if (author != null) {
+            this.author = author;
+        } else {
+            this.author = "defaultAuthor";
+        }
     }
 
     public Date getCreationDate() {
@@ -67,7 +68,11 @@ public class Artwork {
     }
 
     public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+        if (creationDate != null) {
+            this.creationDate = creationDate;
+        } else {
+            this.creationDate = new Date(0);
+        }
     }
 
     public String getDescription() {
@@ -75,7 +80,11 @@ public class Artwork {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        if (description != null) {
+            this.description = description;
+        } else {
+            this.description = "defaultDescription";
+        }
     }
 
     public String getImageLink() {
@@ -100,30 +109,6 @@ public class Artwork {
 
     public void setAvailable(boolean available) {
         isAvailable = available;
-    }
-
-    public MuseumSystem getMuseum() {
-        return museum;
-    }
-
-    public void setMuseum(MuseumSystem museum) {
-        this.museum = museum;
-    }
-
-    public List<Loan> getLoans() {
-        return loans;
-    }
-
-    public void setLoans(List<Loan> loans) {
-        this.loans = loans;
-    }
-
-    public List<Donation> getDonations() {
-        return donations;
-    }
-
-    public void setDonations(List<Donation> donations) {
-        this.donations = donations;
     }
 
     public Room getStorage() {

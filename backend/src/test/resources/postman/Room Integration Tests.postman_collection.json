@@ -1,0 +1,349 @@
+{
+	"info": {
+		"_postman_id": "e25f4f88-8df0-485f-91db-e31d4c07ec66",
+		"name": "Room Integration Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateStorageRoom",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"RTX 3090\",\r\n  \"capacity\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/rooms/storageRoom",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"storageRoom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateExhibitRoom",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"RTX 3090\",\r\n  \"capacity\": 6\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStorageRoomSuccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/storageRoom/12",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"storageRoom",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStorageRoomFail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/storageRoom/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"storageRoom",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllStorageRooms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/storageRoom",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"storageRoom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetExhibitRoomSuccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom/13",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom",
+						"13"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetExhibitRoomFail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllExhibitRooms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditStorageRoomSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/storageRoom/12/RTX 2080",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"storageRoom",
+						"12",
+						"RTX 2080"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditStorageRoomFail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/storageRoom/100/RTX 2080",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"storageRoom",
+						"100",
+						"RTX 2080"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditExhibitRoomSuccess",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom/13/RTX 2080/12",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom",
+						"13",
+						"RTX 2080",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditExhibitRoomFail",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom/100/RTX 2080/12",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom",
+						"100",
+						"RTX 2080",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetExhibitRoomArtworkCountSuccess",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom/13/count",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom",
+						"13",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetExhibitRoomArtworkCountFail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/exhibitRoom/100/count",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"exhibitRoom",
+						"100",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteRoomSuccess",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/12",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteRoomFail",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/rooms/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rooms",
+						"100"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

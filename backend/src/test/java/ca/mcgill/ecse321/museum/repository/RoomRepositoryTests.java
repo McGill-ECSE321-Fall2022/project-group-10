@@ -1,21 +1,19 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import ca.mcgill.ecse321.museum.model.Artwork;
+import ca.mcgill.ecse321.museum.model.ExhibitRoom;
+import ca.mcgill.ecse321.museum.model.StorageRoom;
 import java.sql.Date;
 import java.util.ArrayList;
-
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
-import ca.mcgill.ecse321.museum.model.Artwork;
-import ca.mcgill.ecse321.museum.model.ExhibitRoom;
-import ca.mcgill.ecse321.museum.model.StorageRoom;
-
 
 @SpringBootTest
 public class RoomRepositoryTests {
@@ -37,7 +35,7 @@ public class RoomRepositoryTests {
         // Create Artwork object
 
         List<Artwork> artworks = new ArrayList<Artwork>();
-        
+
         Artwork artwork1 = new Artwork();
         Artwork artwork2 = new Artwork();
 
@@ -63,7 +61,7 @@ public class RoomRepositoryTests {
         artwork1.setAuthor(artwork1Author);
         artwork1.setCreationDate(creationDate1);
         artwork1.setAvailable(isAvailable1);
-        
+
         // Set attributes for artwork2
         artwork2.setTitle(artwork2Title);
         artwork2.setAuthor(artwork2Author);
@@ -77,8 +75,6 @@ public class RoomRepositoryTests {
         // Set attributes for exhibitroom
         exhibitRoom.setName(name);
         exhibitRoom.setCapacity(capacity);
-
-        exhibitRoom.setArtworks(artworks);
 
         // Save object;
         artworks = artworkRepository.saveAll(artworks);
@@ -117,7 +113,7 @@ public class RoomRepositoryTests {
         String name = "Storage";
 
         List<Artwork> artworks = new ArrayList<Artwork>();
-        
+
         Artwork artwork1 = new Artwork();
         Artwork artwork2 = new Artwork();
 
@@ -138,7 +134,7 @@ public class RoomRepositoryTests {
         artwork1.setAuthor(artwork1Author);
         artwork1.setCreationDate(creationDate1);
         artwork1.setAvailable(isAvailable1);
-        
+
         // Set attributes for artwork2
         artwork2.setTitle(artwork2Title);
         artwork2.setAuthor(artwork2Author);
@@ -147,10 +143,9 @@ public class RoomRepositoryTests {
 
         // Add artwork1 and artwork2 to artworks
         artworks.add(artwork1);
-        artworks.add(artwork2);      
-        
+        artworks.add(artwork2);
+
         // Set attributes for storage room
-        storageRoom.setArtworks(artworks);
         storageRoom.setName(name);
 
         // Save object;

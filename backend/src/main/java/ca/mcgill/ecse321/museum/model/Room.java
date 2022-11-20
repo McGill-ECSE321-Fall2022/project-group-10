@@ -1,29 +1,20 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.model;
 
 import javax.persistence.*;
-import java.util.*;
+import org.springframework.lang.NonNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "RoomType")
-// line 148 "../../../../..//MuseumSystem.ump"
+@SequenceGenerator(name = "seq", initialValue = 12)
 public abstract class Room {
 
-    //------------------------
-    // MEMBER VARIABLES
-    //------------------------
-
-    //Room Attributes
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     private long id;
-    private String name;
 
-    //Room Associations
-    @ManyToOne
-    private MuseumSystem museum;
-    @ManyToMany
-    private List<Artwork> artworks;
+    @NonNull private String name = "DefaultRoomName";
 
     public long getId() {
         return id;
@@ -42,22 +33,7 @@ public abstract class Room {
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public MuseumSystem getMuseum() {
-        return museum;
-    }
-
-    public void setMuseum(MuseumSystem museum) {
-        this.museum = museum;
-    }
-
-    public List<Artwork> getArtworks() {
-        return artworks;
-    }
-
-    public void setArtworks(List<Artwork> artworks) {
-        this.artworks = artworks;
+        if (name == null) this.name = "DefaultRoomName";
+        else this.name = name;
     }
 }

@@ -1,35 +1,36 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.model;
 
-import javax.persistence.*;
 import java.sql.Date;
-import java.util.*;
+import javax.persistence.*;
+import org.springframework.lang.NonNull;
 
 @Entity
 // line 79 "../../../../..//MuseumSystem.ump"
 public class Loan {
 
-    //------------------------
+    // ------------------------
     // MEMBER VARIABLES
-    //------------------------
+    // ------------------------
 
-    //Loan Attributes
-    @Id
-    @GeneratedValue
-    private long id;
+    // Loan Attributes
+    @Id @GeneratedValue private long id;
     private float price;
-    private boolean validated;
-    private Date startDate;
-    private Date endDate;
+    private LoanStatus status;
+    @NonNull private Date startDate = new Date(0);
+    @NonNull private Date endDate = new Date(0);
 
-    //Loan Associations
-    @ManyToOne
-    private MuseumSystem museum;
-    @ManyToOne
-    private Visitor customer;
-    @ManyToOne
-    private Administrator validator;
-    @ManyToMany
-    private List<Artwork> artworks;
+    // Loan Associations
+    @ManyToOne private Visitor customer;
+    @ManyToOne private Administrator validator;
+    @ManyToOne private Artwork artwork;
+
+    public enum LoanStatus {
+        INCART,
+        PENDING,
+        VALIDATED,
+        DENIED
+    }
 
     public Long getId() {
         return id;
@@ -51,12 +52,12 @@ public class Loan {
         this.price = price;
     }
 
-    public boolean isValidated() {
-        return validated;
+    public LoanStatus getStatus() {
+        return status;
     }
 
-    public void setValidated(boolean validated) {
-        this.validated = validated;
+    public void setStatus(LoanStatus status) {
+        this.status = status;
     }
 
     public Date getStartDate() {
@@ -64,7 +65,11 @@ public class Loan {
     }
 
     public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+        if (startDate != null) {
+            this.startDate = startDate;
+        } else {
+            this.startDate = new Date(0);
+        }
     }
 
     public Date getEndDate() {
@@ -72,15 +77,11 @@ public class Loan {
     }
 
     public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public MuseumSystem getMuseum() {
-        return museum;
-    }
-
-    public void setMuseum(MuseumSystem museum) {
-        this.museum = museum;
+        if (endDate != null) {
+            this.endDate = endDate;
+        } else {
+            this.endDate = new Date(0);
+        }
     }
 
     public Visitor getCustomer() {
@@ -99,11 +100,11 @@ public class Loan {
         this.validator = validator;
     }
 
-    public List<Artwork> getArtworks() {
-        return artworks;
+    public Artwork getArtwork() {
+        return artwork;
     }
 
-    public void setArtworks(List<Artwork> artworks) {
-        this.artworks = artworks;
+    public void setArtwork(Artwork artwork) {
+        this.artwork = artwork;
     }
 }
