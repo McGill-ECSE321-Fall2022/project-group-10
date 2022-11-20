@@ -9,10 +9,7 @@ plugins {
 	// Code style
 	id 'com.diffplug.spotless' version '6.11.0'
 
-	// Run Postman
-	//id "com.github.michaelruocco.gradle-postman-runner" version "0.1.4"
-
-	// Node plugin (used to run gradle-postman-runner)
+	// Node plugin (used to run newman (postman caller))
 	id "com.github.node-gradle.node" version "3.5.0"
 }
 
