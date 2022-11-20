@@ -16,16 +16,6 @@ public class LoanRequestDto {
     Long validatorId;
     Long artworkId;
 
-    public LoanRequestDto(float price, LoanStatus status, Date startDate, Date endDate, Long customerId, Long validatorId, Long artworkId) {
-        this.price = price;
-        this.status = status;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.customerId = customerId;
-        this.validatorId = validatorId;
-        this.artworkId = artworkId;
-    }
-
     public Long getId() {
         return id;
     }
