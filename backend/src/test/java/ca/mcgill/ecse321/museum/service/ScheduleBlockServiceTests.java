@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock.ScheduleEvent;
+import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.repository.ScheduleBlockRepository;
 import java.sql.Date;
 import java.util.List;
@@ -26,6 +27,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+
+import javax.swing.text.html.Option;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -91,6 +94,35 @@ public class ScheduleBlockServiceTests {
 
                             return Optional.of(scheduleBlock);
                         });
+
+        // ScheduleBlock 4 has visitors
+        lenient()
+                .when(scheduleBlockRepository.findById(SCHEDULEBLOCK_KEY + 3))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                            var scheduleBlock = new ScheduleBlock();
+
+                            scheduleBlock.setId(SCHEDULEBLOCK_KEY);
+                            scheduleBlock.setStartDate(Date.valueOf("2020-01-01"));
+                            scheduleBlock.setEndDate(Date.valueOf("2020-01-02"));
+                            scheduleBlock.setVisitFees(10);
+                            scheduleBlock.setVisitCapacity(100);
+                            scheduleBlock.setEvent(ScheduleEvent.MUSEUM_OPEN);
+
+                            var visitor = new Visitor();
+                            visitor.setId(1);
+                            visitor.setFirstName("Vizi");
+                            visitor.setLastName("Thor");
+
+                            scheduleBlock.setVisitors(List.of(visitor));
+
+                            return Optional.of(scheduleBlock);
+                        });
+
+        // ScheduleBlock 5 does not exist
+        lenient()
+                .when(scheduleBlockRepository.findById(SCHEDULEBLOCK_KEY + 4))
+                .thenReturn(Optional.empty());
 
         // List of all schedule blocks is a list containing ScheduleBlock 1
         lenient()
@@ -297,5 +329,22 @@ public class ScheduleBlockServiceTests {
         int count = 0;
         for (ScheduleBlock scheduleBlock : scheduleBlocks) count++;
         assertEquals(2, count);
+    }
+
+    @Test
+    public void testGetVisitorsOnScheduleBlock() {
+        var visitor = ((List<Visitor>) scheduleBlockService.getVisitorsOnScheduleBlock(4)).get(0);
+        assertEquals(1,visitor.getId());
+        assertEquals("Vizi",visitor.getFirstName());
+        assertEquals("Thor",visitor.getLastName());
+    }
+
+    @Test
+    public void testGetVisitorsOnScheduleBlockButScheduleBlockIsNull() {
+        ServiceLayerException exception =
+                assertThrows(
+                        ServiceLayerException.class, () -> scheduleBlockService.getVisitorsOnScheduleBlock(5));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals("No such schedule block", exception.getMessage());
     }
 }
