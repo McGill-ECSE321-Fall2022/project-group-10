@@ -8,14 +8,11 @@ import ca.mcgill.ecse321.museum.model.ScheduleBlock;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock.ScheduleEvent;
 import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
-import ca.mcgill.ecse321.museum.repository.PersonRepository;
 import ca.mcgill.ecse321.museum.repository.ScheduleBlockRepository;
+import ca.mcgill.ecse321.museum.repository.VisitorRepository;
 import java.sql.Date;
 import javax.transaction.Transactional;
-
-import ca.mcgill.ecse321.museum.repository.VisitorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -211,7 +208,8 @@ public class ScheduleBlockService {
         }
 
         // Check if the visitor is already registered to the schedule block
-        if (scheduleBlock.getVisitors().stream().anyMatch(visitor -> visitor.getId() == visitorId)) {
+        if (scheduleBlock.getVisitors().stream()
+                .anyMatch(visitor -> visitor.getId() == visitorId)) {
             throw new ServiceLayerException(
                     HttpStatus.BAD_REQUEST, "Visitor already registered to schedule block");
         }
@@ -253,7 +251,8 @@ public class ScheduleBlockService {
         }
 
         // Check if the visitor is not registered to the schedule block
-        if (scheduleBlock.getVisitors().stream().noneMatch(visitor -> visitor.getId() == visitorId)) {
+        if (scheduleBlock.getVisitors().stream()
+                .noneMatch(visitor -> visitor.getId() == visitorId)) {
             throw new ServiceLayerException(
                     HttpStatus.BAD_REQUEST, "Visitor not registered to schedule block");
         }

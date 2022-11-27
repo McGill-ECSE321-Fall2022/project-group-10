@@ -13,14 +13,12 @@ import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.*;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock.ScheduleEvent;
 import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
-import ca.mcgill.ecse321.museum.repository.PersonRepository;
 import ca.mcgill.ecse321.museum.repository.ScheduleBlockRepository;
+import ca.mcgill.ecse321.museum.repository.VisitorRepository;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import ca.mcgill.ecse321.museum.repository.VisitorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,8 +30,6 @@ import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
-import javax.swing.text.html.Option;
-
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class ScheduleBlockServiceTests {
@@ -41,7 +37,6 @@ public class ScheduleBlockServiceTests {
     @Mock private ScheduleBlockRepository scheduleBlockRepository;
     @Mock private VisitorRepository visitorRepository;
     @Mock private AdministratorRepository administratorRepository;
-
 
     @InjectMocks private ScheduleBlockService scheduleBlockService;
 
@@ -144,7 +139,6 @@ public class ScheduleBlockServiceTests {
                 .when(scheduleBlockRepository.findById(SCHEDULEBLOCK_KEY + 4))
                 .thenReturn(Optional.empty());
 
-
         // ScheduleBlock 6 has array lists
         lenient()
                 .when(scheduleBlockRepository.findById(SCHEDULEBLOCK_KEY))
@@ -237,7 +231,6 @@ public class ScheduleBlockServiceTests {
                             visitor.setFirstName("DO NOT USE ME");
                             visitor.setLastName("DO NOT USE ME");
 
-
                             var visitor2 = new Visitor();
                             visitor2.setId(1);
                             visitor2.setFirstName("Vizi");
@@ -257,7 +250,6 @@ public class ScheduleBlockServiceTests {
                             admin2.setId(1);
                             admin2.setFirstName("Emplo");
                             admin2.setLastName("Yee");
-
 
                             var admins = new ArrayList<Administrator>();
                             admins.add(admin);
@@ -302,25 +294,31 @@ public class ScheduleBlockServiceTests {
                         });
 
         // Visitor 1 exists
-        lenient().when(visitorRepository.findById(1L)).thenAnswer(invocation -> {
-            var person = new Visitor();
-            person.setId(1);
-            person.setFirstName("Vizi");
-            person.setLastName("Thor");
-            return Optional.of(person);
-        });
+        lenient()
+                .when(visitorRepository.findById(1L))
+                .thenAnswer(
+                        invocation -> {
+                            var person = new Visitor();
+                            person.setId(1);
+                            person.setFirstName("Vizi");
+                            person.setLastName("Thor");
+                            return Optional.of(person);
+                        });
 
         // Visitor 2 does not exist
         lenient().when(visitorRepository.findById(2L)).thenReturn(Optional.empty());
 
         // Admin 1 is an employee
-        lenient().when(administratorRepository.findById(1L)).thenAnswer(invocation -> {
-            var person = new Employee();
-            person.setId(1);
-            person.setFirstName("Emplo");
-            person.setLastName("Yee");
-            return Optional.of(person);
-        });
+        lenient()
+                .when(administratorRepository.findById(1L))
+                .thenAnswer(
+                        invocation -> {
+                            var person = new Employee();
+                            person.setId(1);
+                            person.setFirstName("Emplo");
+                            person.setLastName("Yee");
+                            return Optional.of(person);
+                        });
 
         // Admin 2 does not exist
         lenient().when(administratorRepository.findById(2L)).thenReturn(Optional.empty());
@@ -399,8 +397,11 @@ public class ScheduleBlockServiceTests {
         assertEquals(ScheduleEvent.MUSEUM_OPEN, scheduleBlock.getEvent());
         assertEquals(10, scheduleBlock.getVisitFees());
         assertEquals(100, scheduleBlock.getVisitCapacity());
-        assertEquals(new ArrayList<Visitor>(), scheduleBlock.getVisitors()); // Empty list of visitors
-        assertEquals(new ArrayList<Administrator>(), scheduleBlock.getAdmins()); // Empty list of administrators
+        assertEquals(
+                new ArrayList<Visitor>(), scheduleBlock.getVisitors()); // Empty list of visitors
+        assertEquals(
+                new ArrayList<Administrator>(),
+                scheduleBlock.getAdmins()); // Empty list of administrators
     }
 
     @Test
@@ -449,12 +450,7 @@ public class ScheduleBlockServiceTests {
                         ServiceLayerException.class,
                         () ->
                                 scheduleBlockService.updateScheduleBlock(
-                                        5,
-                                        startDate,
-                                        endDate,
-                                        event,
-                                        visitFees,
-                                        visitCapacity));
+                                        5, startDate, endDate, event, visitFees, visitCapacity));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such schedule block", exception.getMessage());
     }
@@ -501,44 +497,47 @@ public class ScheduleBlockServiceTests {
     @Test
     public void testGetVisitorsOnScheduleBlock() {
         var visitor = ((List<Visitor>) scheduleBlockService.getVisitorsOnScheduleBlock(4)).get(0);
-        assertEquals(1,visitor.getId());
-        assertEquals("Vizi",visitor.getFirstName());
-        assertEquals("Thor",visitor.getLastName());
+        assertEquals(1, visitor.getId());
+        assertEquals("Vizi", visitor.getFirstName());
+        assertEquals("Thor", visitor.getLastName());
     }
 
     @Test
     public void testGetVisitorsOnScheduleBlockButScheduleBlockIsNull() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.getVisitorsOnScheduleBlock(5));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.getVisitorsOnScheduleBlock(5));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such schedule block", exception.getMessage());
     }
+
     @Test
     public void testRegisterVisitorsOnScheduleBlock() {
-        var scheduleBlock = scheduleBlockService.registerVisitorOnScheduleBlock(1,1);
+        var scheduleBlock = scheduleBlockService.registerVisitorOnScheduleBlock(1, 1);
         var registeredVisitor = scheduleBlock.getVisitors().get(0);
         assertNotNull(registeredVisitor);
-        assertEquals(1,registeredVisitor.getId());
-        assertEquals("Vizi",registeredVisitor.getFirstName());
-        assertEquals("Thor",registeredVisitor.getLastName());
+        assertEquals(1, registeredVisitor.getId());
+        assertEquals("Vizi", registeredVisitor.getFirstName());
+        assertEquals("Thor", registeredVisitor.getLastName());
     }
 
     @Test
     public void testRegisterVisitorsOnScheduleBlockWithOtherVisitors() {
-        var scheduleBlock = scheduleBlockService.registerVisitorOnScheduleBlock(8,1);
+        var scheduleBlock = scheduleBlockService.registerVisitorOnScheduleBlock(8, 1);
         var registeredVisitor = scheduleBlock.getVisitors().get(1);
         assertNotNull(registeredVisitor);
-        assertEquals(1,registeredVisitor.getId());
-        assertEquals("Vizi",registeredVisitor.getFirstName());
-        assertEquals("Thor",registeredVisitor.getLastName());
+        assertEquals(1, registeredVisitor.getId());
+        assertEquals("Vizi", registeredVisitor.getFirstName());
+        assertEquals("Thor", registeredVisitor.getLastName());
     }
 
     @Test
     public void testRegisterVisitorsOnScheduleBlockButScheduleBlockIsNull() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.registerVisitorOnScheduleBlock(5,1));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.registerVisitorOnScheduleBlock(5, 1));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such schedule block", exception.getMessage());
     }
@@ -547,7 +546,8 @@ public class ScheduleBlockServiceTests {
     public void testRegisterVisitorsOnScheduleBlockButVisitorIsNull() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.registerVisitorOnScheduleBlock(1,2));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.registerVisitorOnScheduleBlock(1, 2));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such visitor", exception.getMessage());
     }
@@ -556,7 +556,8 @@ public class ScheduleBlockServiceTests {
     public void testRegisterVisitorsOnScheduleBlockButVisitorIsAlreadyRegistered() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.registerVisitorOnScheduleBlock(4,1));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.registerVisitorOnScheduleBlock(4, 1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Visitor already registered to schedule block", exception.getMessage());
     }
@@ -565,35 +566,38 @@ public class ScheduleBlockServiceTests {
     public void testRegisterVisitorsOnScheduleBlockButFull() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.registerVisitorOnScheduleBlock(7,1));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.registerVisitorOnScheduleBlock(7, 1));
         assertEquals("Schedule block is full", exception.getMessage());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
     }
+
     @Test
     public void testRegisterStaffOnScheduleBlock() {
-        var scheduleBlock = scheduleBlockService.registerStaffOnScheduleBlock(1,1);
+        var scheduleBlock = scheduleBlockService.registerStaffOnScheduleBlock(1, 1);
         var registeredStaff = scheduleBlock.getAdmins().get(0);
         assertNotNull(registeredStaff);
-        assertEquals(1,registeredStaff.getId());
-        assertEquals("Emplo",registeredStaff.getFirstName());
-        assertEquals("Yee",registeredStaff.getLastName());
+        assertEquals(1, registeredStaff.getId());
+        assertEquals("Emplo", registeredStaff.getFirstName());
+        assertEquals("Yee", registeredStaff.getLastName());
     }
 
     @Test
     public void testRegisterStaffOnScheduleBlockWithOtherStaff() {
-        var scheduleBlock = scheduleBlockService.registerStaffOnScheduleBlock(8,1);
+        var scheduleBlock = scheduleBlockService.registerStaffOnScheduleBlock(8, 1);
         var registeredStaff = scheduleBlock.getAdmins().get(1);
         assertNotNull(registeredStaff);
-        assertEquals(1,registeredStaff.getId());
-        assertEquals("Emplo",registeredStaff.getFirstName());
-        assertEquals("Yee",registeredStaff.getLastName());
+        assertEquals(1, registeredStaff.getId());
+        assertEquals("Emplo", registeredStaff.getFirstName());
+        assertEquals("Yee", registeredStaff.getLastName());
     }
 
     @Test
     public void testRegisterStaffOnScheduleBlockButScheduleBlockIsNull() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.registerStaffOnScheduleBlock(5,1));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.registerStaffOnScheduleBlock(5, 1));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such schedule block", exception.getMessage());
     }
@@ -602,7 +606,8 @@ public class ScheduleBlockServiceTests {
     public void testRegisterStaffOnScheduleBlockButStaffIsNull() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.registerStaffOnScheduleBlock(1,2));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.registerStaffOnScheduleBlock(1, 2));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such staff", exception.getMessage());
     }
@@ -611,113 +616,137 @@ public class ScheduleBlockServiceTests {
     public void testRegisterStaffOnScheduleBlockButStaffIsAlreadyRegistered() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.registerStaffOnScheduleBlock(4,1));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.registerStaffOnScheduleBlock(4, 1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Staff already registered to schedule block", exception.getMessage());
     }
 
-
-    @Test void testUnregisterVisitorOnScheduleBlock() {
-        var scheduleBlock = scheduleBlockService.unregisterVisitorOnScheduleBlock(4,1);
-        assertEquals(new ArrayList<Visitor>(),scheduleBlock.getVisitors());
+    @Test
+    void testUnregisterVisitorOnScheduleBlock() {
+        var scheduleBlock = scheduleBlockService.unregisterVisitorOnScheduleBlock(4, 1);
+        assertEquals(new ArrayList<Visitor>(), scheduleBlock.getVisitors());
     }
 
-    @Test void testUnregisterVisitorOnScheduleBlockButScheduleBlockIsNull() {
+    @Test
+    void testUnregisterVisitorOnScheduleBlockButScheduleBlockIsNull() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.unregisterVisitorOnScheduleBlock(5,1));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.unregisterVisitorOnScheduleBlock(5, 1));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such schedule block", exception.getMessage());
     }
 
-    @Test void testUnregisterVisitorOnScheduleBlockButVisitorIsNull() {
+    @Test
+    void testUnregisterVisitorOnScheduleBlockButVisitorIsNull() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.unregisterVisitorOnScheduleBlock(4,2));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.unregisterVisitorOnScheduleBlock(4, 2));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such visitor", exception.getMessage());
     }
 
-    @Test void testUnregisterVisitorOnScheduleBlockButNoVisitorsAreRegistered() {
+    @Test
+    void testUnregisterVisitorOnScheduleBlockButNoVisitorsAreRegistered() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.unregisterVisitorOnScheduleBlock(1,1));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.unregisterVisitorOnScheduleBlock(1, 1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Visitor not registered to schedule block", exception.getMessage());
     }
 
-    @Test void testUnregisterVisitorOnScheduleBlockButVisitorIsNotRegistered() {
+    @Test
+    void testUnregisterVisitorOnScheduleBlockButVisitorIsNotRegistered() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.unregisterVisitorOnScheduleBlock(8,1));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.unregisterVisitorOnScheduleBlock(8, 1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Visitor not registered to schedule block", exception.getMessage());
     }
 
-    @Test void testUnregisterVisitorOnScheduleBlockContainsTwoVisitors() {
-        var scheduleBlock = scheduleBlockService.unregisterVisitorOnScheduleBlock(9,1);
+    @Test
+    void testUnregisterVisitorOnScheduleBlockContainsTwoVisitors() {
+        var scheduleBlock = scheduleBlockService.unregisterVisitorOnScheduleBlock(9, 1);
         var visitor = scheduleBlock.getVisitors().get(0);
-        assertEquals(9999,visitor.getId());
+        assertEquals(9999, visitor.getId());
         assertEquals("DO NOT USE ME", visitor.getFirstName());
-        assertEquals("DO NOT USE ME",visitor.getLastName());
-    }
-    @Test void testUnregisterStaffOnScheduleBlock() {
-        var scheduleBlock = scheduleBlockService.unregisterStaffOnScheduleBlock(4,1);
-        assertEquals(new ArrayList<Administrator>(),scheduleBlock.getAdmins());
+        assertEquals("DO NOT USE ME", visitor.getLastName());
     }
 
-    @Test void testUnregisterStaffOnScheduleBlockButScheduleBlockIsNull() {
+    @Test
+    void testUnregisterStaffOnScheduleBlock() {
+        var scheduleBlock = scheduleBlockService.unregisterStaffOnScheduleBlock(4, 1);
+        assertEquals(new ArrayList<Administrator>(), scheduleBlock.getAdmins());
+    }
+
+    @Test
+    void testUnregisterStaffOnScheduleBlockButScheduleBlockIsNull() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.unregisterStaffOnScheduleBlock(5,1));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.unregisterStaffOnScheduleBlock(5, 1));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such schedule block", exception.getMessage());
     }
 
-    @Test void testUnregisterStaffOnScheduleBlockButStaffIsNull() {
+    @Test
+    void testUnregisterStaffOnScheduleBlockButStaffIsNull() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.unregisterStaffOnScheduleBlock(4,2));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.unregisterStaffOnScheduleBlock(4, 2));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such staff", exception.getMessage());
     }
 
-    @Test void testUnregisterStaffOnScheduleBlockButNoStaffIsRegistered() {
+    @Test
+    void testUnregisterStaffOnScheduleBlockButNoStaffIsRegistered() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.unregisterStaffOnScheduleBlock(1,1));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.unregisterStaffOnScheduleBlock(1, 1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Staff not registered to schedule block", exception.getMessage());
     }
 
-    @Test void testUnregisterStaffOnScheduleBlockButStaffIsNotRegistered() {
+    @Test
+    void testUnregisterStaffOnScheduleBlockButStaffIsNotRegistered() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.unregisterStaffOnScheduleBlock(8,1));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.unregisterStaffOnScheduleBlock(8, 1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Staff not registered to schedule block", exception.getMessage());
     }
 
-    @Test void testUnregisterStaffOnScheduleBlockContainsTwoStaff() {
-        var scheduleBlock = scheduleBlockService.unregisterStaffOnScheduleBlock(9,1);
+    @Test
+    void testUnregisterStaffOnScheduleBlockContainsTwoStaff() {
+        var scheduleBlock = scheduleBlockService.unregisterStaffOnScheduleBlock(9, 1);
         var staff = scheduleBlock.getAdmins().get(0);
-        assertEquals(9999,staff.getId());
+        assertEquals(9999, staff.getId());
         assertEquals("DO NOT USE ME", staff.getFirstName());
-        assertEquals("DO NOT USE ME",staff.getLastName());
+        assertEquals("DO NOT USE ME", staff.getLastName());
     }
 
-    @Test void testGetStaffOnScheduleBlock() {
+    @Test
+    void testGetStaffOnScheduleBlock() {
         var staff = scheduleBlockService.getStaffOnScheduleBlock(4);
         var admin = ((List<Administrator>) staff).get(0);
-        assertEquals(1,admin.getId());
+        assertEquals(1, admin.getId());
         assertEquals("Emplo", admin.getFirstName());
-        assertEquals("Yee",admin.getLastName());
+        assertEquals("Yee", admin.getLastName());
     }
 
-    @Test void testGetStaffOnScheduleBlockButScheduleBlockIsNull() {
+    @Test
+    void testGetStaffOnScheduleBlockButScheduleBlockIsNull() {
         ServiceLayerException exception =
                 assertThrows(
-                        ServiceLayerException.class, () -> scheduleBlockService.getStaffOnScheduleBlock(5));
+                        ServiceLayerException.class,
+                        () -> scheduleBlockService.getStaffOnScheduleBlock(5));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No such schedule block", exception.getMessage());
     }

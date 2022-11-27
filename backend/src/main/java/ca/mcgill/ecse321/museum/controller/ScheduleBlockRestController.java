@@ -183,8 +183,10 @@ public class ScheduleBlockRestController {
     public ResponseEntity<ScheduleBlockResponseDto> addVisitorToScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long visitorId) {
         // Add visitor to schedule block
-        var scheduleBlock = scheduleBlockService.registerVisitorOnScheduleBlock(scheduleId, visitorId);
-        return new ResponseEntity<ScheduleBlockResponseDto>(ScheduleBlockResponseDto.createDto(scheduleBlock),HttpStatus.OK);
+        var scheduleBlock =
+                scheduleBlockService.registerVisitorOnScheduleBlock(scheduleId, visitorId);
+        return new ResponseEntity<ScheduleBlockResponseDto>(
+                ScheduleBlockResponseDto.createDto(scheduleBlock), HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -193,9 +195,11 @@ public class ScheduleBlockRestController {
     public ResponseEntity<ScheduleBlockResponseDto> removeVisitorFromScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long visitorId) {
         // Remove visitor from schedule block
-        var scheduleBlock = scheduleBlockService.unregisterVisitorOnScheduleBlock(scheduleId, visitorId);
+        var scheduleBlock =
+                scheduleBlockService.unregisterVisitorOnScheduleBlock(scheduleId, visitorId);
 
-        return new ResponseEntity<ScheduleBlockResponseDto>(ScheduleBlockResponseDto.createDto(scheduleBlock),HttpStatus.OK);
+        return new ResponseEntity<ScheduleBlockResponseDto>(
+                ScheduleBlockResponseDto.createDto(scheduleBlock), HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -225,7 +229,8 @@ public class ScheduleBlockRestController {
             @PathVariable long scheduleId, @PathVariable long staffId) {
         // Add staff to schedule block
         var scheduleBlock = scheduleBlockService.registerStaffOnScheduleBlock(scheduleId, staffId);
-        return new ResponseEntity<ScheduleBlockResponseDto>(ScheduleBlockResponseDto.createDto(scheduleBlock),HttpStatus.OK);
+        return new ResponseEntity<ScheduleBlockResponseDto>(
+                ScheduleBlockResponseDto.createDto(scheduleBlock), HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -233,7 +238,9 @@ public class ScheduleBlockRestController {
     @DeleteMapping(value = {"/scheduleBlock/{scheduleId}/staff/{staffId}"})
     public ResponseEntity<ScheduleBlockResponseDto> removeStaffFromScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long staffId) {
-        var scheduleBlock = scheduleBlockService.unregisterStaffOnScheduleBlock(scheduleId, staffId);
-        return new ResponseEntity<ScheduleBlockResponseDto>(ScheduleBlockResponseDto.createDto(scheduleBlock),HttpStatus.OK);
+        var scheduleBlock =
+                scheduleBlockService.unregisterStaffOnScheduleBlock(scheduleId, staffId);
+        return new ResponseEntity<ScheduleBlockResponseDto>(
+                ScheduleBlockResponseDto.createDto(scheduleBlock), HttpStatus.OK);
     }
 }
