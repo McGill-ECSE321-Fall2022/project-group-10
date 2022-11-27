@@ -113,6 +113,38 @@ public class VisitorServiceTests {
         assertEquals(isActive, visitor.isActive());
     }
 
+    /** Test CreateVisitor with the email of another visitor */
+    @Test
+    public void testCreateVisitorFailDupEmail() {
+        try {
+            String firstName = "John";
+            String lastName = "Doe";
+            String email = "second@email.com"; // Email of imaginary already existing visitor
+            String password = "password123";
+            visitorService.createVisitor(firstName, lastName, email, password);
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    /** Test EditVisitor with complete information */
+    @Test
+    public void testEditVisitorComplete() {
+        Long id = VISITOR_KEY;
+        String firstName = "John";
+        String lastName = "Doe";
+        String email = "tester1@email.com";
+        String password = "password123";
+        Visitor visitor = visitorService.editVisitor(id, firstName, lastName, email, password);
+        assertNotNull(visitor);
+        assertEquals(firstName, visitor.getFirstName());
+        assertEquals(lastName, visitor.getLastName());
+        assertEquals(email, visitor.getEmail());
+        assertEquals(password, visitor.getPassword());
+    }
+
+
     /** Test EditVisitor with the email of another visitor */
     @Test
     public void testEditVisitorFailDupEmail() {
