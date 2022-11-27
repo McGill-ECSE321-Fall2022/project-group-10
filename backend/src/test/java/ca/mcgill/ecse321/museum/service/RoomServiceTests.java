@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -235,5 +236,43 @@ public class RoomServiceTests {
 
         long count = roomService.countArtworksInExhibitRoom(1L);
         assertEquals(0L, count);
+    }
+
+    @Test
+    public void testUpdateExhibitRoomButExhibitRoomIsNull() {
+        ServiceLayerException exception =
+                assertThrows(
+                        ServiceLayerException.class,
+                        () -> roomService.updateExhibitRoom(999, "yeet", 100));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals("No such exhibit rooms", exception.getMessage());
+    }
+
+    @Test
+    public void testUpdateStorageRoomButStorageRoomIsNull() {
+        ServiceLayerException exception =
+                assertThrows(
+                        ServiceLayerException.class,
+                        () -> roomService.updateStorageRoom(999, "yeet"));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals("No such rooms", exception.getMessage());
+    }
+
+    @Test
+    public void testDeleteRoomButRoomIsNull() {
+        ServiceLayerException exception =
+                assertThrows(ServiceLayerException.class, () -> roomService.deleteRoom(999));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals("No such rooms", exception.getMessage());
+    }
+
+    @Test
+    public void testcountArtworksInExhibitRoomButExhibitRoomIsNull() {
+        ServiceLayerException exception =
+                assertThrows(
+                        ServiceLayerException.class,
+                        () -> roomService.countArtworksInExhibitRoom(999));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals("No such exhibit rooms", exception.getMessage());
     }
 }
