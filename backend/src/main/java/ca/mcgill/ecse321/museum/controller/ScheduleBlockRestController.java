@@ -183,13 +183,8 @@ public class ScheduleBlockRestController {
     public ResponseEntity<ScheduleBlockResponseDto> addVisitorToScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long visitorId) {
         // Add visitor to schedule block
-        try {
-            scheduleBlockService.registerVisitorOnScheduleBlock(scheduleId, visitorId);
-        } catch (Exception e) {
-            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.OK);
+        var scheduleBlock = scheduleBlockService.registerVisitorOnScheduleBlock(scheduleId, visitorId);
+        return new ResponseEntity<ScheduleBlockResponseDto>(ScheduleBlockResponseDto.createDto(scheduleBlock),HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -198,13 +193,9 @@ public class ScheduleBlockRestController {
     public ResponseEntity<ScheduleBlockResponseDto> removeVisitorFromScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long visitorId) {
         // Remove visitor from schedule block
-        try {
-            scheduleBlockService.unregisterVisitorOnScheduleBlock(scheduleId, visitorId);
-        } catch (Exception e) {
-            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.BAD_REQUEST);
-        }
+        var scheduleBlock = scheduleBlockService.unregisterVisitorOnScheduleBlock(scheduleId, visitorId);
 
-        return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.OK);
+        return new ResponseEntity<ScheduleBlockResponseDto>(ScheduleBlockResponseDto.createDto(scheduleBlock),HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -233,13 +224,8 @@ public class ScheduleBlockRestController {
     public ResponseEntity<ScheduleBlockResponseDto> addStaffToScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long staffId) {
         // Add staff to schedule block
-        try {
-            scheduleBlockService.registerStaffOnScheduleBlock(scheduleId, staffId);
-        } catch (Exception e) {
-            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.OK);
+        var scheduleBlock = scheduleBlockService.registerStaffOnScheduleBlock(scheduleId, staffId);
+        return new ResponseEntity<ScheduleBlockResponseDto>(ScheduleBlockResponseDto.createDto(scheduleBlock),HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -247,13 +233,7 @@ public class ScheduleBlockRestController {
     @DeleteMapping(value = {"/scheduleBlock/{scheduleId}/staff/{staffId}"})
     public ResponseEntity<ScheduleBlockResponseDto> removeStaffFromScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long staffId) {
-        // Remove staff from schedule block
-        try {
-            scheduleBlockService.unregisterStaffOnScheduleBlock(scheduleId, staffId);
-        } catch (Exception e) {
-            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.OK);
+        var scheduleBlock = scheduleBlockService.unregisterStaffOnScheduleBlock(scheduleId, staffId);
+        return new ResponseEntity<ScheduleBlockResponseDto>(ScheduleBlockResponseDto.createDto(scheduleBlock),HttpStatus.OK);
     }
 }
