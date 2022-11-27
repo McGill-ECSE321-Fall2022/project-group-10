@@ -211,7 +211,7 @@ public class ScheduleBlockService {
         }
 
         // Check if the visitor is already registered to the schedule block
-        if (scheduleBlock.getVisitors().contains(person)) {
+        if (scheduleBlock.getVisitors().stream().anyMatch(visitor -> visitor.getId() == visitorId)) {
             throw new ServiceLayerException(
                     HttpStatus.BAD_REQUEST, "Visitor already registered to schedule block");
         }
@@ -253,13 +253,13 @@ public class ScheduleBlockService {
         }
 
         // Check if the visitor is not registered to the schedule block
-        if (!scheduleBlock.getVisitors().contains(person)) {
+        if (scheduleBlock.getVisitors().stream().noneMatch(visitor -> visitor.getId() == visitorId)) {
             throw new ServiceLayerException(
                     HttpStatus.BAD_REQUEST, "Visitor not registered to schedule block");
         }
 
         // Remove the visitor from the schedule block
-        scheduleBlock.getVisitors().remove(person);
+        scheduleBlock.getVisitors().removeIf(visitor -> visitor.getId() == visitorId);
 
         // Save the schedule block in the database
         return scheduleBlockRepository.save(scheduleBlock);
@@ -310,7 +310,7 @@ public class ScheduleBlockService {
         }
 
         // Check if the staff is already registered to the schedule block
-        if (scheduleBlock.getAdmins().contains(person)) {
+        if (scheduleBlock.getAdmins().stream().anyMatch(admin -> admin.getId() == staffId)) {
             throw new ServiceLayerException(
                     HttpStatus.BAD_REQUEST, "Staff already registered to schedule block");
         }
@@ -347,13 +347,13 @@ public class ScheduleBlockService {
         }
 
         // Check if the staff is not registered to the schedule block
-        if (!scheduleBlock.getAdmins().contains(person)) {
+        if (scheduleBlock.getAdmins().stream().noneMatch(admin -> admin.getId() == staffId)) {
             throw new ServiceLayerException(
                     HttpStatus.BAD_REQUEST, "Staff not registered to schedule block");
         }
 
         // Remove the staff from the schedule block
-        scheduleBlock.getAdmins().remove(person);
+        scheduleBlock.getAdmins().removeIf(admin -> admin.getId() == staffId);
 
         // Save the schedule block in the database
         return scheduleBlockRepository.save(scheduleBlock);
