@@ -6,8 +6,11 @@ import ca.mcgill.ecse321.museum.dto.Response.AdministratorResponseDto;
 import ca.mcgill.ecse321.museum.dto.Response.ScheduleBlockResponseDto;
 import ca.mcgill.ecse321.museum.dto.Response.VisitorResponseDto;
 import ca.mcgill.ecse321.museum.model.Administrator;
+import ca.mcgill.ecse321.museum.model.Person;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock;
 import ca.mcgill.ecse321.museum.model.Visitor;
+import ca.mcgill.ecse321.museum.repository.PersonRepository;
+import ca.mcgill.ecse321.museum.repository.VisitorRepository;
 import ca.mcgill.ecse321.museum.service.ScheduleBlockService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +20,9 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,9 +40,12 @@ public class ScheduleBlockRestController {
 
     @Autowired private ScheduleBlockService scheduleBlockService;
 
+    @Autowired private PersonRepository personRepository;
+
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Create schedule block")
     @PostMapping(value = {"/scheduleBlock"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<ScheduleBlockResponseDto> createScheduleBlock(
             @RequestBody ScheduleBlockRequestDto body) {
         // Check if the schedule block is valid
@@ -60,6 +69,7 @@ public class ScheduleBlockRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Update schedule block")
     @PutMapping(value = {"/scheduleBlock/{id}"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<ScheduleBlockResponseDto> updateScheduleBlock(
             @RequestBody ScheduleBlockRequestDto body, @PathVariable long id) {
         // Check if the schedule block is valid
@@ -84,6 +94,7 @@ public class ScheduleBlockRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Delete schedule block")
     @DeleteMapping(value = {"/scheduleBlock/{id}"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<ScheduleBlockResponseDto> deleteScheduleBlock(@PathVariable long id) {
         // Delete schedule block
         scheduleBlockService.deleteScheduleBlock(id);
@@ -94,6 +105,7 @@ public class ScheduleBlockRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get schedule block")
     @GetMapping(value = {"/scheduleBlock/{id}"})
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ScheduleBlockResponseDto> getScheduleBlock(@PathVariable long id) {
         // Get schedule block
         ScheduleBlock scheduleBlock = scheduleBlockService.getScheduleBlock(id);
@@ -105,6 +117,7 @@ public class ScheduleBlockRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get all schedule blocks")
     @GetMapping(value = {"/scheduleBlock"})
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Iterable<ScheduleBlockResponseDto>> getAllScheduleBlocks() {
         // Get all schedule blocks
         Iterable<ScheduleBlock> scheduleBlocks = scheduleBlockService.getAllScheduleBlocks();
@@ -124,6 +137,7 @@ public class ScheduleBlockRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get schedule block between dates")
     @GetMapping(value = {"/scheduleBlock/dates/{startDate}/{endDate}"})
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Iterable<ScheduleBlockResponseDto>> getScheduleBlocksBetweenDates(
             @PathVariable String startDate, @PathVariable String endDate) {
         // Convert string to date
@@ -162,6 +176,7 @@ public class ScheduleBlockRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get visitor on schedule block")
     @GetMapping(value = {"/scheduleBlock/{id}/visitors"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Iterable<VisitorResponseDto>> getVisitorsOnScheduleBlock(
             @PathVariable long id) {
         // Get visitors for schedule block
@@ -180,8 +195,31 @@ public class ScheduleBlockRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Add visitor to schedule block")
     @PostMapping(value = {"/scheduleBlock/{scheduleId}/visitors/{visitorId}"})
+    @PreAuthorize("hasRole('VISITOR')")
     public ResponseEntity<ScheduleBlockResponseDto> addVisitorToScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long visitorId) {
+
+        // Check if the authentication user is the same as the visitor
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String authEmail;
+        if (principal instanceof UserDetails) {
+            authEmail = ((UserDetails)principal).getUsername();
+        } else {
+            authEmail = principal.toString();
+        }
+
+        // Get the user id of the authenticated user
+        Person person = personRepository.findByEmail(authEmail);
+        if (person == null || person.getId() != visitorId) {
+            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.UNAUTHORIZED);
+        }
+
+        // Check if the visitor id is the same as the authenticated user
+        if (person.getId() != visitorId) {
+            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.UNAUTHORIZED);
+        }
+        
         // Add visitor to schedule block
         var scheduleBlock =
                 scheduleBlockService.registerVisitorOnScheduleBlock(scheduleId, visitorId);
@@ -192,8 +230,31 @@ public class ScheduleBlockRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Remove visitor from schedule block")
     @DeleteMapping(value = {"/scheduleBlock/{scheduleId}/visitors/{visitorId}"})
+    @PreAuthorize("hasRole('VISITOR')")
     public ResponseEntity<ScheduleBlockResponseDto> removeVisitorFromScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long visitorId) {
+        
+        // Check if the authentication user is the same as the visitor
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String authEmail;
+        if (principal instanceof UserDetails) {
+                authEmail = ((UserDetails)principal).getUsername();
+        } else {
+                authEmail = principal.toString();
+        }
+
+        // Get the user id of the authenticated user
+        Person person = personRepository.findByEmail(authEmail);
+        if (person == null || person.getId() != visitorId) {
+                return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.UNAUTHORIZED);
+        }
+
+        // Check if the visitor id is the same as the authenticated user
+        if (person.getId() != visitorId) {
+                return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.UNAUTHORIZED);
+        }
+        
         // Remove visitor from schedule block
         var scheduleBlock =
                 scheduleBlockService.unregisterVisitorOnScheduleBlock(scheduleId, visitorId);
@@ -205,6 +266,7 @@ public class ScheduleBlockRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get staff on schedule block")
     @GetMapping(value = {"/scheduleBlock/{id}/staff"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Iterable<AdministratorResponseDto>> getStaffOnScheduleBlock(
             @PathVariable long id) {
         // Get staff for schedule block
@@ -225,6 +287,7 @@ public class ScheduleBlockRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Add staff to schedule block")
     @PostMapping(value = {"/scheduleBlock/{scheduleId}/staff/{staffId}"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<ScheduleBlockResponseDto> addStaffToScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long staffId) {
         // Add staff to schedule block
@@ -236,6 +299,7 @@ public class ScheduleBlockRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Remove staff from schedule block")
     @DeleteMapping(value = {"/scheduleBlock/{scheduleId}/staff/{staffId}"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<ScheduleBlockResponseDto> removeStaffFromScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long staffId) {
         var scheduleBlock =

@@ -6,6 +6,8 @@ import ca.mcgill.ecse321.museum.model.Administrator;
 import ca.mcgill.ecse321.museum.model.Employee;
 import ca.mcgill.ecse321.museum.model.Owner;
 import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
+import ca.mcgill.ecse321.museum.security.CredentialsEncoder;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -36,10 +38,12 @@ public class AdministratorService {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
+        CredentialsEncoder encoder = new CredentialsEncoder();
+
         employee.setFirstName(firstName);
         employee.setLastName(lastName);
         employee.setEmail(email);
-        employee.setPassword(password);
+        employee.setPassword(encoder.encode(password));
         employee.setSalary(salary);
         employee.setActive(true);
         return administratorRepository.save(employee);
@@ -62,10 +66,12 @@ public class AdministratorService {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
+        CredentialsEncoder encoder = new CredentialsEncoder();
+
         owner.setFirstName(firstName);
         owner.setLastName(lastName);
         owner.setEmail(email);
-        owner.setPassword(password);
+        owner.setPassword(encoder.encode(password));
         return administratorRepository.save(owner);
     }
 
@@ -97,10 +103,12 @@ public class AdministratorService {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
+        CredentialsEncoder encoder = new CredentialsEncoder();
+
         employee.setFirstName(firstName);
         employee.setLastName(lastName);
         employee.setEmail(email);
-        employee.setPassword(password);
+        employee.setPassword(encoder.encode(password));
         employee.setSalary(salary);
         return administratorRepository.save(employee);
     }
@@ -128,10 +136,12 @@ public class AdministratorService {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
+        CredentialsEncoder encoder = new CredentialsEncoder();
+
         owner.setFirstName(firstName);
         owner.setLastName(lastName);
         owner.setEmail(email);
-        owner.setPassword(password);
+        owner.setPassword(encoder.encode(password));
         return administratorRepository.save(owner);
     }
 

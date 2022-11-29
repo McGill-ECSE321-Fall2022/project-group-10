@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*")
@@ -27,6 +28,7 @@ public class ArtworkRestController {
                 @ApiResponse(code = 404, message = "No such artwork")
             })
     @PostMapping(value = {"/artworks"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<ArtworkResponseDto> createArtwork(@RequestBody ArtworkRequestDto body) {
         Artwork artwork =
                 artworkService.createArtwork(
@@ -48,10 +50,11 @@ public class ArtworkRestController {
                 @ApiResponse(code = 200, message = "Artwork returned"),
                 @ApiResponse(code = 404, message = "No such artwork")
             })
-    @GetMapping(value = {"/artworks/{id}"})
-    public ResponseEntity<ArtworkResponseDto> getArtwork(@PathVariable long id)
+    @GetMapping(value = {"/artworks/{artworkId}"})
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ArtworkResponseDto> getArtwork(@PathVariable long artworkId)
             throws IllegalArgumentException {
-        var artwork = artworkService.getArtwork(id);
+        var artwork = artworkService.getArtwork(artworkId);
         return new ResponseEntity<>(ArtworkResponseDto.createDto(artwork), HttpStatus.OK);
     }
 
@@ -63,6 +66,7 @@ public class ArtworkRestController {
                 @ApiResponse(code = 404, message = "No such artwork")
             })
     @GetMapping(value = {"/artworks"})
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<ArtworkResponseDto>> getAllArtworks()
             throws IllegalArgumentException {
         var artworks = artworkService.getAllArtworks();
@@ -79,10 +83,11 @@ public class ArtworkRestController {
                 @ApiResponse(code = 200, message = "Artwork deleted"),
                 @ApiResponse(code = 404, message = "No such artwork")
             })
-    @DeleteMapping(value = {"/artworks/{id}"})
-    public ResponseEntity<String> deleteArtwork(@PathVariable long id)
+    @DeleteMapping(value = {"/artworks/{artworkId}"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<String> deleteArtwork(@PathVariable long artworkId)
             throws IllegalArgumentException {
-        artworkService.deleteArtwork(id);
+        artworkService.deleteArtwork(artworkId);
         return new ResponseEntity<String>("Artwork successfully deleted", HttpStatus.OK);
     }
 
@@ -94,10 +99,11 @@ public class ArtworkRestController {
                 @ApiResponse(code = 404, message = "No such artwork/room"),
                 @ApiResponse(code = 403, message = "The room is full")
             })
-    @PutMapping(value = {"/artworks/move/{id}"})
+    @PutMapping(value = {"/artworks/move/{artworkId}"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<ArtworkResponseDto> moveArtworkToRoom(
-            @PathVariable long id, @RequestParam long roomId) throws IllegalArgumentException {
-        var artwork = artworkService.moveArtworkToRoom(id, roomId);
+            @PathVariable long artworkId, @RequestParam long roomId) throws IllegalArgumentException {
+        var artwork = artworkService.moveArtworkToRoom(artworkId, roomId);
         return new ResponseEntity<ArtworkResponseDto>(
                 ArtworkResponseDto.createDto(artwork), HttpStatus.OK);
     }

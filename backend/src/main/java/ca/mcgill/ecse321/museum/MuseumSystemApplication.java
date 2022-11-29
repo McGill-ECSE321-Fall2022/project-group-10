@@ -3,12 +3,16 @@ package ca.mcgill.ecse321.museum;
 
 import java.util.TimeZone;
 import javax.annotation.PostConstruct;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import ca.mcgill.ecse321.museum.security.CredentialsEncoder;
+
 
 @RestController
 @SpringBootApplication
@@ -31,5 +35,7 @@ public class MuseumSystemApplication {
     @PostConstruct
     public void init() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        // CredentialsEncoder encoder = new CredentialsEncoder();
+        // System.out.println("Encoded password: " + encoder.encode("admin"));
     }
 }

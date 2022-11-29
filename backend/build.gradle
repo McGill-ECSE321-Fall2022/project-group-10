@@ -49,6 +49,10 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+	// Spring security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-test'
+
 	// Needed for Postgres
 	runtimeOnly 'org.postgresql:postgresql'
 
