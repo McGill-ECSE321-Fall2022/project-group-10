@@ -14,6 +14,8 @@ import ca.mcgill.ecse321.museum.model.Administrator;
 import ca.mcgill.ecse321.museum.model.Employee;
 import ca.mcgill.ecse321.museum.model.Owner;
 import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
+import ca.mcgill.ecse321.museum.security.CredentialsEncoder;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -115,7 +117,10 @@ public class AdministratorServiceTests {
         assertEquals(firstName, employee.getFirstName());
         assertEquals(lastName, employee.getLastName());
         assertEquals(email, employee.getEmail());
-        assertEquals(password, employee.getPassword());
+
+        CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
+        assertTrue(credentialsEncoder.matches(password, employee.getPassword()));
+        
         assertEquals(salary, employee.getSalary());
         assertEquals(isActive, employee.isActive());
     }
@@ -231,7 +236,8 @@ public class AdministratorServiceTests {
         assertEquals(firstName, owner.getFirstName());
         assertEquals(lastName, owner.getLastName());
         assertEquals(email, owner.getEmail());
-        assertEquals(password, owner.getPassword());
+        CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
+        assertTrue(credentialsEncoder.matches(password, owner.getPassword()));
     }
 
     /** Test EditOwner with the email of another administrator */

@@ -12,6 +12,8 @@ import static org.mockito.Mockito.verify;
 import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.repository.VisitorRepository;
+import ca.mcgill.ecse321.museum.security.CredentialsEncoder;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -109,7 +111,8 @@ public class VisitorServiceTests {
         assertEquals(firstName, visitor.getFirstName());
         assertEquals(lastName, visitor.getLastName());
         assertEquals(email, visitor.getEmail());
-        assertEquals(password, visitor.getPassword());
+        CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
+        assertTrue(credentialsEncoder.matches(password, visitor.getPassword()));
         assertEquals(isActive, visitor.isActive());
     }
 
@@ -141,7 +144,8 @@ public class VisitorServiceTests {
         assertEquals(firstName, visitor.getFirstName());
         assertEquals(lastName, visitor.getLastName());
         assertEquals(email, visitor.getEmail());
-        assertEquals(password, visitor.getPassword());
+        CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
+        assertTrue(credentialsEncoder.matches(password, visitor.getPassword()));
     }
 
 
