@@ -21,7 +21,7 @@
     {/if}
     {#if roles.includes("OWNER")}
     <div class="link {$page.url.pathname === '/dashboard/hours' ? 'selected' : '' }">
-      <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.5,10H4.5V17H6.5V10M12.5,10H10.5V17H12.5V10M21,19H2V21H21V19M18.5,10H16.5V17H18.5V10M11.5,3.26L16.71,6H6.29L11.5,3.26M11.5,1L2,6V8H21V6L11.5,1Z" /></svg>
+      <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" /></svg>
       <p><a href="/dashboard/hours">Manage schedule</a></p>
     </div>
     <div class="link {$page.url.pathname === '/dashboard/employees' ? 'selected' : '' }">
