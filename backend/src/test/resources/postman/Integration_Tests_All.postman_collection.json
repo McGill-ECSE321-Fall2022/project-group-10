@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"a.b@email.com\",\r\n  \"firstName\": \"a\",\r\n  \"lastName\": \"b\",\r\n  \"password\": \"mypassword\",\r\n  \"salary\": 10\r\n}",
+							"raw": "{\r\n  \"email\": \"a.b@mail.museum.com\",\r\n  \"firstName\": \"a\",\r\n  \"lastName\": \"b\",\r\n  \"password\": \"mypassword\",\r\n  \"salary\": 10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"a.b@email.com\",\r\n    \"firstName\": \"Bob\",\r\n    \"lastName\": \"Swagger\",\r\n    \"password\": \"securep@ssword\",\r\n    \"salary\": 100\r\n}",
+							"raw": "{\r\n    \"email\": \"a.b@mail.museum.com\",\r\n    \"firstName\": \"Bob\",\r\n    \"lastName\": \"Swagger\",\r\n    \"password\": \"securep@ssword\",\r\n    \"salary\": 100\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -74,7 +74,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"c.d@email.com\",\r\n  \"firstName\": \"c\",\r\n  \"lastName\": \"d\",\r\n  \"password\": \"mypassword\"\r\n}",
+							"raw": "{\r\n  \"email\": \"c.d@mail.museum.com\",\r\n  \"firstName\": \"c\",\r\n  \"lastName\": \"d\",\r\n  \"password\": \"mypassword\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -103,7 +103,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"c.d@email.com\",\r\n  \"firstName\": \"e\",\r\n  \"lastName\": \"f\",\r\n  \"password\": \"mypassword\"\r\n}",
+							"raw": "{\r\n  \"email\": \"c.d@mail.museum.com\",\r\n  \"firstName\": \"e\",\r\n  \"lastName\": \"f\",\r\n  \"password\": \"mypassword\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -132,7 +132,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"adam\",\r\n    \"lastName\": \"b\",\r\n    \"email\": \"a.b@email.com\",\r\n    \"password\": \"mypassword\",\r\n    \"salary\": 100.0,\r\n    \"active\": true\r\n}",
+							"raw": "{\r\n    \"firstName\": \"adam\",\r\n    \"lastName\": \"b\",\r\n    \"email\": \"a.b@mail.museum.com\",\r\n    \"password\": \"mypassword\",\r\n    \"salary\": 100.0,\r\n    \"active\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -162,7 +162,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"a\",\r\n    \"lastName\": \"b\",\r\n    \"email\": \"c.d@email.com\",\r\n    \"password\": \"newpassword\",\r\n    \"salary\": 10.0,\r\n    \"active\": true\r\n}",
+							"raw": "{\r\n    \"firstName\": \"a\",\r\n    \"lastName\": \"b\",\r\n    \"email\": \"c.d@mail.museum.com\",\r\n    \"password\": \"newpassword\",\r\n    \"salary\": 10.0,\r\n    \"active\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -192,7 +192,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"c.d@email.com\",\r\n  \"firstName\": \"Chris\",\r\n  \"lastName\": \"d\",\r\n  \"password\": \"mypassword\"\r\n}",
+							"raw": "{\r\n  \"email\": \"c.d@mail.museum.com\",\r\n  \"firstName\": \"Chris\",\r\n  \"lastName\": \"d\",\r\n  \"password\": \"mypassword\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -222,7 +222,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"a.b@email.com\",\r\n  \"firstName\": \"Chris\",\r\n  \"lastName\": \"d\",\r\n  \"password\": \"newpassword\"\r\n}",
+							"raw": "{\r\n  \"email\": \"a.b@mail.museum.com\",\r\n  \"firstName\": \"Chris\",\r\n  \"lastName\": \"d\",\r\n  \"password\": \"newpassword\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -812,13 +812,13 @@
 				"type": "basic",
 				"basic": [
 					{
-						"key": "password",
-						"value": "mypassword",
+						"key": "username",
+						"value": "a.b@mail.museum.com",
 						"type": "string"
 					},
 					{
-						"key": "username",
-						"value": "a.b@email.com",
+						"key": "password",
+						"value": "mypassword",
 						"type": "string"
 					}
 				]
@@ -1262,13 +1262,13 @@
 				"type": "basic",
 				"basic": [
 					{
-						"key": "password",
-						"value": "mypassword",
+						"key": "username",
+						"value": "a.b@mail.museum.com",
 						"type": "string"
 					},
 					{
-						"key": "username",
-						"value": "a.b@email.com",
+						"key": "password",
+						"value": "mypassword",
 						"type": "string"
 					}
 				]
@@ -1515,13 +1515,13 @@
 				"type": "basic",
 				"basic": [
 					{
-						"key": "password",
-						"value": "mypassword",
+						"key": "username",
+						"value": "a.b@mail.museum.com",
 						"type": "string"
 					},
 					{
-						"key": "username",
-						"value": "a.b@email.com",
+						"key": "password",
+						"value": "mypassword",
 						"type": "string"
 					}
 				]
@@ -2078,13 +2078,13 @@
 				"type": "basic",
 				"basic": [
 					{
-						"key": "password",
-						"value": "mypassword",
+						"key": "username",
+						"value": "a.b@mail.museum.com",
 						"type": "string"
 					},
 					{
-						"key": "username",
-						"value": "a.b@email.com",
+						"key": "password",
+						"value": "mypassword",
 						"type": "string"
 					}
 				]
@@ -2690,13 +2690,13 @@
 				"type": "basic",
 				"basic": [
 					{
-						"key": "password",
-						"value": "mypassword",
+						"key": "username",
+						"value": "a.b@mail.museum.com",
 						"type": "string"
 					},
 					{
-						"key": "username",
-						"value": "a.b@email.com",
+						"key": "password",
+						"value": "mypassword",
 						"type": "string"
 					}
 				]

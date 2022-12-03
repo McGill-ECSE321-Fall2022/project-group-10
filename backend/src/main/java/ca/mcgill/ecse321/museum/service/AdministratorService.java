@@ -33,6 +33,9 @@ public class AdministratorService {
             String firstName, String lastName, String email, String password, float salary) {
         Employee employee = new Employee();
 
+        if (!email.endsWith("@mail.museum.com"))
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Administrator emails must end with @mail.museum.com");
+
         if (administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
@@ -60,6 +63,9 @@ public class AdministratorService {
     @Transactional
     public Owner createOwner(String firstName, String lastName, String email, String password) {
         Owner owner = new Owner();
+
+        if (!email.endsWith("@mail.museum.com"))
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Administrator emails must end with @mail.museum.com");
 
         if (administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
@@ -98,7 +104,12 @@ public class AdministratorService {
         if (employee == null)
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "Employee not found");
 
-        if (!employee.getEmail().equals(email) && administratorRepository.findByEmail(email).size() > 0) {
+        if (!email.endsWith("@mail.museum.com"))
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Administrator emails must end with @mail.museum.com");
+
+
+        if (!employee.getEmail().equals(email)
+                && administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
@@ -130,8 +141,13 @@ public class AdministratorService {
 
         if (owner == null)
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "Employee not found");
+        
+        if (!email.endsWith("@mail.museum.com"))
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Administrator emails must end with @mail.museum.com");
 
-        if (!owner.getEmail().equals(email) && administratorRepository.findByEmail(email).size() > 0) {
+
+        if (!owner.getEmail().equals(email)
+                && administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 

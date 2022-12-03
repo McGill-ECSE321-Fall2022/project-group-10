@@ -27,6 +27,9 @@ public class VisitorService {
     @Transactional
     public Visitor createVisitor(String firstName, String lastName, String email, String password) {
         var visitor = new Visitor();
+        
+        if (email.endsWith("@mail.museum.com"))
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Visitor emails can not end with @mail.museum.com");
 
         if (visitorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
@@ -59,6 +62,10 @@ public class VisitorService {
 
         if (visitor == null)
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "Visitor not found");
+        
+        if (email.endsWith("@mail.museum.com"))
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Visitor emails can not end with @mail.museum.com");
+
 
         if (!visitor.getEmail().equals(email) && visitorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
