@@ -11,7 +11,7 @@ import org.springframework.lang.NonNull;
 public abstract class Room {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq")
     private long id;
 
     @NonNull private String name = "DefaultRoomName";

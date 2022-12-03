@@ -15,7 +15,10 @@ public class Artwork {
     // ------------------------
 
     // Artwork Attributes
-    @Id @GeneratedValue private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     @NonNull private String title = "defaultTitle";
     @NonNull private String author = "defaultAuthor";
     @NonNull private Date creationDate = new Date(0);

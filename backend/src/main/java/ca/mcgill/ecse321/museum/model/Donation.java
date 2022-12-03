@@ -12,7 +12,10 @@ public class Donation {
     // ------------------------
 
     // Donation Attributes
-    @Id @GeneratedValue private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private boolean validated;
 
     private String description;

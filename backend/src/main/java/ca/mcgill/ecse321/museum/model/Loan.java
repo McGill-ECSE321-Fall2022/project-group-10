@@ -14,7 +14,10 @@ public class Loan {
     // ------------------------
 
     // Loan Attributes
-    @Id @GeneratedValue private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private float price;
     private LoanStatus status;
     @NonNull private Date startDate = new Date(0);
