@@ -60,7 +60,7 @@ public class VisitorService {
         if (visitor == null)
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "Visitor not found");
 
-        if (visitor.getEmail() != email && visitorRepository.findByEmail(email).size() > 0) {
+        if (!visitor.getEmail().equals(email) && visitorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 

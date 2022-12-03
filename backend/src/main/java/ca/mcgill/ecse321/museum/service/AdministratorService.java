@@ -98,7 +98,7 @@ public class AdministratorService {
         if (employee == null)
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "Employee not found");
 
-        if (employee.getEmail() != email && administratorRepository.findByEmail(email).size() > 0) {
+        if (!employee.getEmail().equals(email) && administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
@@ -131,7 +131,7 @@ public class AdministratorService {
         if (owner == null)
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "Employee not found");
 
-        if (owner.getEmail() != email && administratorRepository.findByEmail(email).size() > 0) {
+        if (!owner.getEmail().equals(email) && administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
