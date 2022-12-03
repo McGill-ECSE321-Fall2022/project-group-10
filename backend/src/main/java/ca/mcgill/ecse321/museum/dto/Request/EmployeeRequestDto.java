@@ -44,7 +44,6 @@ public class EmployeeRequestDto {
         this.password = password;
     }
 
-
     public float getSalary() {
         return salary;
     }

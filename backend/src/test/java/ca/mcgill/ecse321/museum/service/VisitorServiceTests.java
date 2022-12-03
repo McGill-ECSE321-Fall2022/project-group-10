@@ -13,7 +13,6 @@ import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.repository.VisitorRepository;
 import ca.mcgill.ecse321.museum.security.CredentialsEncoder;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -147,7 +146,6 @@ public class VisitorServiceTests {
         CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
         assertTrue(credentialsEncoder.matches(password, visitor.getPassword()));
     }
-
 
     /** Test EditVisitor with the email of another visitor */
     @Test

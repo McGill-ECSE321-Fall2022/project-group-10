@@ -1,3 +1,4 @@
+/* (C)2022 */
 package ca.mcgill.ecse321.museum.security;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -14,5 +15,4 @@ public class CredentialsEncoder implements PasswordEncoder {
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
         return BCrypt.checkpw(rawPassword.toString(), encodedPassword);
     }
-    
 }

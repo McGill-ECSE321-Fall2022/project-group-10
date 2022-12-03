@@ -61,7 +61,8 @@ public class AdministratorRestController {
             })
     @PutMapping(value = {"/administrator/employee/{employeeId}"})
     @PreAuthorize("hasRole('OWNER')")
-    public ResponseEntity<EmployeeResponseDto> editEmployee(@RequestBody EmployeeRequestDto body, @PathVariable int employeeId)
+    public ResponseEntity<EmployeeResponseDto> editEmployee(
+            @RequestBody EmployeeRequestDto body, @PathVariable int employeeId)
             throws IllegalArgumentException {
         administratorService.editEmployee(
                 employeeId,
@@ -167,7 +168,8 @@ public class AdministratorRestController {
             })
     @PutMapping(value = {"/administrator/owner/{ownerId}"})
     @PreAuthorize("hasRole('OWNER')")
-    public ResponseEntity<OwnerResponseDto> editOwner(@RequestBody OwnerRequestDto body, @PathVariable int ownerId)
+    public ResponseEntity<OwnerResponseDto> editOwner(
+            @RequestBody OwnerRequestDto body, @PathVariable int ownerId)
             throws IllegalArgumentException {
         administratorService.editOwner(
                 ownerId,
@@ -197,7 +199,6 @@ public class AdministratorRestController {
     @ApiOperation("Get all owners")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Owners returned")})
     @GetMapping(value = {"/administrator/owner"})
-    
     public ResponseEntity<List<OwnerResponseDto>> getAllOwners() throws IllegalArgumentException {
         var owners = administratorService.getAllOwners();
         var OwnerResponseDtos = owners.stream().map(owner -> OwnerResponseDto.createDto(owner));

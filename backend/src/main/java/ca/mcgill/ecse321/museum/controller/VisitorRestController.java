@@ -69,7 +69,7 @@ public class VisitorRestController {
         // Get the email of the authenticated user
         String authEmail;
         if (principal instanceof UserDetails) {
-            authEmail = ((UserDetails)principal).getUsername();
+            authEmail = ((UserDetails) principal).getUsername();
         } else {
             authEmail = principal.toString();
         }
@@ -79,7 +79,7 @@ public class VisitorRestController {
 
         // Get the visitor id
         long visitorId = visitor.get(0).getId();
-        
+
         visitorService.editVisitor(
                 visitorId,
                 body.getFirstName(),

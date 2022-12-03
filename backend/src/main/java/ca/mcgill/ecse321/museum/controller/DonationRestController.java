@@ -10,7 +10,6 @@ import ca.mcgill.ecse321.museum.service.DonationService;
 import io.swagger.annotations.Api;
 import java.sql.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,14 +39,14 @@ public class DonationRestController {
         if (body == null) {
             return new ResponseEntity<DonationResponseDto>(HttpStatus.BAD_REQUEST);
         }
-        
+
         // Check if the authenticated user is the donor
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         // Get the email of the authenticated user
         String authEmail;
         if (principal instanceof UserDetails) {
-            authEmail = ((UserDetails)principal).getUsername();
+            authEmail = ((UserDetails) principal).getUsername();
         } else {
             authEmail = principal.toString();
         }
@@ -99,7 +98,7 @@ public class DonationRestController {
     @DeleteMapping(value = {"/donations/{donationId}"})
     @PreAuthorize("hasRole('VISITOR')")
     public ResponseEntity<DonationResponseDto> deleteDonation(@PathVariable Long donationId) {
-        
+
         Long donorId;
         try {
             // Get the donation owner id
@@ -109,14 +108,14 @@ public class DonationRestController {
         } catch (Exception e) {
             return new ResponseEntity<DonationResponseDto>(HttpStatus.NOT_FOUND);
         }
-            
+
         // Check if the authenticated user is the donor
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         // Get the email of the authenticated user
         String authEmail;
         if (principal instanceof UserDetails) {
-            authEmail = ((UserDetails)principal).getUsername();
+            authEmail = ((UserDetails) principal).getUsername();
         } else {
             authEmail = principal.toString();
         }
@@ -128,7 +127,7 @@ public class DonationRestController {
         if (donorId != person.get(0).getId()) {
             return new ResponseEntity<DonationResponseDto>(HttpStatus.UNAUTHORIZED);
         }
-        
+
         donationService.deleteDonation(donationId);
         return new ResponseEntity<DonationResponseDto>(HttpStatus.OK);
     }

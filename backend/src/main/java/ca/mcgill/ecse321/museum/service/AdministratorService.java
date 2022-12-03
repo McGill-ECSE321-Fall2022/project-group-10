@@ -7,7 +7,6 @@ import ca.mcgill.ecse321.museum.model.Employee;
 import ca.mcgill.ecse321.museum.model.Owner;
 import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
 import ca.mcgill.ecse321.museum.security.CredentialsEncoder;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;

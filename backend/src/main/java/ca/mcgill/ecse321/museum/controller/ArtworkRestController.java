@@ -102,7 +102,8 @@ public class ArtworkRestController {
     @PutMapping(value = {"/artworks/move/{artworkId}"})
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<ArtworkResponseDto> moveArtworkToRoom(
-            @PathVariable long artworkId, @RequestParam long roomId) throws IllegalArgumentException {
+            @PathVariable long artworkId, @RequestParam long roomId)
+            throws IllegalArgumentException {
         var artwork = artworkService.moveArtworkToRoom(artworkId, roomId);
         return new ResponseEntity<ArtworkResponseDto>(
                 ArtworkResponseDto.createDto(artwork), HttpStatus.OK);

@@ -128,7 +128,7 @@ public class LoanServiceTests {
         assertEquals(visitorId, loan.getCustomer().getId());
     }
 
-    //test create loan with null dates
+    // test create loan with null dates
     @Test
     public void testCreateLoanNullStartDate() {
         float price = 100f;
@@ -191,13 +191,13 @@ public class LoanServiceTests {
 
         // Mock Artwork
         lenient()
-        .when(artworkRepository.findById(anyLong()))
-        .thenAnswer(
-                (InvocationOnMock invocation) -> {
-                    Artwork artwork = new Artwork();
-                    artwork.setId(Long.valueOf(1));
-                    return Optional.of(artwork);
-                });
+                .when(artworkRepository.findById(anyLong()))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                            Artwork artwork = new Artwork();
+                            artwork.setId(Long.valueOf(1));
+                            return Optional.of(artwork);
+                        });
 
         float price = 100f;
         Date startDate = new Date(0);
@@ -402,7 +402,6 @@ public class LoanServiceTests {
         }
     }
 
-
     // validate loan success
     @Test
     public void validateLoan() {
@@ -570,7 +569,7 @@ public class LoanServiceTests {
         assertEquals(newEndDate, loan.getEndDate());
     }
 
-    //edit loan fail null start date
+    // edit loan fail null start date
     @Test
     public void editLoanFailNullStartDate() {
         try {
@@ -581,7 +580,7 @@ public class LoanServiceTests {
         }
     }
 
-    //edit loan fail null end date
+    // edit loan fail null end date
     @Test
     public void editLoanFailNullEndDate() {
         try {
@@ -592,7 +591,7 @@ public class LoanServiceTests {
         }
     }
 
-    //edit loan fail null loan
+    // edit loan fail null loan
     @Test
     public void editLoanFailNullLoan() {
         try {
@@ -608,24 +607,24 @@ public class LoanServiceTests {
     public void getValidatedLoansForArtwork() {
         // mock loan
         lenient()
-        .when(loanRepository.findByArtworkAndStatus(anyLong(), any(LoanStatus.class)))
-        .thenAnswer(
-                (InvocationOnMock invocation) -> {
-                    Loan loan = new Loan();
-                    loan.setId(LOAN_KEY_EMPTY);
-                    return List.of(loan);
-                });
+                .when(loanRepository.findByArtworkAndStatus(anyLong(), any(LoanStatus.class)))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                            Loan loan = new Loan();
+                            loan.setId(LOAN_KEY_EMPTY);
+                            return List.of(loan);
+                        });
 
-        //mock artwork
+        // mock artwork
         lenient()
-        .when(artworkRepository.findById(anyLong()))
-        .thenAnswer(
-                (InvocationOnMock invocation) -> {
-                    Artwork artwork = new Artwork();
-                    artwork.setId(Long.valueOf(1));
-                    return Optional.of(artwork);
-                });
-        
+                .when(artworkRepository.findById(anyLong()))
+                .thenAnswer(
+                        (InvocationOnMock invocation) -> {
+                            Artwork artwork = new Artwork();
+                            artwork.setId(Long.valueOf(1));
+                            return Optional.of(artwork);
+                        });
+
         List<Loan> loans = loanService.getValidatedLoansForArtwork(1L);
         assertNotNull(loans);
     }

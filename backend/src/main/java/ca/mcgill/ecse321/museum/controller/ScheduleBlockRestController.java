@@ -10,7 +10,6 @@ import ca.mcgill.ecse321.museum.model.Person;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock;
 import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.repository.PersonRepository;
-import ca.mcgill.ecse321.museum.repository.VisitorRepository;
 import ca.mcgill.ecse321.museum.service.ScheduleBlockService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -204,7 +203,7 @@ public class ScheduleBlockRestController {
 
         String authEmail;
         if (principal instanceof UserDetails) {
-            authEmail = ((UserDetails)principal).getUsername();
+            authEmail = ((UserDetails) principal).getUsername();
         } else {
             authEmail = principal.toString();
         }
@@ -219,7 +218,7 @@ public class ScheduleBlockRestController {
         if (person.getId() != visitorId) {
             return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.UNAUTHORIZED);
         }
-        
+
         // Add visitor to schedule block
         var scheduleBlock =
                 scheduleBlockService.registerVisitorOnScheduleBlock(scheduleId, visitorId);
@@ -233,28 +232,28 @@ public class ScheduleBlockRestController {
     @PreAuthorize("hasRole('VISITOR')")
     public ResponseEntity<ScheduleBlockResponseDto> removeVisitorFromScheduleBlock(
             @PathVariable long scheduleId, @PathVariable long visitorId) {
-        
+
         // Check if the authentication user is the same as the visitor
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String authEmail;
         if (principal instanceof UserDetails) {
-                authEmail = ((UserDetails)principal).getUsername();
+            authEmail = ((UserDetails) principal).getUsername();
         } else {
-                authEmail = principal.toString();
+            authEmail = principal.toString();
         }
 
         // Get the user id of the authenticated user
         Person person = personRepository.findByEmail(authEmail);
         if (person == null || person.getId() != visitorId) {
-                return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.UNAUTHORIZED);
         }
 
         // Check if the visitor id is the same as the authenticated user
         if (person.getId() != visitorId) {
-                return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.UNAUTHORIZED);
         }
-        
+
         // Remove visitor from schedule block
         var scheduleBlock =
                 scheduleBlockService.unregisterVisitorOnScheduleBlock(scheduleId, visitorId);

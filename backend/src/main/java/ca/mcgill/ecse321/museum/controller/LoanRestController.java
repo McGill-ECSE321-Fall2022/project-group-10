@@ -51,14 +51,14 @@ public class LoanRestController {
         // Get the email of the authenticated user
         String authEmail;
         if (principal instanceof UserDetails) {
-            authEmail = ((UserDetails)principal).getUsername();
+            authEmail = ((UserDetails) principal).getUsername();
         } else {
             authEmail = principal.toString();
         }
 
         // Get the user id of the authenticated user
         Person person = personRepository.findByEmail(authEmail);
-        if (person == null || !(person instanceof Visitor)) { 
+        if (person == null || !(person instanceof Visitor)) {
             return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
         }
 
@@ -118,7 +118,7 @@ public class LoanRestController {
         // Get the email of the authenticated user
         String authEmail;
         if (principal instanceof UserDetails) {
-            authEmail = ((UserDetails)principal).getUsername();
+            authEmail = ((UserDetails) principal).getUsername();
         } else {
             authEmail = principal.toString();
         }
@@ -133,7 +133,7 @@ public class LoanRestController {
         if (validatorId != person.getId()) {
             return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
         }
-        
+
         Loan loan = loanService.validateLoan(loanId, validatorId);
         return new ResponseEntity<LoanResponseDto>(LoanResponseDto.createDto(loan), HttpStatus.OK);
     }
@@ -151,7 +151,7 @@ public class LoanRestController {
         // Get the email of the authenticated user
         String authEmail;
         if (principal instanceof UserDetails) {
-            authEmail = ((UserDetails)principal).getUsername();
+            authEmail = ((UserDetails) principal).getUsername();
         } else {
             authEmail = principal.toString();
         }
@@ -166,7 +166,7 @@ public class LoanRestController {
         if (validatorId != person.getId()) {
             return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
         }
-        
+
         Loan loan = loanService.rejectLoan(loanId, validatorId);
         return new ResponseEntity<LoanResponseDto>(LoanResponseDto.createDto(loan), HttpStatus.OK);
     }
@@ -183,14 +183,14 @@ public class LoanRestController {
         // Get the email of the authenticated user
         String authEmail;
         if (principal instanceof UserDetails) {
-            authEmail = ((UserDetails)principal).getUsername();
+            authEmail = ((UserDetails) principal).getUsername();
         } else {
             authEmail = principal.toString();
         }
 
         // Get the user id of the authenticated user
         Person person = personRepository.findByEmail(authEmail);
-        if (person == null || !(person instanceof Visitor)) { 
+        if (person == null || !(person instanceof Visitor)) {
             return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
         }
 
