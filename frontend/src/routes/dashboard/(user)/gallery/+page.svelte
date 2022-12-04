@@ -8,15 +8,25 @@
 	  const artworks = await res.json();
 	  return { artworks };
   };
+
+  let hideUnloanable = false;
 </script>
 
 <div class="container">
   {#await loadArtworks()}
   <p>Loading</p>
   {:then data}
+    <input type="checkbox" name="hideUnloanable" id="hideUnloanable" bind:checked={hideUnloanable}>
+    <label for="hideUnloanable">Hide unloanable items</label>
     <div class="artworks">
+      
+      {#if data.artworks.length === 0}
+        <p>No artworks yet</p>
+      {/if}
       {#each data.artworks as artwork}
+      {#if artwork.available || !artwork.available && !hideUnloanable }
         <Artwork {artwork}/>
+      {/if}
       {/each}
     </div>
   {/await}
@@ -31,6 +41,11 @@
 
   .artworks {
     display: flex;
+    flex-wrap: wrap;
     gap: 8rem;
+  }
+
+  #hideUnloanable {
+    margin-bottom: 2rem;
   }
 </style>

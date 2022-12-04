@@ -60,12 +60,13 @@
     border-radius: 14px;
     padding: 0 1rem;
     margin-top: -1rem;
-    transition: height ease-in-out 0.3s
+    transition: all ease-in-out 0.3s;
+    margin-bottom: 0;
   }
 
   .container:hover .info {
     height: 8rem;
-    transition: height ease-in-out 0.3s
+    transition: all ease-in-out 0.3s;
   }
 
 </style>
