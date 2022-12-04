@@ -26,7 +26,7 @@
     <InfoModal {selectedArtwork}/>
   </div>
 {/if}
-<div class="container {showModal ? "disabled" : ""}">
+<div class="container">
   {#await loadArtworks()}
   <p>Loading</p>
   {:then data}
@@ -57,10 +57,6 @@
     left: 0;
     background-color: rgba(0, 0, 0, 0.2);
     z-index: 99999;
-  }
-
-  .overlay ~ .container {
-    overflow: hidden;
   }
 
   .container {
