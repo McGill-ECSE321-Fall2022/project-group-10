@@ -6,6 +6,7 @@ import ca.mcgill.ecse321.museum.model.Administrator;
 import ca.mcgill.ecse321.museum.model.Employee;
 import ca.mcgill.ecse321.museum.model.Owner;
 import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
+import ca.mcgill.ecse321.museum.security.CredentialsEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -32,14 +33,19 @@ public class AdministratorService {
             String firstName, String lastName, String email, String password, float salary) {
         Employee employee = new Employee();
 
+        if (!email.endsWith("@mail.museum.com"))
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Administrator emails must end with @mail.museum.com");
+
         if (administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
+        CredentialsEncoder encoder = new CredentialsEncoder();
+
         employee.setFirstName(firstName);
         employee.setLastName(lastName);
         employee.setEmail(email);
-        employee.setPassword(password);
+        employee.setPassword(encoder.encode(password));
         employee.setSalary(salary);
         employee.setActive(true);
         return administratorRepository.save(employee);
@@ -58,14 +64,19 @@ public class AdministratorService {
     public Owner createOwner(String firstName, String lastName, String email, String password) {
         Owner owner = new Owner();
 
+        if (!email.endsWith("@mail.museum.com"))
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Administrator emails must end with @mail.museum.com");
+
         if (administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
+        CredentialsEncoder encoder = new CredentialsEncoder();
+
         owner.setFirstName(firstName);
         owner.setLastName(lastName);
         owner.setEmail(email);
-        owner.setPassword(password);
+        owner.setPassword(encoder.encode(password));
         return administratorRepository.save(owner);
     }
 
@@ -93,14 +104,21 @@ public class AdministratorService {
         if (employee == null)
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "Employee not found");
 
-        if (employee.getEmail() != email && administratorRepository.findByEmail(email).size() > 0) {
+        if (!email.endsWith("@mail.museum.com"))
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Administrator emails must end with @mail.museum.com");
+
+
+        if (!employee.getEmail().equals(email)
+                && administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
+
+        CredentialsEncoder encoder = new CredentialsEncoder();
 
         employee.setFirstName(firstName);
         employee.setLastName(lastName);
         employee.setEmail(email);
-        employee.setPassword(password);
+        employee.setPassword(encoder.encode(password));
         employee.setSalary(salary);
         return administratorRepository.save(employee);
     }
@@ -123,15 +141,22 @@ public class AdministratorService {
 
         if (owner == null)
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "Employee not found");
+        
+        if (!email.endsWith("@mail.museum.com"))
+            throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Administrator emails must end with @mail.museum.com");
 
-        if (owner.getEmail() != email && administratorRepository.findByEmail(email).size() > 0) {
+
+        if (!owner.getEmail().equals(email)
+                && administratorRepository.findByEmail(email).size() > 0) {
             throw new ServiceLayerException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
+
+        CredentialsEncoder encoder = new CredentialsEncoder();
 
         owner.setFirstName(firstName);
         owner.setLastName(lastName);
         owner.setEmail(email);
-        owner.setPassword(password);
+        owner.setPassword(encoder.encode(password));
         return administratorRepository.save(owner);
     }
 

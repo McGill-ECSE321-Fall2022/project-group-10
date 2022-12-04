@@ -14,6 +14,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +35,7 @@ public class RoomRestController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Create exhibit room")
     @PostMapping(value = {"/rooms/exhibitRoom"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<ExhibitRoomResponseDto> createExhibitRoom(
             @RequestBody ExhibitRoomRequestDto body) throws IllegalArgumentException {
         ExhibitRoom exhibitRoom = roomService.createExhibitRoom(body.getName(), body.getCapacity());
@@ -44,6 +46,7 @@ public class RoomRestController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Create storage room")
     @PostMapping(value = {"/rooms/storageRoom"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<StorageRoomResponseDto> createStorageRoom(
             @RequestBody StorageRoomRequestDto body) throws IllegalArgumentException {
         StorageRoom storageRoom = roomService.createStorageRoom(body.getName());
@@ -54,6 +57,7 @@ public class RoomRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Update exhibit room")
     @PutMapping(value = {"/rooms/exhibitRoom/{id}/{newName}/{newCapacity}"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<ExhibitRoomResponseDto> updateExhibitRoom(
             @PathVariable long id, @PathVariable String newName, @PathVariable int newCapacity)
             throws IllegalArgumentException {
@@ -66,6 +70,7 @@ public class RoomRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Update storage room")
     @PutMapping(value = {"/rooms/storageRoom/{id}/{newName}"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<StorageRoomResponseDto> updateStorageRoom(
             @PathVariable long id, @PathVariable String newName) throws IllegalArgumentException {
         return new ResponseEntity<StorageRoomResponseDto>(
@@ -76,6 +81,7 @@ public class RoomRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get exhibit room")
     @GetMapping(value = {"/rooms/exhibitRoom/{id}"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<ExhibitRoomResponseDto> getExhibitRoom(@PathVariable long id)
             throws IllegalArgumentException {
         return new ResponseEntity<ExhibitRoomResponseDto>(
@@ -85,6 +91,7 @@ public class RoomRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get storage room")
     @GetMapping(value = {"/rooms/storageRoom/{id}"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<StorageRoomResponseDto> getStorageRoom(@PathVariable long id)
             throws IllegalArgumentException {
         return new ResponseEntity<StorageRoomResponseDto>(
@@ -94,6 +101,7 @@ public class RoomRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get all exhibit rooms")
     @GetMapping(value = {"/rooms/exhibitRoom"})
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<ExhibitRoomResponseDto>> getAllExhibitRooms()
             throws IllegalArgumentException {
         var rooms = roomService.getAllExhibitRooms();
@@ -106,6 +114,7 @@ public class RoomRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get all storage rooms")
     @GetMapping(value = {"/rooms/storageRoom"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<List<StorageRoomResponseDto>> getAllStorageRooms()
             throws IllegalArgumentException {
         var rooms = roomService.getAllStorageRooms();
@@ -118,6 +127,7 @@ public class RoomRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get count of artworks in exhibit room")
     @GetMapping(value = {"/rooms/exhibitRoom/{id}/count"})
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Long> getCountArtworksInExhibitRoom(@PathVariable long id)
             throws IllegalArgumentException {
         return new ResponseEntity<Long>(
@@ -127,6 +137,7 @@ public class RoomRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Delete room")
     @DeleteMapping(value = {"/rooms/{id}"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<String> deleteRoom(@PathVariable long id)
             throws IllegalArgumentException {
         roomService.deleteRoom(id);

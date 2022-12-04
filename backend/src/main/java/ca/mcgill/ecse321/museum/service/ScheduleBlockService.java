@@ -7,8 +7,9 @@ import ca.mcgill.ecse321.museum.model.Person;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock;
 import ca.mcgill.ecse321.museum.model.ScheduleBlock.ScheduleEvent;
 import ca.mcgill.ecse321.museum.model.Visitor;
-import ca.mcgill.ecse321.museum.repository.PersonRepository;
+import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
 import ca.mcgill.ecse321.museum.repository.ScheduleBlockRepository;
+import ca.mcgill.ecse321.museum.repository.VisitorRepository;
 import java.sql.Date;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class ScheduleBlockService {
 
     @Autowired ScheduleBlockRepository scheduleBlockRepository;
 
-    @Autowired PersonRepository personRepository;
+    @Autowired VisitorRepository visitorRepository;
+    @Autowired AdministratorRepository administratorRepository;
 
     /**
      * Create a new schedule block
@@ -188,7 +190,7 @@ public class ScheduleBlockService {
      * @param visitorId - id of the visitor
      */
     @Transactional
-    public void registerVisitorOnScheduleBlock(long scheduleId, long visitorId) {
+    public ScheduleBlock registerVisitorOnScheduleBlock(long scheduleId, long visitorId) {
         // Get the schedule block from the database using the id
         ScheduleBlock scheduleBlock = scheduleBlockRepository.findById(scheduleId).orElse(null);
 
@@ -198,15 +200,16 @@ public class ScheduleBlockService {
         }
 
         // Get the visitor from the database using the id
-        Person person = personRepository.findById(visitorId).orElse(null);
+        Visitor person = visitorRepository.findById(visitorId).orElse(null);
 
         // Check if the person exists and is a visitor
-        if (person == null || !(person instanceof Visitor)) {
+        if (person == null) {
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such visitor");
         }
 
         // Check if the visitor is already registered to the schedule block
-        if (scheduleBlock.getVisitors().contains(person)) {
+        if (scheduleBlock.getVisitors().stream()
+                .anyMatch(visitor -> visitor.getId() == visitorId)) {
             throw new ServiceLayerException(
                     HttpStatus.BAD_REQUEST, "Visitor already registered to schedule block");
         }
@@ -217,10 +220,10 @@ public class ScheduleBlockService {
         }
 
         // Add the visitor to the schedule block
-        scheduleBlock.getVisitors().add((Visitor) person);
+        scheduleBlock.getVisitors().add(person);
 
         // Save the schedule block in the database
-        scheduleBlockRepository.save(scheduleBlock);
+        return scheduleBlockRepository.save(scheduleBlock);
     }
 
     /**
@@ -230,7 +233,7 @@ public class ScheduleBlockService {
      * @param visitorId - id of the visitor
      */
     @Transactional
-    public void unregisterVisitorOnScheduleBlock(long scheduleId, long visitorId) {
+    public ScheduleBlock unregisterVisitorOnScheduleBlock(long scheduleId, long visitorId) {
         // Get the schedule block from the database using the id
         ScheduleBlock scheduleBlock = scheduleBlockRepository.findById(scheduleId).orElse(null);
 
@@ -240,24 +243,25 @@ public class ScheduleBlockService {
         }
 
         // Get the visitor from the database using the id
-        Person person = personRepository.findById(visitorId).orElse(null);
+        Person person = visitorRepository.findById(visitorId).orElse(null);
 
         // Check if the person exists and is a visitor
-        if (person == null || !(person instanceof Visitor)) {
+        if (person == null) {
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such visitor");
         }
 
         // Check if the visitor is not registered to the schedule block
-        if (!scheduleBlock.getVisitors().contains(person)) {
+        if (scheduleBlock.getVisitors().stream()
+                .noneMatch(visitor -> visitor.getId() == visitorId)) {
             throw new ServiceLayerException(
                     HttpStatus.BAD_REQUEST, "Visitor not registered to schedule block");
         }
 
         // Remove the visitor from the schedule block
-        scheduleBlock.getVisitors().remove(person);
+        scheduleBlock.getVisitors().removeIf(visitor -> visitor.getId() == visitorId);
 
         // Save the schedule block in the database
-        scheduleBlockRepository.save(scheduleBlock);
+        return scheduleBlockRepository.save(scheduleBlock);
     }
 
     /**
@@ -286,7 +290,7 @@ public class ScheduleBlockService {
      * @param staffId - id of the staff member
      */
     @Transactional
-    public void registerStaffOnScheduleBlock(long scheduleId, long staffId) {
+    public ScheduleBlock registerStaffOnScheduleBlock(long scheduleId, long staffId) {
 
         // Get the schedule block from the database using the id
         ScheduleBlock scheduleBlock = scheduleBlockRepository.findById(scheduleId).orElse(null);
@@ -297,24 +301,24 @@ public class ScheduleBlockService {
         }
 
         // Get the staff from the database using the id
-        Person person = personRepository.findById(staffId).orElse(null);
+        Administrator person = administratorRepository.findById(staffId).orElse(null);
 
         // Check if the person exists and is a staff
-        if (person == null || !(person instanceof Administrator)) {
+        if (person == null) {
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such staff");
         }
 
         // Check if the staff is already registered to the schedule block
-        if (scheduleBlock.getAdmins().contains(person)) {
+        if (scheduleBlock.getAdmins().stream().anyMatch(admin -> admin.getId() == staffId)) {
             throw new ServiceLayerException(
                     HttpStatus.BAD_REQUEST, "Staff already registered to schedule block");
         }
 
         // Add the staff to the schedule block
-        scheduleBlock.getAdmins().add((Administrator) person);
+        scheduleBlock.getAdmins().add(person);
 
         // Save the schedule block in the database
-        scheduleBlockRepository.save(scheduleBlock);
+        return scheduleBlockRepository.save(scheduleBlock);
     }
 
     /**
@@ -324,7 +328,7 @@ public class ScheduleBlockService {
      * @param staffId - id of the staff member
      */
     @Transactional
-    public void unregisterStaffOnScheduleBlock(long scheduleId, long staffId) {
+    public ScheduleBlock unregisterStaffOnScheduleBlock(long scheduleId, long staffId) {
         // Get the schedule block from the database using the id
         ScheduleBlock scheduleBlock = scheduleBlockRepository.findById(scheduleId).orElse(null);
 
@@ -334,23 +338,23 @@ public class ScheduleBlockService {
         }
 
         // Get the staff from the database using the id
-        Person person = personRepository.findById(staffId).orElse(null);
+        Person person = administratorRepository.findById(staffId).orElse(null);
 
         // Check if the person exists and is a staff
-        if (person == null || !(person instanceof Administrator)) {
+        if (person == null) {
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such staff");
         }
 
         // Check if the staff is not registered to the schedule block
-        if (!scheduleBlock.getAdmins().contains(person)) {
+        if (scheduleBlock.getAdmins().stream().noneMatch(admin -> admin.getId() == staffId)) {
             throw new ServiceLayerException(
                     HttpStatus.BAD_REQUEST, "Staff not registered to schedule block");
         }
 
         // Remove the staff from the schedule block
-        scheduleBlock.getAdmins().remove(person);
+        scheduleBlock.getAdmins().removeIf(admin -> admin.getId() == staffId);
 
         // Save the schedule block in the database
-        scheduleBlockRepository.save(scheduleBlock);
+        return scheduleBlockRepository.save(scheduleBlock);
     }
 }

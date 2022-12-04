@@ -15,7 +15,9 @@ public class ScheduleBlock {
     // ------------------------
 
     // ScheduleBlock Attributes
-    @Id @GeneratedValue private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     // ------------------------
     // MEMBER VARIABLES

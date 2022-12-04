@@ -13,6 +13,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -37,6 +38,7 @@ public class AdministratorRestController {
                 @ApiResponse(code = 400, message = "No such employee")
             })
     @PostMapping(value = {"/administrator/employee"})
+    @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<EmployeeResponseDto> createEmployee(
             @RequestBody EmployeeRequestDto body) {
         Employee employee =
@@ -57,11 +59,13 @@ public class AdministratorRestController {
                 @ApiResponse(code = 200, message = "Employee edited"),
                 @ApiResponse(code = 404, message = "No such employee")
             })
-    @PutMapping(value = {"/administrator/employee"})
-    public ResponseEntity<EmployeeResponseDto> editEmployee(@RequestBody EmployeeRequestDto body)
+    @PutMapping(value = {"/administrator/employee/{employeeId}"})
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<EmployeeResponseDto> editEmployee(
+            @RequestBody EmployeeRequestDto body, @PathVariable int employeeId)
             throws IllegalArgumentException {
         administratorService.editEmployee(
-                body.getId(),
+                employeeId,
                 body.getFirstName(),
                 body.getLastName(),
                 body.getEmail(),
@@ -77,10 +81,11 @@ public class AdministratorRestController {
                 @ApiResponse(code = 200, message = "Employee deactivated"),
                 @ApiResponse(code = 404, message = "No such employee")
             })
-    @PutMapping(value = {"/administrator/employee/deactivate/{id}"})
-    public ResponseEntity<EmployeeResponseDto> deactivateEmployee(@PathVariable long id)
+    @PutMapping(value = {"/administrator/employee/deactivate/{employeeId}"})
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<EmployeeResponseDto> deactivateEmployee(@PathVariable long employeeId)
             throws IllegalArgumentException {
-        administratorService.deactivateEmployee(id);
+        administratorService.deactivateEmployee(employeeId);
         return new ResponseEntity<EmployeeResponseDto>(HttpStatus.OK);
     }
 
@@ -91,10 +96,11 @@ public class AdministratorRestController {
                 @ApiResponse(code = 200, message = "Employee reactivated"),
                 @ApiResponse(code = 404, message = "No such employee")
             })
-    @PutMapping(value = {"/administrator/employee/reactivate/{id}"})
-    public ResponseEntity<EmployeeResponseDto> reactivateEmployee(@PathVariable long id)
+    @PutMapping(value = {"/administrator/employee/reactivate/{employeeId}"})
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<EmployeeResponseDto> reactivateEmployee(@PathVariable long employeeId)
             throws IllegalArgumentException {
-        administratorService.reactivateEmployee(id);
+        administratorService.reactivateEmployee(employeeId);
         return new ResponseEntity<EmployeeResponseDto>(HttpStatus.OK);
     }
 
@@ -105,10 +111,11 @@ public class AdministratorRestController {
                 @ApiResponse(code = 200, message = "Employee returned"),
                 @ApiResponse(code = 404, message = "No such employee")
             })
-    @GetMapping(value = {"/administrator/employee/{id}"})
-    public ResponseEntity<EmployeeResponseDto> getEmployee(@PathVariable long id)
+    @GetMapping(value = {"/administrator/employee/{employeeId}"})
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<EmployeeResponseDto> getEmployee(@PathVariable long employeeId)
             throws IllegalArgumentException {
-        var employee = administratorService.getEmployee(id);
+        var employee = administratorService.getEmployee(employeeId);
         return new ResponseEntity<>(EmployeeResponseDto.createDto(employee), HttpStatus.OK);
     }
 
@@ -116,6 +123,7 @@ public class AdministratorRestController {
     @ApiOperation("Get all employees")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Employees returned")})
     @GetMapping(value = {"/administrator/employee"})
+    @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<List<EmployeeResponseDto>> getAllEmployees()
             throws IllegalArgumentException {
         var employees = administratorService.getAllEmployees();
@@ -139,6 +147,7 @@ public class AdministratorRestController {
                 @ApiResponse(code = 404, message = "No such owner")
             })
     @PostMapping(value = {"/administrator/owner"})
+    @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<OwnerResponseDto> createOwner(@RequestBody OwnerRequestDto body) {
         Owner owner =
                 administratorService.createOwner(
@@ -157,11 +166,13 @@ public class AdministratorRestController {
                 @ApiResponse(code = 200, message = "Owner edited"),
                 @ApiResponse(code = 404, message = "No such owner")
             })
-    @PutMapping(value = {"/administrator/owner"})
-    public ResponseEntity<OwnerResponseDto> editOwner(@RequestBody OwnerRequestDto body)
+    @PutMapping(value = {"/administrator/owner/{ownerId}"})
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<OwnerResponseDto> editOwner(
+            @RequestBody OwnerRequestDto body, @PathVariable int ownerId)
             throws IllegalArgumentException {
         administratorService.editOwner(
-                body.getId(),
+                ownerId,
                 body.getFirstName(),
                 body.getLastName(),
                 body.getEmail(),
@@ -176,10 +187,11 @@ public class AdministratorRestController {
                 @ApiResponse(code = 200, message = "Owner returned"),
                 @ApiResponse(code = 404, message = "No such owner")
             })
-    @GetMapping(value = {"/administrator/owner/{id}"})
-    public ResponseEntity<OwnerResponseDto> getOwner(@PathVariable long id)
+    @GetMapping(value = {"/administrator/owner/{ownerId}"})
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<OwnerResponseDto> getOwner(@PathVariable long ownerId)
             throws IllegalArgumentException {
-        var owner = administratorService.getOwner(id);
+        var owner = administratorService.getOwner(ownerId);
         return new ResponseEntity<>(OwnerResponseDto.createDto(owner), HttpStatus.OK);
     }
 

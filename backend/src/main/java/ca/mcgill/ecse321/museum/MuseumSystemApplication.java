@@ -31,5 +31,7 @@ public class MuseumSystemApplication {
     @PostConstruct
     public void init() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        // CredentialsEncoder encoder = new CredentialsEncoder();
+        // System.out.println("Encoded password: " + encoder.encode("admin"));
     }
 }

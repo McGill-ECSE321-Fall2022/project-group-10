@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
+import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.Artwork;
 import ca.mcgill.ecse321.museum.model.Donation;
 import ca.mcgill.ecse321.museum.model.Employee;
@@ -26,6 +27,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -160,6 +162,19 @@ public class DonationServiceTests {
         assertEquals(DONOR_KEY, donation.getDonor().getId());
     }
 
+    // Test creating a donation fail
+    @Test
+    public void testCreatDonationFail() {
+
+        String description = "This artwork is of Joey";
+        try {
+            donationService.createDonation(description, Long.valueOf(400));
+
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        }
+    }
+
     // Test validating a donation
     @Test
     public void testValidateDonation() {
@@ -186,11 +201,65 @@ public class DonationServiceTests {
         assertEquals(true, donation.isValidated());
     }
 
+    // Test validating a donation with wrong donation ID
+    public void testValidateDonationfail() {
+        String author = "Keith Crochetiere";
+        String title = "Banana";
+        float price = 50;
+        String imagelink = "WWW.321isbestclass.com";
+        Date creationDate = new Date(1337137);
+        Boolean isAvailable = true;
+
+        try {
+            donationService.validateDonation(
+                    800, VALIDATOR_KEY, price, title, author, imagelink, creationDate, isAvailable);
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        }
+    }
+
+    // Test validating a donation with wrong Validator ID
+    public void testValidateDonationfail2() {
+        String author = "Keith Crochetiere";
+        String title = "Banana";
+        float price = 50;
+        String imagelink = "WWW.321isbestclass.com";
+        Date creationDate = new Date(1337137);
+        Boolean isAvailable = true;
+
+        try {
+            donationService.validateDonation(
+                    DONATION_KEY_INVALID,
+                    300,
+                    price,
+                    title,
+                    author,
+                    imagelink,
+                    creationDate,
+                    isAvailable);
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        }
+    }
+
     // Test deleting a donation
     @Test
     public void testDeleteDonation() {
         donationService.deleteDonation(DONATION_KEY_INVALID);
         verify(donationRepository, times(1)).delete(any(Donation.class));
+    }
+
+    // Delete donation fail
+    @Test
+    public void testDeleteDonationfail() {
+        try {
+            donationService.deleteDonation(Long.valueOf(3000));
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        }
     }
 
     // Test getting all donations
@@ -201,5 +270,24 @@ public class DonationServiceTests {
         assertNotNull(donations.get(0));
         assertEquals(DONATION_KEY_INVALID, donations.get(0).getId());
         assertEquals(1, donations.size());
+    }
+
+    // Test get donation
+    @Test
+    public void testGetDonationSuccess() {
+        Donation donation = donationService.getDonation(DONATION_KEY_VALID);
+        assertNotNull(donation);
+        assertEquals(DONATION_KEY_VALID, donation.getId());
+    }
+
+    // Test get donation fail
+    @Test
+    public void testGetDonationFail() {
+        try {
+            donationService.getDonation(222);
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        }
     }
 }

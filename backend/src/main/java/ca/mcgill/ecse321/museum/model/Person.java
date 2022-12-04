@@ -20,7 +20,9 @@ public abstract class Person {
     private String password;
 
     // Person Associations
-    @Id @GeneratedValue private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     public long getId() {
         return id;

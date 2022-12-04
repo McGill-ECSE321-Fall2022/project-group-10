@@ -12,8 +12,6 @@ public class DonationRequestDto {
     // private String author;
     // private boolean isAvailable;
     // private String imageLink;
-    Long donorID;
-    Long validatorID;
     Long artworkID;
 
     Long price;
@@ -57,14 +55,6 @@ public class DonationRequestDto {
 
     public boolean getValidated() {
         return validated;
-    }
-
-    public Long getDonorID() {
-        return donorID;
-    }
-
-    public Long getValidatorID() {
-        return validatorID;
     }
 
     public void setId(Long id) {

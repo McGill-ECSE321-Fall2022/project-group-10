@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import ca.mcgill.ecse321.museum.exception.ServiceLayerException;
 import ca.mcgill.ecse321.museum.model.Visitor;
 import ca.mcgill.ecse321.museum.repository.VisitorRepository;
+import ca.mcgill.ecse321.museum.security.CredentialsEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -109,8 +110,73 @@ public class VisitorServiceTests {
         assertEquals(firstName, visitor.getFirstName());
         assertEquals(lastName, visitor.getLastName());
         assertEquals(email, visitor.getEmail());
-        assertEquals(password, visitor.getPassword());
+        CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
+        assertTrue(credentialsEncoder.matches(password, visitor.getPassword()));
         assertEquals(isActive, visitor.isActive());
+    }
+
+    /** Test CreateVisitor with the email of another visitor */
+    @Test
+    public void testCreateVisitorFailDupEmail() {
+        try {
+            String firstName = "John";
+            String lastName = "Doe";
+            String email = "second@email.com"; // Email of imaginary already existing visitor
+            String password = "password123";
+            visitorService.createVisitor(firstName, lastName, email, password);
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    /** Test CreateVisitor with invalid email */
+    @Test
+    public void testCreateVisitorInvalidEmail() {
+        try {
+            String firstName = "John";
+            String lastName = "Doe";
+            String email = "second@mail.museum.com"; // Invalid email
+            String password = "password123";
+            visitorService.createVisitor(firstName, lastName, email, password);
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    /** Test EditVisitor with complete information */
+    @Test
+    public void testEditVisitorComplete() {
+        Long id = VISITOR_KEY;
+        String firstName = "John";
+        String lastName = "Doe";
+        String email = "tester1@email.com";
+        String password = "password123";
+        Visitor visitor = visitorService.editVisitor(id, firstName, lastName, email, password);
+        assertNotNull(visitor);
+        assertEquals(firstName, visitor.getFirstName());
+        assertEquals(lastName, visitor.getLastName());
+        assertEquals(email, visitor.getEmail());
+        CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
+        assertTrue(credentialsEncoder.matches(password, visitor.getPassword()));
+    }
+
+    /** Test EditVisitor with different email */
+    @Test
+    public void testEditVisitorEmailChange() {
+        Long id = VISITOR_KEY;
+        String firstName = "John";
+        String lastName = "Doe";
+        String email = "newemail@email.com";
+        String password = "password123";
+        Visitor visitor = visitorService.editVisitor(id, firstName, lastName, email, password);
+        assertNotNull(visitor);
+        assertEquals(firstName, visitor.getFirstName());
+        assertEquals(lastName, visitor.getLastName());
+        assertEquals(email, visitor.getEmail());
+        CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
+        assertTrue(credentialsEncoder.matches(password, visitor.getPassword()));
     }
 
     /** Test EditVisitor with the email of another visitor */
@@ -121,6 +187,22 @@ public class VisitorServiceTests {
             String firstName = "John";
             String lastName = "Doe";
             String email = "second@email.com"; // Email of imaginary already existing visitor
+            String password = "password123";
+            visitorService.editVisitor(id, firstName, lastName, email, password);
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    /** Test EditVisitor with invalid email */
+    @Test
+    public void testEditVisitorInvalidEmail() {
+        try {
+            Long id = VISITOR_KEY;
+            String firstName = "John";
+            String lastName = "Doe";
+            String email = "second@mail.museum.com"; // Invalid email
             String password = "password123";
             visitorService.editVisitor(id, firstName, lastName, email, password);
             fail();

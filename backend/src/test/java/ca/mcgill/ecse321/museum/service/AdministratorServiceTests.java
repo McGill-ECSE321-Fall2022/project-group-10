@@ -14,6 +14,7 @@ import ca.mcgill.ecse321.museum.model.Administrator;
 import ca.mcgill.ecse321.museum.model.Employee;
 import ca.mcgill.ecse321.museum.model.Owner;
 import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
+import ca.mcgill.ecse321.museum.security.CredentialsEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,12 +49,13 @@ public class AdministratorServiceTests {
                             if (invocation.getArgument(0).equals(EMPLOYEE_KEY)) {
                                 Employee employee = new Employee();
                                 employee.setId(EMPLOYEE_KEY);
-                                employee.setEmail("first@email.com");
+                                employee.setEmail("first@mail.museum.com");
+                                employee.setActive(true);
                                 return Optional.of(employee);
                             } else if (invocation.getArgument(0).equals(OWNER_KEY)) {
                                 Owner owner = new Owner();
                                 owner.setId(OWNER_KEY);
-                                owner.setEmail("second@email.com");
+                                owner.setEmail("second@mail.museum.com");
                                 return Optional.of(owner);
                             } else {
                                 return Optional.empty();
@@ -65,15 +67,15 @@ public class AdministratorServiceTests {
                 .thenAnswer(
                         (InvocationOnMock invocation) -> {
                             List<Administrator> administrators = new ArrayList<Administrator>();
-                            if (invocation.getArgument(0).equals("first@email.com")) {
+                            if (invocation.getArgument(0).equals("first@mail.museum.com")) {
                                 Employee employee = new Employee();
                                 employee.setId(EMPLOYEE_KEY);
-                                employee.setEmail("first@email.com");
+                                employee.setEmail("first@mail.museum.com");
                                 administrators.add(employee);
-                            } else if (invocation.getArgument(0).equals("second@email.com")) {
+                            } else if (invocation.getArgument(0).equals("second@mail.museum.com")) {
                                 Owner owner = new Owner();
                                 owner.setId(OWNER_KEY);
-                                owner.setEmail("second@email.com");
+                                owner.setEmail("second@mail.museum.com");
                                 administrators.add(owner);
                             }
                             return administrators;
@@ -105,7 +107,7 @@ public class AdministratorServiceTests {
     public void testCreateEmployeeComplete() {
         String firstName = "John";
         String lastName = "Doe";
-        String email = "tester1@email.com";
+        String email = "tester1@mail.museum.com";
         String password = "password123";
         float salary = 99999;
         boolean isActive = true;
@@ -115,7 +117,88 @@ public class AdministratorServiceTests {
         assertEquals(firstName, employee.getFirstName());
         assertEquals(lastName, employee.getLastName());
         assertEquals(email, employee.getEmail());
-        assertEquals(password, employee.getPassword());
+
+        CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
+        assertTrue(credentialsEncoder.matches(password, employee.getPassword()));
+
+        assertEquals(salary, employee.getSalary());
+        assertEquals(isActive, employee.isActive());
+    }
+
+    /** Test CreateEmployee with duplicate email information */
+    @Test
+    public void testCreateEmployeeDupEmail() {
+        try {
+            String firstName = "John";
+            String lastName = "Doe";
+            String email = "second@mail.museum.com"; // Email of owner (OWNER_KEY)
+            String password = "password123";
+            float salary = 99999;
+            administratorService.createEmployee(firstName, lastName, email, password, salary);
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    /** Test CreateEmployee with invalid email */
+    @Test
+    public void testCreateEmployeeInvalidEmail() {
+        try {
+            String firstName = "John";
+            String lastName = "Doe";
+            String email = "second@email.com"; // Invalid email
+            String password = "password123";
+            float salary = 99999;
+            administratorService.createEmployee(firstName, lastName, email, password, salary);
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    /** Test EditEmployee with complete info */
+    @Test
+    public void testEditEmployeeComplete() {
+        Long id = EMPLOYEE_KEY;
+        String firstName = "Johnathan";
+        String lastName = "Doe";
+        String email = "first@mail.museum.com";
+        String password = "password123";
+        float salary = 99999;
+        boolean isActive = true;
+        Employee employee = administratorService.editEmployee(id, firstName, lastName, email, password, salary);
+        assertNotNull(employee);
+        assertEquals(firstName, employee.getFirstName());
+        assertEquals(lastName, employee.getLastName());
+        assertEquals(email, employee.getEmail());
+
+        CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
+        assertTrue(credentialsEncoder.matches(password, employee.getPassword()));
+
+        assertEquals(salary, employee.getSalary());
+        assertEquals(isActive, employee.isActive());
+    }
+
+    /** Test EditEmployee with email change */
+    @Test
+    public void testEditEmployeeEmailChange() {
+        Long id = EMPLOYEE_KEY;
+        String firstName = "Johnathan";
+        String lastName = "Doe";
+        String email = "newemail@mail.museum.com";
+        String password = "password123";
+        float salary = 99999;
+        boolean isActive = true;
+        Employee employee = administratorService.editEmployee(id, firstName, lastName, email, password, salary);
+        assertNotNull(employee);
+        assertEquals(firstName, employee.getFirstName());
+        assertEquals(lastName, employee.getLastName());
+        assertEquals(email, employee.getEmail());
+
+        CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
+        assertTrue(credentialsEncoder.matches(password, employee.getPassword()));
+
         assertEquals(salary, employee.getSalary());
         assertEquals(isActive, employee.isActive());
     }
@@ -127,7 +210,24 @@ public class AdministratorServiceTests {
             Long id = EMPLOYEE_KEY;
             String firstName = "John";
             String lastName = "Doe";
-            String email = "second@email.com"; // Email of owner (OWNER_KEY)
+            String email = "second@mail.museum.com"; // Email of owner (OWNER_KEY)
+            String password = "password123";
+            float salary = 99999;
+            administratorService.editEmployee(id, firstName, lastName, email, password, salary);
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    /** Test EditEmployee with the invalid email */
+    @Test
+    public void testEditEmployeeInvalidEmail() {
+        try {
+            Long id = EMPLOYEE_KEY;
+            String firstName = "John";
+            String lastName = "Doe";
+            String email = "second@email.com"; // Invalid email
             String password = "password123";
             float salary = 99999;
             administratorService.editEmployee(id, firstName, lastName, email, password, salary);
@@ -144,7 +244,7 @@ public class AdministratorServiceTests {
             Long id = NEW_KEY; // New key (does not exist)
             String firstName = "John";
             String lastName = "Doe";
-            String email = "first@email.com";
+            String email = "first@mail.museum.com";
             String password = "password123";
             float salary = 99999;
             administratorService.editEmployee(id, firstName, lastName, email, password, salary);
@@ -224,14 +324,79 @@ public class AdministratorServiceTests {
     public void testCreateOwnerComplete() {
         String firstName = "John";
         String lastName = "Doe";
-        String email = "tester2@email.com";
+        String email = "tester2@mail.museum.com";
         String password = "password123";
         Owner owner = administratorService.createOwner(firstName, lastName, email, password);
         assertNotNull(owner);
         assertEquals(firstName, owner.getFirstName());
         assertEquals(lastName, owner.getLastName());
         assertEquals(email, owner.getEmail());
-        assertEquals(password, owner.getPassword());
+        CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
+        assertTrue(credentialsEncoder.matches(password, owner.getPassword()));
+    }
+
+    /** Test CreateOwner with the email of another administrator */
+    @Test
+    public void testCreateOwnerFailDupEmail() {
+        try {
+            String firstName = "John";
+            String lastName = "Doe";
+            String email = "first@mail.museum.com"; // Email of owner (EMPLOYEE_KEY)
+            String password = "password123";
+            administratorService.createOwner(firstName, lastName, email, password);
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    /** Test CreateOwner with invalid email */
+    @Test
+    public void testCreateOwnerInvalidEmail() {
+        try {
+            String firstName = "John";
+            String lastName = "Doe";
+            String email = "first@email.com"; // Invalid email
+            String password = "password123";
+            administratorService.createOwner(firstName, lastName, email, password);
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    /** Test EditOwner with complete info */
+    @Test
+    public void testEditOwnerComplete() {
+        Long id = OWNER_KEY;
+        String firstName = "Johnathan";
+        String lastName = "Doe";
+        String email = "second@mail.museum.com";
+        String password = "password123";
+        Owner owner = administratorService.editOwner(id, firstName, lastName, email, password);
+        assertNotNull(owner);
+        assertEquals(firstName, owner.getFirstName());
+        assertEquals(lastName, owner.getLastName());
+        assertEquals(email, owner.getEmail());
+        CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
+        assertTrue(credentialsEncoder.matches(password, owner.getPassword()));
+    }
+
+    /** Test EditOwner with email change info */
+    @Test
+    public void testEditOwnerEmailChange() {
+        Long id = OWNER_KEY;
+        String firstName = "Johnathan";
+        String lastName = "Doe";
+        String email = "newemail@mail.museum.com";
+        String password = "password123";
+        Owner owner = administratorService.editOwner(id, firstName, lastName, email, password);
+        assertNotNull(owner);
+        assertEquals(firstName, owner.getFirstName());
+        assertEquals(lastName, owner.getLastName());
+        assertEquals(email, owner.getEmail());
+        CredentialsEncoder credentialsEncoder = new CredentialsEncoder();
+        assertTrue(credentialsEncoder.matches(password, owner.getPassword()));
     }
 
     /** Test EditOwner with the email of another administrator */
@@ -241,7 +406,23 @@ public class AdministratorServiceTests {
             Long id = OWNER_KEY;
             String firstName = "John";
             String lastName = "Doe";
-            String email = "first@email.com"; // Email of employee (EMPLOYEE_KEY)
+            String email = "first@mail.museum.com"; // Email of employee (EMPLOYEE_KEY)
+            String password = "password123";
+            administratorService.editOwner(id, firstName, lastName, email, password);
+            fail();
+        } catch (ServiceLayerException e) {
+            assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    /** Test EditOwner with invalid email */
+    @Test
+    public void testEditOwnerInvalidEmail() {
+        try {
+            Long id = OWNER_KEY;
+            String firstName = "John";
+            String lastName = "Doe";
+            String email = "first@email.com"; // Invalid email
             String password = "password123";
             administratorService.editOwner(id, firstName, lastName, email, password);
             fail();
@@ -257,7 +438,7 @@ public class AdministratorServiceTests {
             Long id = NEW_KEY; // New key (does not exist)
             String firstName = "John";
             String lastName = "Doe";
-            String email = "first@email.com";
+            String email = "first@mail.museum.com";
             String password = "password123";
             administratorService.editOwner(id, firstName, lastName, email, password);
             fail();

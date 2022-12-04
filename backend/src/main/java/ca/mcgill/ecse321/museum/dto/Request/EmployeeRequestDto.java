@@ -8,19 +8,9 @@ public class EmployeeRequestDto {
     private String lastName;
     private String email;
     private String password;
-    private Long id;
 
     // Employee Attribute
-    private boolean isActive;
     private float salary;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -52,14 +42,6 @@ public class EmployeeRequestDto {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        this.isActive = active;
     }
 
     public float getSalary() {
