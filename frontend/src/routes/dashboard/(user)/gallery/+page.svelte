@@ -20,13 +20,13 @@
     showModal = true;
   }
 </script>
-
+<h1>Browse Artworks</h1>
 {#if showModal}
   <div class="overlay">
     <InfoModal {selectedArtwork}/>
   </div>
 {/if}
-<div class="container">
+<div>
   {#await loadArtworks()}
   <p>Loading</p>
   {:then data}
@@ -57,12 +57,6 @@
     left: 0;
     background-color: rgba(0, 0, 0, 0.2);
     z-index: 99999;
-  }
-
-  .container {
-    width: 100%;
-    background-color: #F3F5FA;
-    padding: 8rem;
   }
 
   .artworks {
