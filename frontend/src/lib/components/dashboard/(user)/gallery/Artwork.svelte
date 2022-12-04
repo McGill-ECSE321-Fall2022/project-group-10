@@ -1,9 +1,19 @@
 <script>
   import notFound from '$lib/assets/images/not-found.jpg';
+	import { createEventDispatcher } from 'svelte';
   export let artwork;
   console.log(artwork);
 
   const imageNotFound = (e) => e.target.src = notFound;
+
+
+  const dispatch = createEventDispatcher();
+
+  const openModal = (artwork) => {
+    dispatch('selectArtwork', {
+      selectedArtwork : artwork
+    });
+  };
 </script>
 
 <div class="container">
@@ -15,9 +25,9 @@
       >
   </div>
   <div class="info">
-    <p>Title: {artwork.title.length > 10 ? `${artwork.title.slice(0,10)}...` : artwork.title}</p>
-    <p>Author: {artwork.author.length > 10 ? `${artwork.author.slice(0,10)}...` : artwork.author}</p>
-    <p><a href="">click to loan/more info</a></p>
+    <p class="info-text">Title: {artwork.title.length > 10 ? `${artwork.title.slice(0,10)}...` : artwork.title}</p>
+    <p class="info-text">Author: {artwork.author.length > 10 ? `${artwork.author.slice(0,10)}...` : artwork.author}</p>
+    <p class="click-text" on:click={() => openModal(artwork)}>click to loan/more info</p>
   </div>
 </div>
 
@@ -67,6 +77,18 @@
   .container:hover .info {
     height: 8rem;
     transition: all ease-in-out 0.3s;
+  }
+
+  .info-text {
+    color: #29346F;
+  }
+
+  .click-text {
+    cursor: pointer;
+    color: #454545;
+    font-size: 0.8rem;
+    text-align: right;
+    margin-top: 2rem;
   }
 
 </style>

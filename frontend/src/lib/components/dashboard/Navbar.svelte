@@ -68,7 +68,10 @@
     display: flex;
     flex-direction: column;
     padding: 3rem;
+    box-sizing: border-box;
     gap: 3rem;
+    position: sticky;
+    top: 0;
   }
 
   .icon {
