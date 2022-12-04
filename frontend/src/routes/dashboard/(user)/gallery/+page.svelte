@@ -11,13 +11,14 @@
 </script>
 
 <div class="container">
-  
   {#await loadArtworks()}
   <p>Loading</p>
   {:then data}
-    {#each data.artworks as artwork}
-      <Artwork {artwork}/>
-    {/each}
+    <div class="artworks">
+      {#each data.artworks as artwork}
+        <Artwork {artwork}/>
+      {/each}
+    </div>
   {/await}
 </div>
 
@@ -26,5 +27,10 @@
     width: 100%;
     background-color: #F3F5FA;
     padding: 8rem;
+  }
+
+  .artworks {
+    display: flex;
+    gap: 8rem;
   }
 </style>
