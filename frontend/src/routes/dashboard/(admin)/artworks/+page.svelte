@@ -1,25 +1,26 @@
 <script>
   import Artwork from "$lib/components/dashboard/(user)/gallery/Artwork.svelte";
   import {apiCall} from '$lib/scripts/restApi.js'
+	import AddArtworkModal from "../../../../lib/components/dashboard/(admin)/artworks/AddArtworkModal.svelte";
 
   let selectedStorage;
   let newStorage;
+  let storageRooms, exhibitRooms, artworks;
+  let showArtworkModal = false;
 
   const loadArtworks = async () => {
 	  const artworksRes = await apiCall('GET','artworks');
-	  const artworks = artworksRes.data;
+	  artworks = artworksRes.data;
 
     const storageRoomsRes = await apiCall('GET','rooms/storageRoom');
-    const storageRooms = await storageRoomsRes.data;
+    storageRooms = await storageRoomsRes.data;
 
     const exhibitRoomsRes = await apiCall('GET','rooms/exhibitRoom');
-    const exhibitRooms = await exhibitRoomsRes.data;
+    exhibitRooms = await exhibitRoomsRes.data;
 
     selectedStorage = storageRooms[0];
     newStorage = storageRooms[0];
-	  return { artworks, storageRooms, exhibitRooms };
   };
-  let promise = loadArtworks();
 
   let selectedArtworks = [];
   const toggleSelectedArtwork = (artwork) => {
@@ -37,23 +38,38 @@
 
   const moveArtworksToRoom = async () => {
     selectedArtworks.forEach(async artwork => {
-      await apiCall('PUT',`artworks/move/${artwork.id}?roomId=${newStorage.id}`);
+      let index = artworks.indexOf(artwork);
+      let anArtwork = (await apiCall('PUT',`artworks/move/${artwork.id}?roomId=${newStorage.id}`)).data;
+      artworks[index] = anArtwork;
     });
-    promise = loadArtworks();
+    artworks = artworks;
+    selectedArtworks = [];
+  }
+
+  const handleAddArtwork = (e) => {
+    console.log("hello");
+    console.log(e.detail.artwork.data); 
+    artworks.push(e.detail.artwork.data);
+    artworks = artworks;
+    showArtworkModal = false;
   }
 </script>
 
 <div class="container">
-  {#await promise}
+  {#await loadArtworks()}
   <p>Loading</p>
   {:then data}
+  {#if showArtworkModal}
+    <div class="overlay" on:click={() => showArtworkModal = false} on:keydown={() => {}}>
+    </div>
+    <AddArtworkModal on:addArtwork={handleAddArtwork} on:close={() => showArtworkModal = false}/>
+  {/if}
   <!-- Room Select -->
     <div class="select-room">
       <p>Select Current Room</p>
-      <select bind:value={selectedStorage}>
+      <select bind:value={selectedStorage} on:change={() => {selectedArtworks = []}}> 
         <optgroup label="Storage Rooms">
-          {#each data.storageRooms as storageRoom}
-            {console.log(storageRoom.name)}
+          {#each storageRooms as storageRoom}
             <option value={storageRoom}>
               {storageRoom.name}
             </option>
@@ -61,21 +77,25 @@
         </optgroup>
 
         <optgroup label="Exhibit Rooms">
-          {#each data.exhibitRooms as exhibitRoom}
+          {#each exhibitRooms as exhibitRoom}
             <option value={exhibitRoom}>
               {exhibitRoom.name}
             </option>
           {/each}
         </optgroup>
       </select>
+
+      {#if !Object.hasOwn(selectedStorage,'capacity')}
+        <button on:click={() => showArtworkModal = true}>Add Artwork</button>
+      {/if}
     </div>
 
     <!-- Artworks -->
     <div class="artworks">
-      {#if data.artworks.length === 0}
+      {#if artworks.length === 0}
         <p>No artworks yet</p>
       {:else}
-        {#each data.artworks as artwork}
+        {#each artworks as artwork}
           {#if artwork.storage.id == selectedStorage.id}
             <div class="artwork-container"
               on:click={() => toggleSelectedArtwork(artwork)} 
@@ -87,12 +107,11 @@
       {/if}
     </div>
 
-    <div class="buttons">
       <div class="select-room">
         <p>Select New Room</p>
         <select bind:value={newStorage}>
           <optgroup label="Storage Rooms">
-            {#each data.storageRooms as storageRoom}
+            {#each storageRooms as storageRoom}
               {console.log(storageRoom.name)}
               <option value={storageRoom}>
                 {storageRoom.name}
@@ -101,17 +120,16 @@
           </optgroup>
   
           <optgroup label="Exhibit Rooms">
-            {#each data.exhibitRooms as exhibitRoom}
+            {#each exhibitRooms as exhibitRoom}
               <option value={exhibitRoom}>
                 {exhibitRoom.name}
               </option>
             {/each}
           </optgroup>
         </select>
+        <button on:click={() => moveArtworksToRoom()}>Move Artwork</button>
       </div>
-      <button on:click={() => moveArtworksToRoom()}>Move Artwork</button>
-      <!-- <button on:click={addArtwork}>Add Artwork</button> -->
-    </div>
+      
   {/await}
 </div>
 
@@ -156,5 +174,33 @@
     background-color: #ECE9FE;
     padding: 3rem;
     border-radius: 14px;
+  }
+
+  .overlay {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 0;
+  }
+
+  button {
+    height: fit-content;
+    padding: 1rem;
+    background-color: #4E36FC;
+    color: white;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+  }
+
+  button:hover {
+    filter: brightness(90%)
+  }
+
+  button:active {
+    filter: brightness(80%)
   }
 </style>
