@@ -1,80 +1,39 @@
-  <script>  
-  const sendLoanRequest = async () => {
-    let headers = new Headers();
-    headers.set('Authorization', `Basic ${btoa('among.us@email.com:lol')}`);
-    const res = await fetch(`http://localhost:8081/request/{selectedArtwork.id}`,
-    { 
-      method: "POST", 
-      headers: headers 
-    });
-      const artwork = await res.json();
-      return { artwork };
-  }
+<script>  
+
+  import {apiCall} from '$lib/scripts/restApi.js'
 
   const getAllLoansInCart = async () => {
-    let headers = new Headers()
-    headers.set('Authorization', `Basic ${btoa('among.us@email.com:lol')}`);
-
-    const res = await fetch(`http://localhost:8081/loans/self/withStatus/INCART`, {
-      method: "GET",
-      headers: headers
-    });
-
-    const loans = await res.json();
+    const loansRes = await apiCall('GET', 'loans/self/withStatus/INCART');
+    const loans = loansRes.data;
     console.log(loans);
-    return { loans };
+    return loans;
   }
 
   const removeFromCart = async (id) => {
-    let headers = new Headers()
-    headers.set('Authorization', `Basic ${btoa('among.us@email.com:lol')}`);
-
-    const res = await fetch(`http://localhost:8081/loans/${id}`, {
-      method: "DELETE",
-      headers: headers
-    });
-
-    const response = await res.json();
-    return { response };
+    const res = await apiCall('DELETE', `loans/${id}`);
+    const response = res.data;
+    return response;
   }
 
   const requestLoanInCart = async (id) => {
-    let headers = new Headers()
-    headers.set('Authorization', `Basic ${btoa('among.us@email.com:lol')}`);
-
-    const res = await fetch(`http://localhost:8081/loans/request/${id}`, {
-      method: "PUT",
-      headers: headers
-    });
-
-    const response = await res.json();
-    return { response };
+    const res = await apiCall('PUT', `loans/request/${id}`);
+    const response = res.data;
+    return response;
   }
 
   const requestAllLoansInCart = async () => {
-    let headers = new Headers()
-    headers.set('Authorization', `Basic ${btoa('among.us@email.com:lol')}`);
-
-    const res = await fetch(`http://localhost:8081/loans/self/requestall`, {
-      method: "PUT",
-      headers: headers
-    });
-
-    const response = await res.json();
-    return { response };
+    const res = await apiCall('PUT', `loans/self/requestall`);
+    const response = res.data;
+    return response;
   }
 
   const emptyCart = async () => {
     let headers = new Headers()
     headers.set('Authorization', `Basic ${btoa('among.us@email.com:lol')}`);
 
-    const res = await fetch(`http://localhost:8081/loans/self/deleteAllInCart`, {
-      method: "DELETE",
-      headers: headers
-    });
-
-    const response = await res.json();
-    return { response };
+    const res = await apiCall('DELETE', `loans/self/deleteAllInCart`);
+    const response = res.data;
+    return response;
   }
 
   </script>
@@ -91,11 +50,11 @@
     <div class="list-view">
       {#await getAllLoansInCart()}
       <p>Loading</p>
-      {:then data}
-        {#if data.loans.length == 0}
+      {:then loans}
+        {#if loans.length == 0}
           <p>Your shopping cart is empty.</p>
         {:else}
-          {#each data.loans as loan}
+          {#each loans as loan}
             <div class="row">
               <div>
                 <img src={loan.artwork.image} alt="artwork" class="img-fluid">
