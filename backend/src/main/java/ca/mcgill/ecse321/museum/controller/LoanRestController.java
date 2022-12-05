@@ -62,18 +62,13 @@ public class LoanRestController {
             return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
         }
 
-        // Check if the authenticated user is the borrower
-        if (body.getCustomerId() != person.getId()) {
-            return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
-        }
-
         Loan loan =
                 loanService.createLoan(
                         body.getPrice(),
                         body.getStartDate(),
                         body.getEndDate(),
                         body.getArtworkId(),
-                        body.getCustomerId());
+                        person.getId());
         return new ResponseEntity<LoanResponseDto>(
                 LoanResponseDto.createDto(loan), HttpStatus.CREATED);
     }
@@ -124,6 +119,30 @@ public class LoanRestController {
     public ResponseEntity<LoanResponseDto> requestLoan(@PathVariable Long loanId) {
         return new ResponseEntity<LoanResponseDto>(
                 LoanResponseDto.createDto(loanService.requestLoan(loanId)), HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Request all loans")
+    @PutMapping(value = {"/loans/self/requestall"})
+    @PreAuthorize("hasRole('VISITOR')")
+    public ResponseEntity<List<LoanResponseDto>> requestAllLoansInCart() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Get the email of the authenticated user
+        String authEmail;
+        if (principal instanceof UserDetails) {
+            authEmail = ((UserDetails) principal).getUsername();
+        } else {
+            authEmail = principal.toString();
+        }
+
+        Person person = personRepository.findByEmail(authEmail);
+        if (person == null || !(person instanceof Visitor)) {
+            return new ResponseEntity<List<LoanResponseDto>>(HttpStatus.UNAUTHORIZED);
+        }
+        
+        return new ResponseEntity<List<LoanResponseDto>>(loanService.requestAllLoanInCartByCustomer(person.getId()).stream()
+            .map(loan -> LoanResponseDto.createDto(loan)).toList(), HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -227,6 +246,35 @@ public class LoanRestController {
         }
 
         loanService.deleteLoan(loanId);
+        return new ResponseEntity<LoanResponseDto>(HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Delete loan")
+    @DeleteMapping(value = {"/loans/self/deleteAllInCart"})
+    @PreAuthorize("hasRole('VISITOR')")
+    public ResponseEntity<LoanResponseDto> deleteAllLoansInCart() {
+
+        // Check if the authenticated user is the borrower
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Get the email of the authenticated user
+        String authEmail;
+        if (principal instanceof UserDetails) {
+            authEmail = ((UserDetails) principal).getUsername();
+        } else {
+            authEmail = principal.toString();
+        }
+
+        // Get the user id of the authenticated user
+        Person person = personRepository.findByEmail(authEmail);
+        if (person == null || !(person instanceof Visitor)) {
+            return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
+        }
+
+        // Get the loan owner id
+        loanService.deleteAllLoansInCart(person.getId());
+
         return new ResponseEntity<LoanResponseDto>(HttpStatus.OK);
     }
 }
