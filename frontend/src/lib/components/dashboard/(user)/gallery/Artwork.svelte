@@ -2,6 +2,8 @@
   import notFound from '$lib/assets/images/not-found.jpg';
 	import { createEventDispatcher } from 'svelte';
   export let artwork;
+  export let expandable = true;
+  export let imageBorderStyle = "";
   console.log(artwork);
 
   const imageNotFound = (e) => e.target.src = notFound;
@@ -17,14 +19,14 @@
 </script>
 
 <div class="container" on:click={() => openModal(artwork)} on:keydown={null}>
-  <div class="image-container">
+  <div class="image-container {expandable ? "expandableImage" : ""}" style="{imageBorderStyle}">
     <img class="image"
       src="{artwork.imageLink}"
       alt="{artwork.description}"
       on:error={imageNotFound}
       >
   </div>
-  <div class="info">
+  <div class="info {expandable ? "expandableInfo" : ""}">
     <p class="info-text">Title: {artwork.title.length > 10 ? `${artwork.title.slice(0,10)}...` : artwork.title}</p>
     <p class="info-text">Author: {artwork.author.length > 10 ? `${artwork.author.slice(0,10)}...` : artwork.author}</p>
     <p class="click-text">click to loan/more info</p>
@@ -47,11 +49,15 @@
     padding: 0.5rem;
     border-radius: 14px;
     background-color: white;
+  }
+
+  .expandableImage {
+    position: relative;
     top: 0;
     transition: top ease-in-out 0.3s;
   }
 
-  .container:hover .image-container {
+  .container:hover .expandableImage {
     position: relative;
     top: -1rem;
     transition: top ease-in-out 0.3s;
@@ -70,11 +76,14 @@
     border-radius: 14px;
     padding: 0 1rem;
     margin-top: -1rem;
-    transition: all ease-in-out 0.3s;
     margin-bottom: 0;
   }
 
-  .container:hover .info {
+  .expandableInfo {
+    transition: all ease-in-out 0.3s;
+  }
+
+  .container:hover .expandableInfo {
     height: 8rem;
     transition: all ease-in-out 0.3s;
   }

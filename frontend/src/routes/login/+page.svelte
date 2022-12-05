@@ -1,10 +1,41 @@
 <script>
     import backgroundImg from '$lib/assets/images/blue-painting.jpg';
     import loginImg from '$lib/assets/images/landscape-painting.png';
+    import { onMount } from 'svelte';
+    import {apiCall, getCredentials, setCredentials, clearCredentials} from '$lib/scripts/restApi.js';
     
-    function onLogin() {
+    function onLogin(email=null, password=null) {
+        // Get the username and password from the input fields
 
+        if (email == null || password == null) {
+            email = document.getElementById("email-field").value;
+            password = document.getElementById("password-field").value;
+        }
+
+        // Set the credentials
+        setCredentials(email, password);
+        // Send a request to the backend to login
+        apiCall('GET', 'artworks', null).then((response) => {
+
+            if (response.error == null) {
+                window.location.href = '/dashboard';
+            } else {
+                clearCredentials();
+                alert('Invalid email or password.');
+            }
+        }).catch((error) => {
+            clearCredentials();
+            alert('Unable to connect to the server.');
+        });
     }
+
+    onMount(() => {
+        const {email, password} = getCredentials();
+        if (email != null && password != null) {
+            onLogin(email, password);
+        }
+    });
+
 </script>
 
 <div id="login-page">

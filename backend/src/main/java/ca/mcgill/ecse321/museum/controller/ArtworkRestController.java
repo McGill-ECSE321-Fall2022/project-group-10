@@ -38,7 +38,7 @@ public class ArtworkRestController {
                         body.getDescription(),
                         body.getImageLink(),
                         body.getPrice(),
-                        body.isAvailable());
+                        body.getIsAvailable());
         return new ResponseEntity<ArtworkResponseDto>(
                 ArtworkResponseDto.createDto(artwork), HttpStatus.CREATED);
     }
