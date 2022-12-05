@@ -4,22 +4,21 @@
 
   let selectedStorage;
   let newStorage;
+  let storageRooms, exhibitRooms, artworks;
 
   const loadArtworks = async () => {
 	  const artworksRes = await apiCall('GET','artworks');
-	  const artworks = artworksRes.data;
+	  artworks = artworksRes.data;
 
     const storageRoomsRes = await apiCall('GET','rooms/storageRoom');
-    const storageRooms = await storageRoomsRes.data;
+    storageRooms = await storageRoomsRes.data;
 
     const exhibitRoomsRes = await apiCall('GET','rooms/exhibitRoom');
-    const exhibitRooms = await exhibitRoomsRes.data;
+    exhibitRooms = await exhibitRoomsRes.data;
 
     selectedStorage = storageRooms[0];
     newStorage = storageRooms[0];
-	  return { artworks, storageRooms, exhibitRooms };
   };
-  let promise = loadArtworks();
 
   let selectedArtworks = [];
   const toggleSelectedArtwork = (artwork) => {
@@ -37,22 +36,25 @@
 
   const moveArtworksToRoom = async () => {
     selectedArtworks.forEach(async artwork => {
-      await apiCall('PUT',`artworks/move/${artwork.id}?roomId=${newStorage.id}`);
+      let index = artworks.indexOf(artwork);
+      let anArtwork = (await apiCall('PUT',`artworks/move/${artwork.id}?roomId=${newStorage.id}`)).data;
+      artworks[index] = anArtwork;
     });
-    promise = loadArtworks();
+    artworks = artworks;
+    selectedArtworks = [];
   }
 </script>
 
 <div class="container">
-  {#await promise}
+  {#await loadArtworks()}
   <p>Loading</p>
   {:then data}
   <!-- Room Select -->
     <div class="select-room">
       <p>Select Current Room</p>
-      <select bind:value={selectedStorage}>
+      <select bind:value={selectedStorage} on:change={() => {selectedArtworks = []}}> 
         <optgroup label="Storage Rooms">
-          {#each data.storageRooms as storageRoom}
+          {#each storageRooms as storageRoom}
             {console.log(storageRoom.name)}
             <option value={storageRoom}>
               {storageRoom.name}
@@ -61,7 +63,7 @@
         </optgroup>
 
         <optgroup label="Exhibit Rooms">
-          {#each data.exhibitRooms as exhibitRoom}
+          {#each exhibitRooms as exhibitRoom}
             <option value={exhibitRoom}>
               {exhibitRoom.name}
             </option>
@@ -72,10 +74,10 @@
 
     <!-- Artworks -->
     <div class="artworks">
-      {#if data.artworks.length === 0}
+      {#if artworks.length === 0}
         <p>No artworks yet</p>
       {:else}
-        {#each data.artworks as artwork}
+        {#each artworks as artwork}
           {#if artwork.storage.id == selectedStorage.id}
             <div class="artwork-container"
               on:click={() => toggleSelectedArtwork(artwork)} 
@@ -92,7 +94,7 @@
         <p>Select New Room</p>
         <select bind:value={newStorage}>
           <optgroup label="Storage Rooms">
-            {#each data.storageRooms as storageRoom}
+            {#each storageRooms as storageRoom}
               {console.log(storageRoom.name)}
               <option value={storageRoom}>
                 {storageRoom.name}
@@ -101,7 +103,7 @@
           </optgroup>
   
           <optgroup label="Exhibit Rooms">
-            {#each data.exhibitRooms as exhibitRoom}
+            {#each exhibitRooms as exhibitRoom}
               <option value={exhibitRoom}>
                 {exhibitRoom.name}
               </option>
