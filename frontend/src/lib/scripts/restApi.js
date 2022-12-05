@@ -16,6 +16,10 @@ async function apiCall(method="GET", endpoint="", data={}) {
         let headers = new Headers();
         headers.set("Content-Type", "application/json");
         headers.set('Authorization', 'Basic ' + btoa(email + ":" + password));
+        headers.set('Access-Control-Allow-Origin', '*');
+        headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+        headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        headers.set('Access-Control-Allow-Credentials', 'true');
 
         // Create and send the request
         if (method === "GET") {
@@ -23,7 +27,6 @@ async function apiCall(method="GET", endpoint="", data={}) {
                 method: method,
                 headers: headers
             }).then(async (res) => [res, await res.json()]).then(ans => {
-                console.log(ans)
                 if (ans[1] != null || ans[1] != undefined) {
                     resolve({response: ans[0], data: ans[1], error: null});
                 } else {
@@ -44,6 +47,7 @@ async function apiCall(method="GET", endpoint="", data={}) {
                     reject({response: ans[0], data: ans[1], error: null});
                 }
             }).catch((err) => {
+                console.log(err)
                 reject({error: err});
             });        
         }
