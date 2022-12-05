@@ -27,10 +27,10 @@ async function apiCall(method="GET", endpoint="", data={}) {
                 method: method,
                 headers: headers
             }).then(async (res) => [res, await res.json()]).then(ans => {
-                if (ans[1] != null || ans[1] != undefined) {
+                if ((ans[1] != null || ans[1] != undefined) && ans[0].status != 401) {
                     resolve({response: ans[0], data: ans[1], error: null});
                 } else {
-                    reject({response: ans[0], data: ans[1], error: null});
+                    reject({response: ans[0], data: ans[1], error: "Unauthorized"});
                 }
             }).catch((err) => {
                 reject({error: err});
@@ -41,10 +41,10 @@ async function apiCall(method="GET", endpoint="", data={}) {
                 headers: headers,
                 body: JSON.stringify(data)
             }).then(async (res) => [res, await res.json()]).then(ans => {
-                if (ans[1] != null || ans[1] != undefined) {
+                if ((ans[1] != null || ans[1] != undefined) && ans[0].status != 401) {
                     resolve({response: ans[0], data: ans[1], error: null});
                 } else {
-                    reject({response: ans[0], data: ans[1], error: null});
+                    reject({response: ans[0], data: ans[1], error: "Unauthorized"});
                 }
             }).catch((err) => {
                 console.log(err)

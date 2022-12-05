@@ -16,7 +16,6 @@
         setCredentials(email, password);
         // Send a request to the backend to login
         apiCall('GET', 'artworks', null).then((response) => {
-
             if (response.error == null) {
                 window.location.href = '/dashboard';
             } else {
@@ -37,6 +36,10 @@
     });
 
 </script>
+
+<svelte:head>
+    <title>Log In</title>
+</svelte:head>
 
 <div id="login-page">
     <div id="background-overlay" style="background-image: url('{backgroundImg}')"></div>

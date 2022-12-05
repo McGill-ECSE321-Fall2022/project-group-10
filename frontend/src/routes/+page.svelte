@@ -11,6 +11,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Universal Museum</title>
+</svelte:head>
+
 <div id="landing-page">
     <link href="https://fonts.googleapis.com/css?family=Chau%20Philomene%20One" rel="stylesheet"> <!-- Font -->
     <div id="background-overlay" style="background-image: url('{backgroundImg}')"></div>
