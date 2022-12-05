@@ -19,6 +19,6 @@
   .slot-container {
     width: 100%;
     background-color: #F3F5FA;
-    padding: 4rem;
+    padding: 2rem;
   }
 </style>
