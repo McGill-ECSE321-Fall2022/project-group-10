@@ -28,6 +28,7 @@ public class SecurityConfig {
                             auth.antMatchers("/").permitAll();
                             auth.antMatchers("/visitor")
                                     .permitAll(); // Anyone can create a visitor account
+                            auth.antMatchers("/swagger-ui/**").permitAll();
                             // ... other rules
                         })
                 .userDetailsService(userDetailsService)
