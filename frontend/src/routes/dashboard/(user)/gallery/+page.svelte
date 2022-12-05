@@ -2,13 +2,11 @@
 	import Artwork from "../../../../lib/components/dashboard/(user)/gallery/Artwork.svelte";
   import InfoModal from "../../../../lib/components/dashboard/(user)/gallery/InfoModal.svelte";
   import ShoppingCart from "../../../../lib/components/dashboard/(user)/gallery/ShoppingCart.svelte";
+  import {apiCall} from '$lib/scripts/restApi.js'
 
   const loadArtworks = async () => {
-    let headers = new Headers();
-	  headers.set('Authorization', `Basic ${btoa('admin@mail.museum.com:admin')}`);
-	  const res = await fetch('http://localhost:8081/artworks', { headers: headers });
-	  const artworks = await res.json();
-	  return { artworks };
+    const artworksRes = await apiCall('GET','artworks');
+	  return artworksRes.data;
   };
 
   let hideUnloanable = false;

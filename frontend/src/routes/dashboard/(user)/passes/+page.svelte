@@ -15,6 +15,12 @@
 	function randInt(max) {
 		return Math.floor(Math.random()*max)+1;
 	}
+
+	const getScheduleBlocks = async() => {
+		const res = await fetch('/api/schedule');
+		const data = await res.json();
+		return data;
+	}
 	
 	//	The Calendar Component just displays stuff in a row & column. It has no knowledge of dates.
 	//	The items[] below are placed (by you) in a specified row & column of the calendar.
@@ -25,13 +31,15 @@
 	function initMonthItems() {
 		let y = year;
 		let m = month;
-		let d1=new Date(y,m,randInt(7)+7);
+		let d1=new Date(y,m,15);
 		items=[
-			{title:"11:00 Task Early in month",className:"task--primary",date:new Date(y,m,randInt(6)),len:randInt(4)+1},
-			{title:"7:30 Wk 2 tasks",className:"task--warning",date:d1,len:randInt(4)+2},
-			{title:"Overlapping Stuff (isBottom:true)",date:d1,className:"task--info",len:4,isBottom:true},
-			{title:"10:00 More Stuff to do",date:new Date(y,m,randInt(7)+14),className:"task--info",len:randInt(4)+1,detailHeader:"Difficult",detailContent:"But not especially so"},
-			{title:"All day task",date:new Date(y,m,randInt(7)+21),className:"task--danger",len:1,vlen:2},
+			{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,1),len:2, vlen:1},
+			{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,6),len:3, vlen:1},
+			{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,13),len:5, vlen:1},
+			{title:"7:30 Van Gogh expedition",className:"task--warning",date:d1,len:randInt(4)+2},
+
+			{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,21),len:2, vlen:1},
+			{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,23),len:2, vlen:1},
 		];
 
 		//This is where you calc the row/col to put each dated item
@@ -127,7 +135,7 @@
 	
 </script>
 
-<h1>Buy Passes</h1>
+<h1>Museum Passes</h1>
 
 <div class="calendar-container">
   <div class="calendar-header">
@@ -138,7 +146,6 @@
       <button on:click={()=>next()}>&gt;</button>
       <button on:click={()=>year++}>&Gt;</button>
     </h1>
-		{eventText}
 	</div>
 
 	<Calendar
@@ -150,10 +157,28 @@
 		on:headerClick={(e)=>headerClick(e.detail)}
 		/>
 </div>
-	
+
+<div id="event-desc" style="">
+	<h2>Legend</h2>
+	<div class="task--primary">Museum Open</div>
+	<div class="task--warning">Van Gogh Expedition</div>
+	<div class="task--danger">Museum Closed</div>
+</div>
+
 <style>
+
+#event-desc {
+	margin: auto;
+	width: 70%;
+	background-color: #EEEEFF;
+	border-radius: 10px;
+	margin-top: 1rem;
+	padding: .1rem 2rem;
+	box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
 .calendar-container {
-  width: 90%;
+  width: 70%;
   margin: auto;
   overflow: hidden;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);

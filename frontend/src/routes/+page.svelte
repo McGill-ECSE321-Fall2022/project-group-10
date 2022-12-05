@@ -12,7 +12,7 @@
 </script>
 
 <svelte:head>
-    <title>Universal Museum</title>
+    <title>Marwan's Museum</title>
 </svelte:head>
 
 <div id="landing-page">
@@ -20,19 +20,24 @@
     <div id="background-overlay" style="background-image: url('{backgroundImg}')"></div>
 
     <div id="page-title">
-        <h1 class="animate-character">Universal Museum</h1>
+        <h1 class="animate-character">Marwan's Museum</h1>
         <h2>Proudly delivering the best of art since 2022</h2>
         <button on:click={onGetStarted}>Get Started</button>
     </div>
 
     <div id="navbar">
-        <a href="/" class="navbar-title">U.M.</a>
+        <a href="/" class="navbar-title">M.M.</a>
         <a href="/login">Login</a>
         <a href="/register">Register</a>
         <a href="/artworks">Artworks</a>
     </div>
     
-    <ImageCarousel images={[image1, image2, image3]} labels={["\"White Pillars\" by John Doe", "\"Blue Storm\" by Patrick Doe", "\"McDonalds Atwater\" by Joseph Saliba"]} time=4000 style="min-width: 300px; min-height: 200px; width: 25%; height: 30%; position: absolute; right: 300px;"/>
+    <ImageCarousel images={[image1, image2, image3]} labels={["\"White Pillars\" by John Doe", "\"Blue Storm\" by Patrick Doe", "\"McDonalds Atwater\" by Joseph Saliba"]} time=4000 
+        style="
+            width: 30rem; 
+            height: 20rem;
+            margin-left: auto; 
+            right: 300px;"/>
 </div>
 
 <style>
