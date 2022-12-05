@@ -75,7 +75,7 @@ public class ArtworkRestController {
         return new ResponseEntity<List<ArtworkResponseDto>>(
                 ArtworkResponseDtos.toList(), HttpStatus.OK);
     }
-    
+
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Delete artwork")
     @ApiResponses(

@@ -39,5 +39,4 @@ public class ArtworkRequestDto {
     public boolean isAvailable() {
         return available;
     }
-
 }
