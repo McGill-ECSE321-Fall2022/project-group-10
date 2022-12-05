@@ -1,6 +1,7 @@
 <script>
   export let selectedArtwork;
   import notFound from '$lib/assets/images/not-found.jpg';
+  import {apiCall} from '$lib/scripts/restApi.js'
 
   const imageNotFound = (e) => e.target.src = notFound;
 
@@ -16,24 +17,19 @@
   }
 
   const addLoanToCartRequest = async () => {
-    let headers = new Headers();
-	  headers.set('Authorization', `Basic ${btoa('among.us@email.com:lol')}`);
-    headers.set('Content-Type', 'application/json');
-	  const res = await fetch(`http://localhost:8081/loans`,
+
+	  const loanRes = await apiCall('POST', `loans`,
     {
-      body: JSON.stringify({
-        artworkId: selectedArtwork.id,
-        userId: 1,
-        endDate: endDateIn,
-        price: getTotalPrice(startDateIn, endDateIn),
-        startDate: startDateIn,
-        status: "INCART"
-      }),
-      method: "POST", 
-      headers: headers 
+      artworkId: selectedArtwork.id,
+      userId: 1,
+      endDate: endDateIn,
+      price: getTotalPrice(startDateIn, endDateIn),
+      startDate: startDateIn,
+      status: "INCART"
     });
-    const artwork = await res.json();
-    return { artwork };
+
+    const loan = loanRes.data;
+    return { loan };
   }
 </script>
 
