@@ -48,7 +48,7 @@
         user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
     }
 
-    #login-page {
+    #login-page { /* refers to id */
         /* Fill the screen */
         width: 100%;
         height: 100%;

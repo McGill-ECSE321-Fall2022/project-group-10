@@ -98,6 +98,27 @@ public class LoanRestController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get all loan with self user id and status")
+    @GetMapping(value = {"/loans/self/withStatus/{status}"})
+    @PreAuthorize("hasRole('VISITOR')")
+    public ResponseEntity<List<LoanResponseDto>> getLoansByCustomerAndStatus(@PathVariable Loan.LoanStatus status) {
+        
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Get the email of the authenticated user
+        String authEmail;
+        if (principal instanceof UserDetails) {
+            authEmail = ((UserDetails) principal).getUsername();
+        } else {
+            authEmail = principal.toString();
+        }
+
+        var loans = loanService.getLoansByCustomerEmailAndStatus(authEmail, status);
+        var LoanResponseDtos = loans.stream().map(loan -> LoanResponseDto.createDto(loan));
+        return new ResponseEntity<List<LoanResponseDto>>(LoanResponseDtos.toList(), HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Request loan")
     @PutMapping(value = {"/loans/request/{loanId}"})
     public ResponseEntity<LoanResponseDto> requestLoan(@PathVariable Long loanId) {

@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     public List<Loan> findByArtworkAndStatus(Long artworkId, Loan.LoanStatus status);
 
-    public List<Loan> findByCustomerAndStatus(Long customerId, Loan.LoanStatus status);
+    public List<Loan> findByCustomerEmailAndStatus(String email, Loan.LoanStatus status);
 }

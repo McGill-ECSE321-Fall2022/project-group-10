@@ -78,6 +78,14 @@ public class LoanService {
     }
 
     @Transactional
+    public List<Loan> getLoansByCustomerEmailAndStatus(String customerEmail, LoanStatus status) {
+        Visitor customer = (Visitor) personRepository.findByEmail(customerEmail);
+        if (customer == null)
+            throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such customer");
+        return loanRepository.findByCustomerEmailAndStatus(customer.getEmail(), status);
+    }
+
+    @Transactional
     public Loan validateLoan(Long id, Long validatorID) {
         Loan loan = loanRepository.findById(id).orElse(null);
         Administrator admin = administratorRepository.findById(validatorID).orElse(null);

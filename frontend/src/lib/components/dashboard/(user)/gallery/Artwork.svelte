@@ -16,7 +16,7 @@
   };
 </script>
 
-<div class="container">
+<div class="container" on:click={() => openModal(artwork)} on:keydown={null}>
   <div class="image-container">
     <img class="image"
       src="{artwork.imageLink}"
@@ -27,7 +27,7 @@
   <div class="info">
     <p class="info-text">Title: {artwork.title.length > 10 ? `${artwork.title.slice(0,10)}...` : artwork.title}</p>
     <p class="info-text">Author: {artwork.author.length > 10 ? `${artwork.author.slice(0,10)}...` : artwork.author}</p>
-    <p class="click-text" on:click={() => openModal(artwork)}>click to loan/more info</p>
+    <p class="click-text">click to loan/more info</p>
   </div>
 </div>
 
@@ -37,6 +37,7 @@
     height: fit-content;
     background-color: rgba(63,76,139,.2);
     border-radius: 14px;
+    cursor: pointer;
   }
 
   .image-container {
@@ -46,7 +47,6 @@
     padding: 0.5rem;
     border-radius: 14px;
     background-color: white;
-    position: relative;
     top: 0;
     transition: top ease-in-out 0.3s;
   }

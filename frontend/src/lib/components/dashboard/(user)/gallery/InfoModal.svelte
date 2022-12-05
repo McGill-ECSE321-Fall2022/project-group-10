@@ -4,17 +4,20 @@
 
   const imageNotFound = (e) => e.target.src = notFound;
 
-  const sendLoanRequest = async () => {
+  const addLoanToCartRequest = async () => {
     let headers = new Headers();
 	  headers.set('Authorization', `Basic ${btoa('admin@mail.museum.com:admin')}`);
-	  const res = await fetch(`http://localhost:8081/request/{selectedArtwork.id}`,
-    { 
-      method: POST, 
+	  const res = await fetch(`http://localhost:8081/loans`,
+    {
+      body: JSON.stringify({
+        artworkId: selectedArtwork.id,
+        userId: 1
+      }),
+      method: "POST", 
       headers: headers 
     });
-	  const artwork = await res.json();
-	  return { artwork };
-    console.log(artwork);
+    const artwork = await res.json();
+    return { artwork };
   }
 </script>
 
@@ -28,7 +31,12 @@
   >
   <p>{selectedArtwork.creationDate}</p>
   <p>{selectedArtwork.description}</p>
-  <button on:click={sendLoanRequest} disabled={!selectedArtwork.available}>Loan</button>
+
+  {#if selectedArtwork.available}
+    <button on:click={addLoanToCartRequest}>Add to cart</button>
+  {:else}
+    <em>This artwork is not available to be loaned.</em>
+  {/if}
 </div>
 
 <style>
@@ -52,5 +60,6 @@
     border-style: none;
     padding: 0.5rem 1rem;
     border-radius: 14px; 
+    cursor: pointer;
   }
 </style>
