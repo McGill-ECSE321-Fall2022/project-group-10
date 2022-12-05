@@ -1,10 +1,12 @@
 <script>
   import Artwork from "$lib/components/dashboard/(user)/gallery/Artwork.svelte";
   import {apiCall} from '$lib/scripts/restApi.js'
+	import AddArtworkModal from "../../../../lib/components/dashboard/(admin)/artworks/AddArtworkModal.svelte";
 
   let selectedStorage;
   let newStorage;
   let storageRooms, exhibitRooms, artworks;
+  let showArtworkModal = false;
 
   const loadArtworks = async () => {
 	  const artworksRes = await apiCall('GET','artworks');
@@ -43,19 +45,31 @@
     artworks = artworks;
     selectedArtworks = [];
   }
+
+  const handleAddArtwork = (e) => {
+    console.log("hello");
+    console.log(e.detail.artwork.data); 
+    artworks.push(e.detail.artwork.data);
+    artworks = artworks;
+    showArtworkModal = false;
+  }
 </script>
 
 <div class="container">
   {#await loadArtworks()}
   <p>Loading</p>
   {:then data}
+  {#if showArtworkModal}
+    <div class="overlay" on:click={() => showArtworkModal = false} on:keydown={() => {}}>
+    </div>
+    <AddArtworkModal on:addArtwork={handleAddArtwork} on:close={() => showArtworkModal = false}/>
+  {/if}
   <!-- Room Select -->
     <div class="select-room">
       <p>Select Current Room</p>
       <select bind:value={selectedStorage} on:change={() => {selectedArtworks = []}}> 
         <optgroup label="Storage Rooms">
           {#each storageRooms as storageRoom}
-            {console.log(storageRoom.name)}
             <option value={storageRoom}>
               {storageRoom.name}
             </option>
@@ -70,6 +84,10 @@
           {/each}
         </optgroup>
       </select>
+
+      {#if !Object.hasOwn(selectedStorage,'capacity')}
+        <button on:click={() => showArtworkModal = true}>Add Artwork</button>
+      {/if}
     </div>
 
     <!-- Artworks -->
@@ -89,7 +107,6 @@
       {/if}
     </div>
 
-    <div class="buttons">
       <div class="select-room">
         <p>Select New Room</p>
         <select bind:value={newStorage}>
@@ -110,10 +127,9 @@
             {/each}
           </optgroup>
         </select>
+        <button on:click={() => moveArtworksToRoom()}>Move Artwork</button>
       </div>
-      <button on:click={() => moveArtworksToRoom()}>Move Artwork</button>
-      <!-- <button on:click={addArtwork}>Add Artwork</button> -->
-    </div>
+      
   {/await}
 </div>
 
@@ -158,5 +174,33 @@
     background-color: #ECE9FE;
     padding: 3rem;
     border-radius: 14px;
+  }
+
+  .overlay {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 0;
+  }
+
+  button {
+    height: fit-content;
+    padding: 1rem;
+    background-color: #4E36FC;
+    color: white;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+  }
+
+  button:hover {
+    filter: brightness(90%)
+  }
+
+  button:active {
+    filter: brightness(80%)
   }
 </style>

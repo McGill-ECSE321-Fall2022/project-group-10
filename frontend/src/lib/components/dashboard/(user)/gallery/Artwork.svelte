@@ -21,7 +21,7 @@
 <div class="container" on:click={() => openModal(artwork)} on:keydown={null}>
   <div class="image-container {expandable ? "expandableImage" : ""}" style="{imageBorderStyle}">
     <img class="image"
-      src="{artwork.imageLink}"
+      src="{artwork.imageLink || notFound}"
       alt="{artwork.description}"
       on:error={imageNotFound}
       >
