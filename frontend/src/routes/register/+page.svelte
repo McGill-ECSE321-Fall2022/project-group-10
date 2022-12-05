@@ -120,6 +120,10 @@
     });
 </script>
 
+<svelte:head>
+    <title>Register</title>
+</svelte:head>
+
 <div id="register-page">
     <div id="background-overlay" style="background-image: url('{backgroundImg}')"></div>
     <div id="register-panel">

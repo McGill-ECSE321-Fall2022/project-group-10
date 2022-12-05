@@ -11,18 +11,22 @@
     }
 </script>
 
+<svelte:head>
+    <title>Marwan's Museum</title>
+</svelte:head>
+
 <div id="landing-page">
     <link href="https://fonts.googleapis.com/css?family=Chau%20Philomene%20One" rel="stylesheet"> <!-- Font -->
     <div id="background-overlay" style="background-image: url('{backgroundImg}')"></div>
 
     <div id="page-title">
-        <h1 class="animate-character">Universal Museum</h1>
+        <h1 class="animate-character">Marwan's Museum</h1>
         <h2>Proudly delivering the best of art since 2022</h2>
         <button on:click={onGetStarted}>Get Started</button>
     </div>
 
     <div id="navbar">
-        <a href="/" class="navbar-title">U.M.</a>
+        <a href="/" class="navbar-title">M.M.</a>
         <a href="/login">Login</a>
         <a href="/register">Register</a>
         <a href="/artworks">Artworks</a>

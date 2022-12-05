@@ -3,54 +3,40 @@
 <div id="request-page">
     <h1>Requests</h1>
 
-    <div style="clear: both">
-        <h2 style="float: left">Loans</h2>
-        <h2 style="float: right">Donations</h2>
+    <div id="request-panel" >
+        
+        
+        <div id="loan-side"class="panel-side">
+            <h2>Loans</h2>
+            <div id="loan-forms">
+
+
+
+            </div>
+
+        </div>
+        
+        <div id="donation-side" class="panel-side">
+            <h2>Donations</h2>
+            <div id="donation-forms">
+
+
+           </div>
+
+        </div>
+            
     </div>
+
     
-
-    <div class="flex-parent-element" id="request-panel">
-        <div class="flex-child-element" id="loan-panel">
-            
-
-        </div>
-        <div class="flex-child-element" id="donation-panel">
-          
-            
-        </div>
             
     </div>
-</div>
+
 
 
 <style>
 
-    .flex-parent-element {
-        display: flex;
-        width: 100%;
-    }
-
-    .flex-child-element {
-        flex: 1;
-        border: 1px solid rgb(84, 82, 224);
-        margin: 1px;
-       
-        min-width: 700px;
-        min-height: 450px;
-        width: 50%;
-        height: 65%;
-        background-color: white;
-        border-radius: 20px;
-        display: flex;
-        flex-direction: row;
-        /* Animation when the page loads */
-        animation: fade-in 1s;
     
-    }
-
-    .flex-child-element:first-child {
-        margin-right: 20px;
-    }
+    
 
     #request-page {
         /* Fill the screen */
@@ -58,6 +44,52 @@
         height: 100%;
         
     }
+
+    #request-panel {
+        width: 100%;
+        height: 96%;
+        background-color: white;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: row;
+    }
+
+    #donation-forms {
+
+        min-width: 200px;
+        min-height: 200px;
+        width: 90%;
+        height: 90%;
+        background-color: #F3F5FA;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: row;
+    }
+
+    #loan-forms {
+
+        min-width: 200px;
+        min-height: 200px;
+        width: 90%;
+        height: 90%;
+        background-color: #F3F5FA;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .panel-side{
+        flex-grow: 3;
+        flex-basis: 300px;
+        width: 100%;
+        /* Center the content */
+        display: flex;
+        margin-bottom: 5px;
+        flex-direction: column;
+        justify-content: Left;
+        align-items: center;
+    }
+    
 
    
 

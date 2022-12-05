@@ -16,7 +16,6 @@
         setCredentials(email, password);
         // Send a request to the backend to login
         apiCall('GET', 'artworks', null).then((response) => {
-
             if (response.error == null) {
                 window.location.href = '/dashboard';
             } else {
@@ -38,6 +37,10 @@
 
 </script>
 
+<svelte:head>
+    <title>Log In</title>
+</svelte:head>
+
 <div id="login-page">
     <div id="background-overlay" style="background-image: url('{backgroundImg}')"></div>
     <div id="login-panel">
@@ -46,10 +49,6 @@
             <span style="color: gray; margin-bottom: 30px;" class="noselect">Please enter your details below</span>
             <input id="email-field" type="text" placeholder="E-mail" />
             <input id="password-field" type="password" placeholder="Password" />
-            <label>
-                <input id="remember-me" type="checkbox" />
-                <span class="noselect">Remember me</span>
-            </label>
             <button id="login-button" on:click={onLogin}><strong>Log In</strong></button>
             <span style="color: gray; margin-top: 15px;">Don't have an account? <a href="register">Sign up for free</a></span>
         </div>
