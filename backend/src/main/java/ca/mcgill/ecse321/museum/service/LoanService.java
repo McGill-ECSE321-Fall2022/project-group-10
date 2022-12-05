@@ -115,7 +115,8 @@ public class LoanService {
         Visitor customer = (Visitor) personRepository.findById(customerId).orElse(null);
         if (customer == null)
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such customer");
-        List<Loan> loansInCart = loanRepository.findByCustomerEmailAndStatus(customer.getEmail(), LoanStatus.INCART);
+        List<Loan> loansInCart =
+                loanRepository.findByCustomerEmailAndStatus(customer.getEmail(), LoanStatus.INCART);
         for (Loan loan : loansInCart) {
             loan.setStatus(LoanStatus.PENDING);
         }
@@ -172,7 +173,8 @@ public class LoanService {
         Visitor customer = (Visitor) personRepository.findById(customerId).orElse(null);
         if (customer == null)
             throw new ServiceLayerException(HttpStatus.NOT_FOUND, "No such customer");
-        List<Loan> loansInCart = loanRepository.findByCustomerEmailAndStatus(customer.getEmail(), LoanStatus.INCART);
+        List<Loan> loansInCart =
+                loanRepository.findByCustomerEmailAndStatus(customer.getEmail(), LoanStatus.INCART);
         for (Loan loan : loansInCart) {
             loanRepository.delete(loan);
         }

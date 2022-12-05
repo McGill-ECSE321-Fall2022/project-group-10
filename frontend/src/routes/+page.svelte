@@ -32,7 +32,12 @@
         <a href="/artworks">Artworks</a>
     </div>
     
-    <ImageCarousel images={[image1, image2, image3]} labels={["\"White Pillars\" by John Doe", "\"Blue Storm\" by Patrick Doe", "\"McDonalds Atwater\" by Joseph Saliba"]} time=4000 style="min-width: 300px; min-height: 200px; width: 25%; height: 30%; position: absolute; right: 300px;"/>
+    <ImageCarousel images={[image1, image2, image3]} labels={["\"White Pillars\" by John Doe", "\"Blue Storm\" by Patrick Doe", "\"McDonalds Atwater\" by Joseph Saliba"]} time=4000 
+        style="
+            width: 30rem; 
+            height: 20rem;
+            margin-left: auto; 
+            right: 300px;"/>
 </div>
 
 <style>
