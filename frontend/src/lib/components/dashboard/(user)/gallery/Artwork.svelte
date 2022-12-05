@@ -3,6 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
   export let artwork;
   export let expandable = true;
+  export let imageBorderStyle = "";
   console.log(artwork);
 
   const imageNotFound = (e) => e.target.src = notFound;
@@ -18,7 +19,7 @@
 </script>
 
 <div class="container">
-  <div class="image-container {expandable ? "expandableImage" : ""}">
+  <div class="image-container {expandable ? "expandableImage" : ""}" style="{imageBorderStyle}">
     <img class="image"
       src="{artwork.imageLink}"
       alt="{artwork.description}"
