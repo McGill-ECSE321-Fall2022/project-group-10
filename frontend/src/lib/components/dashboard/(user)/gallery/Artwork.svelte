@@ -52,7 +52,6 @@
   }
 
   .expandableImage {
-    position: relative;
     top: 0;
     transition: top ease-in-out 0.3s;
   }
