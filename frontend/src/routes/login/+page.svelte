@@ -2,36 +2,31 @@
     import backgroundImg from '$lib/assets/images/blue-painting.jpg';
     import loginImg from '$lib/assets/images/landscape-painting.png';
     import { onMount } from 'svelte';
-    import {apiCall, getCredentials, setCredentials, clearCredentials} from '$lib/scripts/restApi.js';
+    import {apiCall, getCredentials, setCredentials, clearCredentials, isLoggedIn } from '$lib/scripts/restApi.js';
     
-    function onLogin(email=null, password=null) {
+    async function onLogin() {
         // Get the username and password from the input fields
 
-        if (email == null || password == null) {
-            email = document.getElementById("email-field").value;
-            password = document.getElementById("password-field").value;
-        }
+        const email = document.getElementById("email-field").value;
+        const password = document.getElementById("password-field").value;
 
         // Set the credentials
         setCredentials(email, password);
+
         // Send a request to the backend to login
-        apiCall('GET', 'artworks', null).then((response) => {
-            if (response.error == null) {
-                window.location.href = '/dashboard';
-            } else {
-                clearCredentials();
-                alert('Invalid email or password.');
-            }
-        }).catch((error) => {
+        if (await isLoggedIn()) {
+            window.location.href = '/dashboard';
+        } else {
             clearCredentials();
-            alert('Unable to connect to the server.');
-        });
+            alert('Invalid email or password.');
+        }
     }
 
-    onMount(() => {
-        const {email, password} = getCredentials();
-        if (email != null && password != null) {
-            onLogin(email, password);
+    onMount(async () => {
+        if (await isLoggedIn()) {
+            window.location.href = '/dashboard';
+        } else {
+            clearCredentials();
         }
     });
 

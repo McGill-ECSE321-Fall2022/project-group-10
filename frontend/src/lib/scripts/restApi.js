@@ -84,4 +84,23 @@ function clearCredentials() {
     localStorage.removeItem("password");
 }
 
-export { apiCall, setCredentials, getCredentials, clearCredentials };
+/**
+ * This function checks if the user is logged in 
+ * @returns {boolean} - True if the user is logged in, false otherwise
+ */
+async function isLoggedIn() {
+    return new Promise((resolve) => {
+        // Make a request to the server to check if the credentials are valid
+        apiCall('GET', 'artworks', null).then((response) => {
+            if (response.error == null) {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        }).catch((error) => {
+            resolve(false);
+        });
+    });
+}
+
+export { apiCall, setCredentials, getCredentials, clearCredentials, isLoggedIn };
