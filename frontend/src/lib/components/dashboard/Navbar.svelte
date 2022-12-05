@@ -1,16 +1,28 @@
 <script>
   import {page} from '$app/stores';
   import { goto } from '$app/navigation';
-  import {clearCredentials} from '$lib/scripts/restApi.js';
+  import {clearCredentials, isLoggedIn} from '$lib/scripts/restApi.js';
+  import { onMount } from 'svelte';
+
   let roles = ["OWNER", "ADMINISTRATOR", "EMPLOYEE", "VISITOR"] // OWNER, EMPLOYEE, ADMINISTRATOR, VISITOR, USER
+
   let logout = () => {
     clearCredentials();
     goto('/');
   }
+
+  onMount(async () => {
+    // Check if the user is logged in
+    if (!(await isLoggedIn())) {
+      // Not logged in
+      window.location.href = '/login';
+    }
+  });
+
 </script>
 
 <div class = "container">
-  <h1 class="title">Marwan's Museum</h1>
+  <h1 class="title"><a href="/" class="title">Marwan's Museum</a></h1>
 
 
   <div class="links">
@@ -67,6 +79,10 @@
 </div>
 
 <style>
+  .title {
+    text-decoration: none;
+  }
+
   .logout-link {
     color: #F44336;
     fill:  #F44336;

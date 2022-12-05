@@ -1,7 +1,7 @@
 <script>
     import backgroundImg from '$lib/assets/images/blue-painting.jpg';
     import registerImg from '$lib/assets/images/landscape-painting.png';
-    import { apiCall, getCredentials, setCredentials } from '$lib/scripts/restApi';
+    import { apiCall, isLoggedIn, setCredentials } from '$lib/scripts/restApi';
     import { onMount } from 'svelte';
     
     function onRegister() {
@@ -111,12 +111,12 @@
         }
     }
 
-    onMount(() => {
-        // Go to the login page if the user is already logged in
-        const {email, password} = getCredentials();
-        if (email != null && password != null) {
-            window.location.href = '/login';
-        }     
+    onMount(async () => {
+        if (await isLoggedIn()) {
+            window.location.href = '/dashboard';
+        } else {
+            clearCredentials();
+        }
     });
 </script>
 
