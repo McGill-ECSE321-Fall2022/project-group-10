@@ -6,7 +6,8 @@
 
   const loadArtworks = async () => {
     const artworksRes = await apiCall('GET','artworks');
-	  return artworksRes.data;
+    let artworks = artworksRes.data;
+	  return artworks;
   };
 
   let hideUnloanable = false;
@@ -60,15 +61,14 @@
 <div style="z-index: -5;">
   {#await loadArtworks()}
   <p>Loading</p>
-  {:then data}
+  {:then artworks}
     <input type="checkbox" name="hideUnloanable" id="hideUnloanable" bind:checked={hideUnloanable}>
     <label for="hideUnloanable">Hide unloanable items</label>
     <div class="artworks">
-      
-      {#if data.artworks.length === 0}
+      {#if artworks.length === 0}
         <p>No artworks yet</p>
       {/if}
-      {#each data.artworks as artwork}
+      {#each artworks as artwork}
       {#if artwork.available || !artwork.available && !hideUnloanable }
         <Artwork {artwork} on:selectArtwork={handleSelectArtwork}/>
       {/if}

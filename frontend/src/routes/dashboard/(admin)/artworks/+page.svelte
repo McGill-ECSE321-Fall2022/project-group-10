@@ -53,6 +53,18 @@
     artworks = artworks;
     showArtworkModal = false;
   }
+
+  const deleteArtworks = async () => {
+    selectedArtworks.forEach(async artwork => {
+      await apiCall('DELETE',`artworks/${artwork.id}`,{});
+    });
+    selectedArtworks.forEach(async artwork => {
+      let index = artworks.indexOf(artwork);
+      artworks.splice(index,1);
+    });
+    artworks = artworks;
+    selectedArtworks = [];
+  }
 </script>
 
 <div class="container">
@@ -65,31 +77,30 @@
     <AddArtworkModal on:addArtwork={handleAddArtwork} on:close={() => showArtworkModal = false}/>
   {/if}
   <!-- Room Select -->
-    <div class="select-room">
-      <p>Select Current Room</p>
-      <select bind:value={selectedStorage} on:change={() => {selectedArtworks = []}}> 
-        <optgroup label="Storage Rooms">
-          {#each storageRooms as storageRoom}
-            <option value={storageRoom}>
-              {storageRoom.name}
-            </option>
-          {/each}
-        </optgroup>
-
-        <optgroup label="Exhibit Rooms">
-          {#each exhibitRooms as exhibitRoom}
-            <option value={exhibitRoom}>
-              {exhibitRoom.name}
-            </option>
-          {/each}
-        </optgroup>
-      </select>
-
-      {#if !Object.hasOwn(selectedStorage,'capacity')}
-        <button on:click={() => showArtworkModal = true}>Add Artwork</button>
-      {/if}
-    </div>
-
+      <div class="select-room">
+        <p>Select Current Room</p>
+        <select bind:value={selectedStorage} on:change={() => {selectedArtworks = []}}>
+          <optgroup label="Storage Rooms">
+            {#each storageRooms as storageRoom}
+              <option value={storageRoom}>
+                {storageRoom.name}
+              </option>
+            {/each}
+          </optgroup>
+          <optgroup label="Exhibit Rooms">
+            {#each exhibitRooms as exhibitRoom}
+              <option value={exhibitRoom}>
+                {exhibitRoom.name}
+              </option>
+            {/each}
+          </optgroup>
+        </select>
+        {#if !Object.hasOwn(selectedStorage,'capacity')}
+          <button on:click={() => showArtworkModal = true}>Add Artwork</button>
+        {/if}
+        <button class="delete-button" on:click="{() => deleteArtworks()}">Delete Artworks</button>
+      </div>
+      
     <!-- Artworks -->
     <div class="artworks">
       {#if artworks.length === 0}
@@ -127,13 +138,17 @@
             {/each}
           </optgroup>
         </select>
-        <button on:click={() => moveArtworksToRoom()}>Move Artwork</button>
+        <button on:click={() => moveArtworksToRoom()}>Move Artworks</button>
       </div>
       
   {/await}
 </div>
 
 <style>
+  .delete-button {
+    background-color: #F44336
+  }
+
   .container {
     display: flex;
     flex-direction: column;
