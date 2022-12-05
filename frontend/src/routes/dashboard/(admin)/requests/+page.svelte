@@ -2,13 +2,20 @@
 
 <div id="request-page">
     <h1>Requests</h1>
+
+    <div style="clear: both">
+        <h2 style="float: left">Loans</h2>
+        <h2 style="float: right">Donations</h2>
+    </div>
+    
+
     <div class="flex-parent-element" id="request-panel">
         <div class="flex-child-element" id="loan-panel">
-            <h2 class="prompt"> Loans </h2>
+            
 
         </div>
-        <div class="flex-child-element">
-            <h2 class="prompt"> Donations </h2>
+        <div class="flex-child-element" id="donation-panel">
+          
             
         </div>
             
@@ -17,13 +24,6 @@
 
 
 <style>
-
-    .prompt{
-        color: gray;
-        font-size : 15px;
-        margin-left: 20px;
-        margin-bottom: 30px;
-    }
 
     .flex-parent-element {
         display: flex;
