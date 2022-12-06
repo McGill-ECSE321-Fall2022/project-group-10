@@ -117,18 +117,23 @@
 
 
 <div class="container">
-  <h2>Email: {email}</h2>
-  <h2>First Name: {firstName}</h2>
-  <h2>Last Name: {lastName}</h2>
-  <h2>Salary: {salary}</h2>
-  <h2>Active: {active}</h2>
+  <h3>Email: {email}</h3>
+  <h3>First Name: {firstName}</h3>
+  <h3>Last Name: {lastName}</h3>
+  <h3>Salary: {salary}</h3>
+  <h3>Active: {active}</h3>
 
-  <input id="firstname-field" type="text" placeholder={firstName} on:input={onFirstNameChange} />
-  <input id="lastname-field" type="text" placeholder={lastName} on:input={onLastNameChange} />
-  <input id="email-field" type="text" placeholder={email} on:input={onEmailChange} />
-  <input id="salary-field" type="text" placeholder={salary} />
-
+  <hr>
+  <h2>Edit</h2>
+  <div style="margin-bottom: 2rem;">
+    <input id="firstname-field" type="text" placeholder={firstName} on:input={onFirstNameChange} />
+    <input id="lastname-field" type="text" placeholder={lastName} on:input={onLastNameChange} />
+    <input id="email-field" type="text" placeholder={email} on:input={onEmailChange} />
+    <input id="salary-field" type="text" placeholder={salary} />
+  </div>
+  
   <button on:click={editEmployee}>Edit Employee</button>
+
 
   {#if selectedEmployee.active}
   <button id = "deactivate-button" on:click={deactivateEmployee}>Deactivate Employee</button>
