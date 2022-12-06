@@ -47,7 +47,7 @@
     padding: 0.5rem;
     margin-top: -1rem;
     transition: all ease-in-out 0.3s;
-    margin-bottom: -1rem;
+    margin-bottom: -2.5rem;
   }
 
 
