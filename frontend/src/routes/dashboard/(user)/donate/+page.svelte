@@ -1,13 +1,17 @@
 <script>
+    import {apiCall} from '$lib/scripts/restApi.js'
 
-    function onDonate(descpription=null){
+    function onDonate(){
         //get the title,author,description,imagelink
-        alert("Donate button clicked");
-        if(descpription==null)
-        {
-            descpription= document.getElementById("descpription").value;
-        }
-        alert("Donate button clicked");
+        const description = document.getElementById("description").value;
+       
+       // Send a request to the backend to create a new donation
+       apiCall("POST",'donations', {
+        description: description
+    
+        }).then(response => alert("Thank you for your donation!"))
+
+        
     }
 </script>
 
@@ -17,15 +21,11 @@
             
                 <h1 class="noselect">Donate Artwork</h1>
                 <h2 class="prompt">Please enter the artwork description below</h2>
-                <input id="descpription" type="text" placeholder="Description" required/>
+                <input id="description" type="text" placeholder="Description" required/>
                 <button id="Donate-button" on:click={onDonate}><strong>Donate</strong></button>
             
         
         </div>
-
-
-
-
 
     </div>
 </div>
