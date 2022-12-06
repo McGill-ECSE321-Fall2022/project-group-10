@@ -7,12 +7,12 @@ The team will analyze and translate the clients requirements into a working requ
 ## Team Members
 | Name      | Github Username | Roles | Deliverable 1 (hours worked) | Deliverable 2 (hours worked) | Deliverable 3 (hours worked)
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-| Eduard Anton      | PersoSirEduard       | Requirements, Use-cases, Tests, Documentation, Domain Model,  ScheduleBlock classes| 15 | 11 |
-| Keith Crochtiere   | khc1100        | Requirements, Use-cases, Tests, Documentation, Donation classes | 8 | 9 |
-| Joseph Saliba   | JosephSaliba01        | Requirements, Use-cases, Tests, Documentation, Domain Model, Room and Loan classes | 15 | 12 |
-| Adam Simard   | Simard302        | Requirements, Use-cases, Tests, Documentation, Wiki, Administrator classes | 8 | 9 |
-| Alex Turianskyj   | Al3X-T        | Requirements, Use-cases, Tests, Documentation, Visitor classes | 8 | 16 |
-| Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation, Project Setup, Model Classes, Artwork classes | 10 | 15 |
+| Eduard Anton      | PersoSirEduard       | Requirements, Use-cases, Tests, Documentation, Domain Model,  ScheduleBlock classes,  Landing, Register & Sign in pages | 15 | 11 | 15
+| Keith Crochtiere   | khc1100        | Requirements, Use-cases, Tests, Documentation, Donation classes, Donation page | 8 | 9 | 9
+| Joseph Saliba   | JosephSaliba01        | Requirements, Use-cases, Tests, Documentation, Domain Model, Room and Loan classes, Schedule page | 15 | 12 | 12
+| Adam Simard   | Simard302        | Requirements, Use-cases, Tests, Documentation, Wiki, Administrator classes, Loan page | 8 | 9 | 10
+| Alex Turianskyj   | Al3X-T        | Requirements, Use-cases, Tests, Documentation, Visitor classes, Employee page | 8 | 16 | 11
+| Charles Blancas   | Charles Spencer Blancas        | Requirements, Use-cases, Tests, Documentation, Project Setup, Model Classes, Artwork classes, Arwork page | 10 | 15 | 17
 
 ## Index
 [Deliverable 1 Project Report](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Deliverable-1-Project-Report)
