@@ -7,6 +7,7 @@
     $:pendingDonations=[];
     const loadDonation = async () => {
         const donationsRes = await apiCall('GET','donations');
+        pendingDonations = [];
 
         for(let donation of donationsRes.data){
             if (!donation.validated) {
@@ -21,10 +22,25 @@
     async function onValidateClick(event) {
         const donation = event.detail;
         
-        apiCall("PUT", `donations/validate/${donation.id}/${validatorId}`).then(response => {
-
-        }).catch(err => {
-            
+        apiCall("PUT", `donations/validate/${donation.id}`, {
+            validated: true,
+            author: "admin",
+            description: "I did your mom",
+            isAvailable: true,
+            price: 100,
+            title: "Your mom",
+            imageLink: "https://t3.ftcdn.net/jpg/00/44/98/00/360_F_44980072_bO7DGmhDTZ1Ttn57BhammUEPeqc2zyYR.jpg",
+            creationDate: new Date()
+        }).then(async response => {
+            if (response.error == null) {
+                await loadDonation();
+            } else {
+                alert("Unable to validate the request.");
+                await loadDonation();
+            }
+        }).catch(async err => {
+            alert("Unable to validate the request.");
+            await loadDonation();
         });
     }
 
@@ -38,7 +54,7 @@
         
 
         
-        <div id="invalid-donation-side"class="panel-side">
+        <div id="pending-donation-side"class="panel-side">
             <h2>Pending Donations</h2>
             <div id="donation-forms">
                 {#await loadDonation()}
