@@ -2,6 +2,7 @@
     import Employee from "../../../../lib/components/dashboard/(owner)/employees/Employee.svelte";
     import EmployeeModal from "../../../../lib/components/dashboard/(owner)/employees/EmployeeModal.svelte";
     import {apiCall} from '$lib/scripts/restApi.js'
+    import {goto} from '$app/navigation';
 
     $:employees = [];
     $:selectedEmployee = null;
@@ -22,9 +23,21 @@
     };
 
     const handleCloseEmployeeModal = () => {
-    showEmployeeModal = false;
-  }
-    
+      showEmployeeModal = false;
+      location.reload();
+    };
+
+    const createEmployee = async () => {
+        const res = await apiCall('POST', 'administrator/employee',
+        {
+            email: document.getElementById('email-field').value,
+            firstName: document.getElementById('firstname-field').value,
+            lastName: document.getElementById('lastname-field').value,
+            password: document.getElementById('password-field').value,
+            salary: document.getElementById('salary-field').value,
+        });
+      };
+
 </script>
 
 <h1>Manage Employees</h1>
@@ -34,7 +47,7 @@
     <EmployeeModal {selectedEmployee} />
 {/if}
 
-
+<button on:click={createEmployee}>Create Employee</button>
 
 
 <div style="z-index: -5;">
@@ -78,5 +91,15 @@
     background-color: #ECE9FE;
     padding: 3rem;
     border-radius: 14px;
+  }
+
+  button {
+    background-color: #4E36FC;
+    color: white;
+    border-style: none;
+    margin-right: auto;
+    margin-bottom: 14px;
+    padding: 0.5rem 1rem;
+    border-radius: 14px; 
   }
 </style>

@@ -5,6 +5,10 @@
   export let expandable = false;
   console.log(employee);
 
+  $:firstName = employee.firstName;
+  $:lastName = employee.lastName;
+  $:email = employee.email;
+
   //const imageNotFound = (e) => e.target.src = notFound;
 
 
@@ -20,8 +24,8 @@
 <div class="container" on:click={() => openModal(employee)} on:keydown={null}>
       <!-- on:error={imageNotFound} -->
   <div class="info {expandable ? "expandableInfo" : ""}">
-    <p class="info-text">{employee.email}</p>
-    <p class="info-text">{employee.firstName} {employee.lastName}</p>
+    <p class="info-text">{email}</p>
+    <p class="info-text">{firstName} {lastName}</p>
 
   </div>
 </div>
