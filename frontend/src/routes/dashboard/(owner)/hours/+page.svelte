@@ -172,68 +172,125 @@
 
   let event,startDate,endDate,visitCapacity,visitFees;
   const date = new Date();
-  let firstOfMonth = new Date(date.getFullYear(), date.getMonth(),1);
-  let lastOfMonth = new Date(date.getFullYear(), date.getMonth()+1, 0);
-  console.log(lastOfMonth);
+  $: firstOfMonth = new Date(date.getFullYear(), date.getMonth(),1);
+  $: lastOfMonth = new Date(date.getFullYear(), date.getMonth()+1, 0);
 
   const addScheduleBlock = () => {
-    apiCall('POST', 'scheduleBlock', {event,startDate,endDate,visitCapacity,visitFees});
+    let newSchedule = apiCall('POST', 'scheduleBlock', {event,startDate,endDate,visitCapacity,visitFees});
+    items.push(newSchedule);
+    items = items;
+  }
+
+  const getSundayOfWeek = (date) => {
+    let day = date.getDay();
+    let diff = date.getDate() - day + (day == 0 ? -6:1);
+    return new Date(date.setDate(diff));
+  }
+
+  const getSaturdayOfWeek = (date) => {
+    let day = date.getDay();
+    let diff = date.getDate() - day + (day == 0 ? 0:6);
+    console.log("date: ")
+    console.log(new Date(date.setDate(diff)))
+    return new Date(date.setDate(diff));
   }
 </script>
 
-<h1>Museum Passes</h1>
-
-<form class="new_block" on:submit|preventDefault={addScheduleBlock}>
-  <select name="event" id="event" bind:value={event}>
-    <option value="MUSEUM_OPEN">Regular Schedule</option>
-    <option value="MUSEUM_MEETING">Special Event</option>
-  </select>
-  <div class="link">
-    <label for="start">Start Date</label>
-    <input type="date" name="start" id="start" required bind:value={startDate} min={firstOfMonth} max={endDate}>
+<div class="container">
+  <form class="new_block" on:submit|preventDefault={addScheduleBlock}>
+    <h1>New Schedule Block</h1>
+    <div class="link">
+      <select name="event" id="event" bind:value={event}>
+        <option value="MUSEUM_OPEN">Regular Schedule</option>
+        <option value="MUSEUM_MEETING">Special Event</option>
+      </select>
+    </div>
+    <div class="link">
+      <label for="start">Start Date</label>
+      <input type="date" name="start" id="start" required bind:value={startDate} min={firstOfMonth} max={() => getSaturdayOfWeek(startDate)}>
+    </div>
+    <div class="link">
+      <label for="end">End Date</label>
+      <input type="date" name="end" id="end" required bind:value={endDate} min={() => getSundayOfWeek(endDate)} max={lastOfMonth}>
+    </div>
+    <div class="link">
+      <label for="capacity">Capacity</label>
+      <input type="number" name="capacity" id="capacity" required bind:value={visitCapacity}>
+    </div>
+    <div class="link">
+      <label for="fees">Fees</label>
+      <input type="number" name="fees" id="fees" step="0.01" required bind:value={visitFees}>
+    </div>
+    <button type="submit">New Schedule Block</button>
+  </form>
+  
+  <div class="calendar-info">
+    <div class="calendar-container">
+      <div class="calendar-header">
+        <h1>
+           {monthNames[month]} {year}
+        </h1>
+      </div>
+    
+      <Calendar
+        {headers}
+        {days}
+        {items}
+        on:dayClick={(e)=>dayClick(e.detail)}
+        on:itemClick={(e)=>itemClick(e.detail)}
+        on:headerClick={(e)=>headerClick(e.detail)}
+        />
+    </div>
+    
+    <div id="event-desc" style="">
+      {#if currScheduleBlock != null}
+        <h2>{currScheduleBlock.event}</h2>
+        <div>Starts: {currScheduleBlock.startDate}</div>
+        <div>Ends: {currScheduleBlock.endDate}</div>
+        <h3>{currScheduleBlock.visitFees}$</h3>
+      {/if}
+    </div>
   </div>
-  <div class="link">
-    <label for="end">End Date</label>
-    <input type="date" name="end" id="end" required bind:value={endDate} min={startDate} max={lastOfMonth}>
-  </div>
-  <div class="link">
-    <label for="capacity">Capacity</label>
-    <input type="number" name="capacity" id="capacity" required bind:value={visitCapacity}>
-  </div>
-  <div class="link">
-    <label for="fees">Fees</label>
-    <input type="number" name="fees" id="fees" step="0.01" required bind:value={visitFees}>
-  </div>
-  <button type="submit">New Schedule Block</button>
-</form>
-
-<div class="calendar-container">
-  <div class="calendar-header">
-    <h1>
-       {monthNames[month]} {year}
-    </h1>
-	</div>
-
-	<Calendar
-		{headers}
-		{days}
-		{items}
-		on:dayClick={(e)=>dayClick(e.detail)}
-		on:itemClick={(e)=>itemClick(e.detail)}
-		on:headerClick={(e)=>headerClick(e.detail)}
-		/>
-</div>
-
-<div id="event-desc" style="">
-	{#if currScheduleBlock != null}
-		<h2>{currScheduleBlock.event}</h2>
-		<div>Starts: {currScheduleBlock.startDate}</div>
-		<div>Ends: {currScheduleBlock.endDate}</div>
-		<h3>{currScheduleBlock.visitFees}$</h3>
-	{/if}
 </div>
 
 <style>
+  select {
+    border-radius: 14px;
+    border: solid;
+    border-width: 1px;
+    padding: 0.5rem;
+    background-color: white;
+  }
+
+  input {
+    border-radius: 14px;
+    border: solid;
+    border-width: 1px;
+    padding: 0.5rem;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+    gap: 10rem;
+    justify-content: center;
+  }
+
+  .new_block {
+    background-color: white;
+    border-radius: 14px;
+    padding: 3rem;
+    margin-bottom: 1rem;
+    width: 20rem;
+    height: 30rem;
+  }
+
+  .link {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
 
 #event-desc {
 	margin: auto;
@@ -246,7 +303,7 @@
 }
 
 .calendar-container {
-  width: 70%;
+  width: auto;
   margin: auto;
   overflow: hidden;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
