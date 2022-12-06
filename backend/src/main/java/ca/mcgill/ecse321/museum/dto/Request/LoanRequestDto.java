@@ -12,7 +12,6 @@ public class LoanRequestDto {
     Date startDate;
     Date endDate;
 
-    Long customerId;
     Long validatorId;
     Long artworkId;
 
@@ -34,10 +33,6 @@ public class LoanRequestDto {
 
     public Date getEndDate() {
         return endDate;
-    }
-
-    public Long getCustomerId() {
-        return customerId;
     }
 
     public Long getValidatorId() {

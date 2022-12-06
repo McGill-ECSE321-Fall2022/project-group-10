@@ -16,6 +16,8 @@ import io.swagger.annotations.ApiOperation;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -117,19 +119,19 @@ public class ScheduleBlockRestController {
     @ApiOperation("Get all schedule blocks")
     @GetMapping(value = {"/scheduleBlock"})
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Iterable<ScheduleBlockResponseDto>> getAllScheduleBlocks() {
+    public ResponseEntity<List<ScheduleBlockResponseDto>> getAllScheduleBlocks() {
         // Get all schedule blocks
-        Iterable<ScheduleBlock> scheduleBlocks = scheduleBlockService.getAllScheduleBlocks();
+        List<ScheduleBlock> scheduleBlocks = scheduleBlockService.getAllScheduleBlocks();
 
         // Convert to response DTOs
-        Iterable<ScheduleBlockResponseDto> scheduleBlockResponseDtos =
+        List<ScheduleBlockResponseDto> scheduleBlockResponseDtos =
                 new ArrayList<ScheduleBlockResponseDto>();
         for (ScheduleBlock scheduleBlock : scheduleBlocks) {
             ((ArrayList<ScheduleBlockResponseDto>) scheduleBlockResponseDtos)
                     .add(ScheduleBlockResponseDto.createDto(scheduleBlock));
         }
 
-        return new ResponseEntity<Iterable<ScheduleBlockResponseDto>>(
+        return new ResponseEntity<List<ScheduleBlockResponseDto>>(
                 scheduleBlockResponseDtos, HttpStatus.OK);
     }
 
@@ -137,7 +139,7 @@ public class ScheduleBlockRestController {
     @ApiOperation("Get schedule block between dates")
     @GetMapping(value = {"/scheduleBlock/dates/{startDate}/{endDate}"})
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Iterable<ScheduleBlockResponseDto>> getScheduleBlocksBetweenDates(
+    public ResponseEntity<List<ScheduleBlockResponseDto>> getScheduleBlocksBetweenDates(
             @PathVariable String startDate, @PathVariable String endDate) {
         // Convert string to date
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
@@ -149,26 +151,26 @@ public class ScheduleBlockRestController {
             startDateDate = new Date(dateFormatter.parse(startDate).getTime());
             endDateDate = new Date(dateFormatter.parse(endDate).getTime());
             if (endDateDate == null || startDateDate == null) {
-                return new ResponseEntity<Iterable<ScheduleBlockResponseDto>>(
+                return new ResponseEntity<List<ScheduleBlockResponseDto>>(
                         HttpStatus.BAD_REQUEST);
             }
         } catch (Exception e) {
-            return new ResponseEntity<Iterable<ScheduleBlockResponseDto>>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<List<ScheduleBlockResponseDto>>(HttpStatus.BAD_REQUEST);
         }
 
         // Get schedule blocks between dates
-        Iterable<ScheduleBlock> scheduleBlocks =
+        List<ScheduleBlock> scheduleBlocks =
                 scheduleBlockService.getScheduleBlocksBetweenDates(startDateDate, endDateDate);
 
         // Convert to response DTOs
-        Iterable<ScheduleBlockResponseDto> scheduleBlockResponseDtos =
+        List<ScheduleBlockResponseDto> scheduleBlockResponseDtos =
                 new ArrayList<ScheduleBlockResponseDto>();
         for (ScheduleBlock scheduleBlock : scheduleBlocks) {
             ((ArrayList<ScheduleBlockResponseDto>) scheduleBlockResponseDtos)
                     .add(ScheduleBlockResponseDto.createDto(scheduleBlock));
         }
 
-        return new ResponseEntity<Iterable<ScheduleBlockResponseDto>>(
+        return new ResponseEntity<List<ScheduleBlockResponseDto>>(
                 scheduleBlockResponseDtos, HttpStatus.OK);
     }
 
@@ -176,27 +178,27 @@ public class ScheduleBlockRestController {
     @ApiOperation("Get visitor on schedule block")
     @GetMapping(value = {"/scheduleBlock/{id}/visitors"})
     @PreAuthorize("hasRole('ADMINISTRATOR')")
-    public ResponseEntity<Iterable<VisitorResponseDto>> getVisitorsOnScheduleBlock(
+    public ResponseEntity<List<VisitorResponseDto>> getVisitorsOnScheduleBlock(
             @PathVariable long id) {
         // Get visitors for schedule block
-        Iterable<Visitor> visitors = scheduleBlockService.getVisitorsOnScheduleBlock(id);
+        List<Visitor> visitors = scheduleBlockService.getVisitorsOnScheduleBlock(id);
 
         // Convert to response DTOs
-        Iterable<VisitorResponseDto> visitorResponseDtos = new ArrayList<VisitorResponseDto>();
+        List<VisitorResponseDto> visitorResponseDtos = new ArrayList<VisitorResponseDto>();
         for (Visitor visitor : visitors) {
             ((ArrayList<VisitorResponseDto>) visitorResponseDtos)
                     .add(VisitorResponseDto.createDto(visitor));
         }
 
-        return new ResponseEntity<Iterable<VisitorResponseDto>>(visitorResponseDtos, HttpStatus.OK);
+        return new ResponseEntity<List<VisitorResponseDto>>(visitorResponseDtos, HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Add visitor to schedule block")
-    @PostMapping(value = {"/scheduleBlock/{scheduleId}/visitors/{visitorId}"})
+    @PostMapping(value = {"/scheduleBlock/{scheduleId}/add/self"})
     @PreAuthorize("hasRole('VISITOR')")
     public ResponseEntity<ScheduleBlockResponseDto> addVisitorToScheduleBlock(
-            @PathVariable long scheduleId, @PathVariable long visitorId) {
+            @PathVariable long scheduleId) {
 
         // Check if the authentication user is the same as the visitor
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -210,18 +212,10 @@ public class ScheduleBlockRestController {
 
         // Get the user id of the authenticated user
         Person person = personRepository.findByEmail(authEmail);
-        if (person == null || person.getId() != visitorId) {
-            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.UNAUTHORIZED);
-        }
-
-        // Check if the visitor id is the same as the authenticated user
-        if (person.getId() != visitorId) {
-            return new ResponseEntity<ScheduleBlockResponseDto>(HttpStatus.UNAUTHORIZED);
-        }
 
         // Add visitor to schedule block
         var scheduleBlock =
-                scheduleBlockService.registerVisitorOnScheduleBlock(scheduleId, visitorId);
+                scheduleBlockService.registerVisitorOnScheduleBlock(scheduleId, person.getId() );
         return new ResponseEntity<ScheduleBlockResponseDto>(
                 ScheduleBlockResponseDto.createDto(scheduleBlock), HttpStatus.OK);
     }
@@ -266,20 +260,20 @@ public class ScheduleBlockRestController {
     @ApiOperation("Get staff on schedule block")
     @GetMapping(value = {"/scheduleBlock/{id}/staff"})
     @PreAuthorize("hasRole('ADMINISTRATOR')")
-    public ResponseEntity<Iterable<AdministratorResponseDto>> getStaffOnScheduleBlock(
+    public ResponseEntity<List<AdministratorResponseDto>> getStaffOnScheduleBlock(
             @PathVariable long id) {
         // Get staff for schedule block
-        Iterable<Administrator> staff = scheduleBlockService.getStaffOnScheduleBlock(id);
+        List<Administrator> staff = scheduleBlockService.getStaffOnScheduleBlock(id);
 
         // Convert to response DTOs
-        Iterable<AdministratorResponseDto> staffResponseDtos =
+        List<AdministratorResponseDto> staffResponseDtos =
                 new ArrayList<AdministratorResponseDto>();
         for (Administrator staffMember : staff) {
             ((ArrayList<AdministratorResponseDto>) staffResponseDtos)
                     .add(AdministratorResponseDto.createDto(staffMember));
         }
 
-        return new ResponseEntity<Iterable<AdministratorResponseDto>>(
+        return new ResponseEntity<List<AdministratorResponseDto>>(
                 staffResponseDtos, HttpStatus.OK);
     }
 

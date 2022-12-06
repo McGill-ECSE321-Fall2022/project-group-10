@@ -310,7 +310,7 @@ public class LoanServiceTests {
                         });
 
         lenient()
-                .when(loanRepository.findByArtworkAndStatus(anyLong(), any(LoanStatus.class)))
+                .when(loanRepository.findByArtworkIdAndStatus(anyLong(), any(LoanStatus.class)))
                 .thenAnswer(
                         (InvocationOnMock invocation) -> {
                             Loan loan = new Loan();
@@ -344,7 +344,7 @@ public class LoanServiceTests {
                         });
 
         lenient()
-                .when(loanRepository.findByArtworkAndStatus(anyLong(), any(LoanStatus.class)))
+                .when(loanRepository.findByArtworkIdAndStatus(anyLong(), any(LoanStatus.class)))
                 .thenAnswer(
                         (InvocationOnMock invocation) -> {
                             Loan loan = new Loan();
@@ -382,7 +382,7 @@ public class LoanServiceTests {
                         });
 
         lenient()
-                .when(loanRepository.findByArtworkAndStatus(anyLong(), any(LoanStatus.class)))
+                .when(loanRepository.findByArtworkIdAndStatus(anyLong(), any(LoanStatus.class)))
                 .thenAnswer(
                         (InvocationOnMock invocation) -> {
                             Loan loan = new Loan();
@@ -607,7 +607,7 @@ public class LoanServiceTests {
     public void getValidatedLoansForArtwork() {
         // mock loan
         lenient()
-                .when(loanRepository.findByArtworkAndStatus(anyLong(), any(LoanStatus.class)))
+                .when(loanRepository.findByArtworkIdAndStatus(anyLong(), any(LoanStatus.class)))
                 .thenAnswer(
                         (InvocationOnMock invocation) -> {
                             Loan loan = new Loan();

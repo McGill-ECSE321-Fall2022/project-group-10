@@ -6,7 +6,9 @@ import ca.mcgill.ecse321.museum.dto.Response.LoanResponseDto;
 import ca.mcgill.ecse321.museum.model.Loan;
 import ca.mcgill.ecse321.museum.model.Person;
 import ca.mcgill.ecse321.museum.model.Visitor;
+import ca.mcgill.ecse321.museum.model.Administrator;
 import ca.mcgill.ecse321.museum.repository.PersonRepository;
+import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
 import ca.mcgill.ecse321.museum.service.LoanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +37,7 @@ public class LoanRestController {
     @Autowired private LoanService loanService;
 
     @Autowired private PersonRepository personRepository;
+    @Autowired private AdministratorRepository administratorRepository;
 
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Create loan")
@@ -62,18 +65,13 @@ public class LoanRestController {
             return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
         }
 
-        // Check if the authenticated user is the borrower
-        if (body.getCustomerId() != person.getId()) {
-            return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
-        }
-
         Loan loan =
                 loanService.createLoan(
                         body.getPrice(),
                         body.getStartDate(),
                         body.getEndDate(),
                         body.getArtworkId(),
-                        body.getCustomerId());
+                        person.getId());
         return new ResponseEntity<LoanResponseDto>(
                 LoanResponseDto.createDto(loan), HttpStatus.CREATED);
     }
@@ -98,6 +96,28 @@ public class LoanRestController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Get all loan with self user id and status")
+    @GetMapping(value = {"/loans/self/withStatus/{status}"})
+    @PreAuthorize("hasRole('VISITOR')")
+    public ResponseEntity<List<LoanResponseDto>> getLoansByCustomerAndStatus(
+            @PathVariable Loan.LoanStatus status) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Get the email of the authenticated user
+        String authEmail;
+        if (principal instanceof UserDetails) {
+            authEmail = ((UserDetails) principal).getUsername();
+        } else {
+            authEmail = principal.toString();
+        }
+
+        var loans = loanService.getLoansByCustomerEmailAndStatus(authEmail, status);
+        var LoanResponseDtos = loans.stream().map(loan -> LoanResponseDto.createDto(loan));
+        return new ResponseEntity<List<LoanResponseDto>>(LoanResponseDtos.toList(), HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Request loan")
     @PutMapping(value = {"/loans/request/{loanId}"})
     public ResponseEntity<LoanResponseDto> requestLoan(@PathVariable Long loanId) {
@@ -106,13 +126,10 @@ public class LoanRestController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation("Validate loan")
-    @PutMapping(value = {"/loans/validate/{loanId}/{validatorId}"})
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
-    public ResponseEntity<LoanResponseDto> validateLoan(
-            @PathVariable Long loanId, @PathVariable Long validatorId) {
-
-        // Check if the authenticated user is the validator
+    @ApiOperation("Request all loans")
+    @PutMapping(value = {"/loans/self/requestall"})
+    @PreAuthorize("hasRole('VISITOR')")
+    public ResponseEntity<List<LoanResponseDto>> requestAllLoansInCart() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         // Get the email of the authenticated user
@@ -123,27 +140,49 @@ public class LoanRestController {
             authEmail = principal.toString();
         }
 
-        // Get the user id of the authenticated user
         Person person = personRepository.findByEmail(authEmail);
-        if (person == null || person.getId() != validatorId) {
-            return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
+        if (person == null || !(person instanceof Visitor)) {
+            return new ResponseEntity<List<LoanResponseDto>>(HttpStatus.UNAUTHORIZED);
         }
 
-        // Check if the authenticated user is the validator
-        if (validatorId != person.getId()) {
-            return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<List<LoanResponseDto>>(
+                loanService.requestAllLoanInCartByCustomer(person.getId()).stream()
+                        .map(loan -> LoanResponseDto.createDto(loan))
+                        .toList(),
+                HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Validate loan")
+    @PutMapping(value = {"/loans/validate/{loanId}"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<LoanResponseDto> validateLoan(
+            @PathVariable Long loanId) {
+
+        // Check if the authenticated user is the donor
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Get the email of the authenticated user
+        String authEmail;
+        if (principal instanceof UserDetails) {
+            authEmail = ((UserDetails) principal).getUsername();
+        } else {
+            authEmail = principal.toString();
         }
 
-        Loan loan = loanService.validateLoan(loanId, validatorId);
+        // Get the id of the authenticated user
+        List<Administrator> admins = administratorRepository.findByEmail(authEmail);
+
+        Loan loan = loanService.validateLoan(loanId, admins.get(0).getId());
         return new ResponseEntity<LoanResponseDto>(LoanResponseDto.createDto(loan), HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Reject loan")
-    @PutMapping(value = {"/loans/reject/{loanId}/{validatorId}"})
+    @PutMapping(value = {"/loans/reject/{loanId}"})
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<LoanResponseDto> rejectLoan(
-            @PathVariable Long loanId, @PathVariable Long validatorId) {
+            @PathVariable Long loanId) {
 
         // Check if the authenticated user is the validator
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -156,18 +195,10 @@ public class LoanRestController {
             authEmail = principal.toString();
         }
 
-        // Get the user id of the authenticated user
-        Person person = personRepository.findByEmail(authEmail);
-        if (person == null || person.getId() != validatorId) {
-            return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
-        }
+        // Get the id of the authenticated user
+        List<Administrator> admins = administratorRepository.findByEmail(authEmail);
 
-        // Check if the authenticated user is the validator
-        if (validatorId != person.getId()) {
-            return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
-        }
-
-        Loan loan = loanService.rejectLoan(loanId, validatorId);
+        Loan loan = loanService.rejectLoan(loanId, admins.get(0).getId());
         return new ResponseEntity<LoanResponseDto>(LoanResponseDto.createDto(loan), HttpStatus.OK);
     }
 
@@ -206,6 +237,35 @@ public class LoanRestController {
         }
 
         loanService.deleteLoan(loanId);
+        return new ResponseEntity<LoanResponseDto>(HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Delete loan")
+    @DeleteMapping(value = {"/loans/self/deleteAllInCart"})
+    @PreAuthorize("hasRole('VISITOR')")
+    public ResponseEntity<LoanResponseDto> deleteAllLoansInCart() {
+
+        // Check if the authenticated user is the borrower
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Get the email of the authenticated user
+        String authEmail;
+        if (principal instanceof UserDetails) {
+            authEmail = ((UserDetails) principal).getUsername();
+        } else {
+            authEmail = principal.toString();
+        }
+
+        // Get the user id of the authenticated user
+        Person person = personRepository.findByEmail(authEmail);
+        if (person == null || !(person instanceof Visitor)) {
+            return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
+        }
+
+        // Get the loan owner id
+        loanService.deleteAllLoansInCart(person.getId());
+
         return new ResponseEntity<LoanResponseDto>(HttpStatus.OK);
     }
 }

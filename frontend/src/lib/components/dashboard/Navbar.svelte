@@ -1,14 +1,43 @@
 <script>
   import {page} from '$app/stores';
-  let roles = ["OWNER", "ADMINISTRATOR", "EMPLOYEE", "VISITOR"] // OWNER, EMPLOYEE, ADMINISTRATOR, VISITOR, USER
+  import { goto } from '$app/navigation';
+  import {getCredentials, clearCredentials, isLoggedIn} from '$lib/scripts/restApi.js';
+  import { onMount } from 'svelte';
+  import {apiCall} from '$lib/scripts/restApi.js'
+
+  let roles = [] // OWNER, EMPLOYEE, ADMINISTRATOR, VISITOR, USER
+
+  let logout = () => {
+    clearCredentials();
+    goto('/');
+  }
+
+  $: thisRole = ""
+
+  onMount(async () => {
+    // Check if the user is logged in
+    if (!(await isLoggedIn())) {
+      // Not logged in
+      window.location.href = '/login';
+    } else {
+      // Logged in
+      let credentials = await getCredentials();
+      
+      const res = await apiCall('GET',`user/role/`)
+      roles = res.data;
+    }
+  });
+
 </script>
 
 <div class = "container">
-  <h1 class="title">Marwan's Museum</h1>
-
+  <div>
+    <h1 class="title"><a href="/" class="title">Marwan's Museum</a></h1>
+    <em style="color: gray;">Logged in as {roles}</em>
+  </div>
 
   <div class="links">
-    {#if roles.includes("ADMINISTRATOR")}
+    {#if roles.includes("OWNER") || roles.includes("EMPLOYEE")}
       <div class="link {$page.url.pathname === '/dashboard/artworks' ? 'selected' : '' }">
         <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4,4H11V2H4A2,2 0 0,0 2,4V11H4V4M10,13L6,18H18L15,14L12.97,16.71L10,13M17,8.5A1.5,1.5 0 0,0 15.5,7A1.5,1.5 0 0,0 14,8.5A1.5,1.5 0 0,0 15.5,10A1.5,1.5 0 0,0 17,8.5M20,2H13V4H20V11H22V4A2,2 0 0,0 20,2M20,20H13V22H20A2,2 0 0,0 22,20V13H20V20M4,13H2V20A2,2 0 0,0 4,22H11V20H4V13Z" /></svg>
         <p><a href="/dashboard/artworks">Manage artworks</a></p>
@@ -53,10 +82,27 @@
       <p><a href="/dashboard/donate">Donate an artwork</a></p>
     </div>
     {/if}
+    <div class="logout-link link">
+      <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.08,15.59L16.67,13H7V11H16.67L14.08,8.41L15.5,7L20.5,12L15.5,17L14.08,15.59M19,3A2,2 0 0,1 21,5V9.67L19,7.67V5H5V19H19V16.33L21,14.33V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19Z" /></svg>
+      <p class="logout" on:click="{logout}" on:keydown={() => {}}>Log out</p>
+    </div>
   </div>
 </div>
 
 <style>
+  .title {
+    text-decoration: none;
+  }
+
+  .logout-link {
+    color: #F44336;
+    fill:  #F44336;
+  }
+
+  .logout {
+    cursor: pointer;
+  }
+
   .title {
     font-size: 1rem;
     color: #4E36FC;
@@ -64,7 +110,7 @@
   
   .container {
     height: 100vh;
-    width: 16rem;
+    width: 18rem;
     display: flex;
     flex-direction: column;
     padding: 3rem;

@@ -1,6 +1,8 @@
 <script>
     import backgroundImg from '$lib/assets/images/blue-painting.jpg';
     import registerImg from '$lib/assets/images/landscape-painting.png';
+    import { apiCall, isLoggedIn, setCredentials, clearCredentials } from '$lib/scripts/restApi';
+    import { onMount } from 'svelte';
     
     function onRegister() {
         // Get the values from the form
@@ -9,12 +11,22 @@
         const firstName = document.getElementById('firstname-field').value;
         const lastName = document.getElementById('lastname-field').value;
 
-        if (!isValidName(firstName)) {}
-        if (!isValidName(lastName)) {}
-        if (!isValidEmail(email)) {}
-        if (!isValidPassword(password)) {}
+        if (!isValidName(firstName)) { onFirstNameChange(); return; }
+        if (!isValidName(lastName)) { onLastNameChange(); return; }
+        if (!isValidEmail(email)) { onEmailChange(); return; }
+        if (!isValidPassword(password)) { onPasswordChange(); return; }
 
-        
+        // Send a request to the backend to register
+        apiCall("POST", 'visitor', {email, password, firstName, lastName}).then((response) => {
+            if (response.error == null) {
+                setCredentials(email, password);
+                window.location.href = '/login';
+            } else {
+                alert('Unable to register. Please verify the input and try again later.');
+            }
+        }).catch((error) => {
+            alert('Unable to connect to the server.');
+        });
     }
 
     function isValidName(name) {
@@ -98,7 +110,19 @@
             passwordField.style.color = 'black';
         }
     }
+
+    onMount(async () => {
+        if (await isLoggedIn()) {
+            window.location.href = '/dashboard';
+        } else {
+            clearCredentials();
+        }
+    });
 </script>
+
+<svelte:head>
+    <title>Register</title>
+</svelte:head>
 
 <div id="register-page">
     <div id="background-overlay" style="background-image: url('{backgroundImg}')"></div>

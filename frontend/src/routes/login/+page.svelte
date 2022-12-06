@@ -1,11 +1,40 @@
 <script>
     import backgroundImg from '$lib/assets/images/blue-painting.jpg';
     import loginImg from '$lib/assets/images/landscape-painting.png';
+    import { onMount } from 'svelte';
+    import {apiCall, getCredentials, setCredentials, clearCredentials, isLoggedIn } from '$lib/scripts/restApi.js';
     
-    function onLogin() {
+    async function onLogin() {
+        // Get the username and password from the input fields
 
+        const email = document.getElementById("email-field").value;
+        const password = document.getElementById("password-field").value;
+
+        // Set the credentials
+        setCredentials(email, password);
+
+        // Send a request to the backend to login
+        if (await isLoggedIn()) {
+            window.location.href = '/dashboard';
+        } else {
+            clearCredentials();
+            alert('Invalid email or password.');
+        }
     }
+
+    onMount(async () => {
+        if (await isLoggedIn()) {
+            window.location.href = '/dashboard';
+        } else {
+            clearCredentials();
+        }
+    });
+
 </script>
+
+<svelte:head>
+    <title>Log In</title>
+</svelte:head>
 
 <div id="login-page">
     <div id="background-overlay" style="background-image: url('{backgroundImg}')"></div>
@@ -15,10 +44,6 @@
             <span style="color: gray; margin-bottom: 30px;" class="noselect">Please enter your details below</span>
             <input id="email-field" type="text" placeholder="E-mail" />
             <input id="password-field" type="password" placeholder="Password" />
-            <label>
-                <input id="remember-me" type="checkbox" />
-                <span class="noselect">Remember me</span>
-            </label>
             <button id="login-button" on:click={onLogin}><strong>Log In</strong></button>
             <span style="color: gray; margin-top: 15px;">Don't have an account? <a href="register">Sign up for free</a></span>
         </div>
@@ -48,7 +73,7 @@
         user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
     }
 
-    #login-page {
+    #login-page { /* refers to id */
         /* Fill the screen */
         width: 100%;
         height: 100%;

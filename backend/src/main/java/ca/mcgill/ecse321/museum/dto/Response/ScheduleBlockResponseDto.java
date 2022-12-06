@@ -21,6 +21,7 @@ public class ScheduleBlockResponseDto {
     private int visitCapacity;
     private ScheduleEvent event;
     private List<Long> adminIds; // List of admin IDs that are associated with this schedule block
+    private List<Long> visitorIds; // List of visitor IDs that are associated with this schedule block
     private int visitSize; // Number of visitors that are associated with this schedule block
 
     // =========================
@@ -87,6 +88,14 @@ public class ScheduleBlockResponseDto {
         this.adminIds = adminIds;
     }
 
+    public List<Long> getVisitorIds() {
+        return visitorIds;
+    }
+
+    public void setVisitorIds(List<Long> visitorIds) {
+        this.visitorIds = visitorIds;
+    }
+
     public int getVisitSize() {
         return visitSize;
     }
@@ -120,6 +129,15 @@ public class ScheduleBlockResponseDto {
             }
         }
         scheduleBlockDto.setAdminIds(adminsIds);
+
+        // Get visitor IDs associated with this schedule block
+        List<Long> visitorIds = new ArrayList<Long>();
+        if (scheduleBlock.getVisitors() != null) {
+            for (ca.mcgill.ecse321.museum.model.Visitor visitor : scheduleBlock.getVisitors()) {
+                visitorIds.add(visitor.getId());
+            }
+        }
+        scheduleBlockDto.setVisitorIds(visitorIds);
 
         // Get number of visitors associated with this schedule block
         if (scheduleBlock.getVisitors() != null) {

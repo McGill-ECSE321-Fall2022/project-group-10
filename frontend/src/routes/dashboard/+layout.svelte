@@ -3,12 +3,22 @@
 
 </script>
 <div class = "container">
-<Navbar/>
-<slot></slot>
+  <div class="navbar-container">
+    <Navbar/>
+  </div>
+  <div class="slot-container">
+    <slot></slot>
+  </div>
 </div>
 
 <style>
   .container {
     display: flex;
+  }
+
+  .slot-container {
+    width: 100%;
+    background-color: #F3F5FA;
+    padding: 2rem;
   }
 </style>

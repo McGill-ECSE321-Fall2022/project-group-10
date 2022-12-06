@@ -17,7 +17,7 @@ public class DonationRequestDto {
     Long price;
     String title;
     String author;
-    String imagelink;
+    String imageLink;
     Date creationDate;
     boolean isAvailable;
 
@@ -29,8 +29,8 @@ public class DonationRequestDto {
         return creationDate;
     }
 
-    public String getimageLink() {
-        return imagelink;
+    public String getImageLink() {
+        return imageLink;
     }
 
     public String getAuthor() {

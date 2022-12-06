@@ -10,6 +10,7 @@ public class ArtworkRequestDto {
     String description;
     String imageLink;
     float price;
+    boolean available;
 
     public String getTitle() {
         return title;
@@ -36,8 +37,6 @@ public class ArtworkRequestDto {
     }
 
     public boolean isAvailable() {
-        return isAvailable;
+        return available;
     }
-
-    boolean isAvailable;
 }

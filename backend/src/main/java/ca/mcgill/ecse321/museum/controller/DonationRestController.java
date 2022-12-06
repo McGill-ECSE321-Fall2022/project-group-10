@@ -3,8 +3,10 @@ package ca.mcgill.ecse321.museum.controller;
 
 import ca.mcgill.ecse321.museum.dto.Request.DonationRequestDto;
 import ca.mcgill.ecse321.museum.dto.Response.DonationResponseDto;
+import ca.mcgill.ecse321.museum.model.Administrator;
 import ca.mcgill.ecse321.museum.model.Donation;
 import ca.mcgill.ecse321.museum.model.Visitor;
+import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
 import ca.mcgill.ecse321.museum.repository.VisitorRepository;
 import ca.mcgill.ecse321.museum.service.DonationService;
 import io.swagger.annotations.Api;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DonationRestController {
     @Autowired private DonationService donationService;
     @Autowired private VisitorRepository visitorRepository;
+    @Autowired private AdministratorRepository administratorRepository;
 
     @PostMapping(value = {"/donations"})
     @PreAuthorize("hasRole('VISITOR')")
@@ -67,47 +70,26 @@ public class DonationRestController {
                 DonationResponseDto.createDto(donationService.getDonation(id)), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/donations/validate/{donationId}/{validatorId}"})
+    @GetMapping(value = {"/donations"})
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<DonationResponseDto>> getAllDonations() {
+        var donations = donationService.getAllDonations();
+        var DonationResponseDtos = donations.stream().map(donation -> DonationResponseDto.createDto(donation));
+        return new ResponseEntity<List<DonationResponseDto>>((DonationResponseDtos.toList()), HttpStatus.OK);
+    }
+
+    @PutMapping(value = {"/donations/validate/{donationId}"})
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<DonationResponseDto> validateDonation(
             @PathVariable Long donationId,
-            @PathVariable Long validatorId,
             @RequestBody DonationRequestDto body) {
 
         float price = body.getPrice();
         String title = body.getTitle();
         String author = body.getAuthor();
-        String imageLink = body.getimageLink();
+        String imageLink = body.getImageLink();
         Date creationDate = body.getDate();
         Boolean isAvailable = body.getisAvailable();
-
-        Donation donation =
-                donationService.validateDonation(
-                        donationId,
-                        validatorId,
-                        price,
-                        title,
-                        author,
-                        imageLink,
-                        creationDate,
-                        isAvailable);
-        return new ResponseEntity<DonationResponseDto>(
-                DonationResponseDto.createDto(donation), HttpStatus.OK);
-    }
-
-    @DeleteMapping(value = {"/donations/{donationId}"})
-    @PreAuthorize("hasRole('VISITOR')")
-    public ResponseEntity<DonationResponseDto> deleteDonation(@PathVariable Long donationId) {
-
-        Long donorId;
-        try {
-            // Get the donation owner id
-            Donation donation = donationService.getDonation(donationId);
-            donorId = donation.getDonor().getId();
-
-        } catch (Exception e) {
-            return new ResponseEntity<DonationResponseDto>(HttpStatus.NOT_FOUND);
-        }
 
         // Check if the authenticated user is the donor
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -121,13 +103,25 @@ public class DonationRestController {
         }
 
         // Get the id of the authenticated user
-        List<Visitor> person = visitorRepository.findByEmail(authEmail);
+        List<Administrator> admins = administratorRepository.findByEmail(authEmail);
 
-        // Check if the authenticated user is the donor
-        if (donorId != person.get(0).getId()) {
-            return new ResponseEntity<DonationResponseDto>(HttpStatus.UNAUTHORIZED);
-        }
+        Donation donation =
+                donationService.validateDonation(
+                        donationId,
+                        admins.get(0).getId(),
+                        price,
+                        title,
+                        author,
+                        imageLink,
+                        creationDate,
+                        isAvailable);
+        return new ResponseEntity<DonationResponseDto>(
+                DonationResponseDto.createDto(donation), HttpStatus.OK);
+    }
 
+    @DeleteMapping(value = {"/donations/{donationId}"})
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<DonationResponseDto> deleteDonation(@PathVariable Long donationId) {
         donationService.deleteDonation(donationId);
         return new ResponseEntity<DonationResponseDto>(HttpStatus.OK);
     }

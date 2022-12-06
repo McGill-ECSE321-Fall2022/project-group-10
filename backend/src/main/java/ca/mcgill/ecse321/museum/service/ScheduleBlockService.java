@@ -11,6 +11,8 @@ import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
 import ca.mcgill.ecse321.museum.repository.ScheduleBlockRepository;
 import ca.mcgill.ecse321.museum.repository.VisitorRepository;
 import java.sql.Date;
+import java.util.List;
+
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -132,7 +134,7 @@ public class ScheduleBlockService {
      * @return - all schedule blocks
      */
     @Transactional
-    public Iterable<ScheduleBlock> getAllScheduleBlocks() {
+    public List<ScheduleBlock> getAllScheduleBlocks() {
         return scheduleBlockRepository.findAll();
     }
 
@@ -144,7 +146,7 @@ public class ScheduleBlockService {
      * @return - all schedule blocks between the two dates
      */
     @Transactional
-    public Iterable<ScheduleBlock> getScheduleBlocksBetweenDates(Date startDate, Date endDate) {
+    public List<ScheduleBlock> getScheduleBlocksBetweenDates(Date startDate, Date endDate) {
         return scheduleBlockRepository
                 .findScheduleBlockByStartDateGreaterThanEqualAndEndDateLessThanEqual(
                         startDate, endDate);
@@ -158,7 +160,7 @@ public class ScheduleBlockService {
     //  * @return - all schedule blocks of specified type between two dates
     //  */
     // @Transactional
-    // public Iterable<ScheduleBlock> getScheduleBlocksBetweenDatesAndEvent(Date startDate, Date
+    // public List<ScheduleBlock> getScheduleBlocksBetweenDatesAndEvent(Date startDate, Date
     // endDate, ScheduleEvent event) {
     //     return
     // scheduleBlockRepository.findScheduleBlockByStartDateGreaterThanEqualAndEndDateLessThanEqualAndEvent(startDate, endDate, event);
@@ -171,7 +173,7 @@ public class ScheduleBlockService {
      * @return - all visitors of the schedule block
      */
     @Transactional
-    public Iterable<Visitor> getVisitorsOnScheduleBlock(long id) {
+    public List<Visitor> getVisitorsOnScheduleBlock(long id) {
         // Get the schedule block from the database using the id
         ScheduleBlock scheduleBlock = scheduleBlockRepository.findById(id).orElse(null);
 
@@ -271,7 +273,7 @@ public class ScheduleBlockService {
      * @return - all staff of the schedule block
      */
     @Transactional
-    public Iterable<Administrator> getStaffOnScheduleBlock(long id) {
+    public List<Administrator> getStaffOnScheduleBlock(long id) {
         // Get the schedule block from the database using the id
         ScheduleBlock scheduleBlock = scheduleBlockRepository.findById(id).orElse(null);
 

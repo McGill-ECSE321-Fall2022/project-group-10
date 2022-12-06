@@ -22,11 +22,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
+                .cors()
+                .and()
                 .authorizeRequests(
                         auth -> {
                             auth.antMatchers("/").permitAll();
-                            auth.antMatchers("/visitor")
-                                    .permitAll(); // Anyone can create a visitor account
+                            // auth.antMatchers("/visitor")
+                            //         .permitAll(); // Anyone can create a visitor account
+                            auth.antMatchers("/swagger-ui/**").permitAll();
                             // ... other rules
                         })
                 .userDetailsService(userDetailsService)
