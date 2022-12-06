@@ -1,6 +1,7 @@
 <script>
     import {apiCall} from '$lib/scripts/restApi.js'
     import Artwork from "$lib/components/dashboard/(user)/gallery/Artwork.svelte";
+    import InfoModal from "../../../../lib/components/dashboard/(user)/gallery/InfoModal.svelte";
 
     let loans, artwork;
     let accepted = [];
@@ -11,7 +12,7 @@
         loans = loanRes.data;
         for (let i =0; i<loans.length; i++){
             switch(loans[i].status){
-                case 'ACCEPTED':
+                case 'VALIDATED':
                     accepted.push(loans[i]);
                     break;
                 case 'PENDING':
@@ -23,7 +24,37 @@
             }
         }
     };
+    let showLoanInfo = false;
+    let selectedLoan;
+    const toggleInfo = (loan) =>{
+        if (!showLoanInfo){
+            selectedLoan = loan
+        }
+        showLoanInfo = !showLoanInfo;
+    }
+    const imageNotFound = (e) => e.target.src = notFound;
   </script>
+{#if showLoanInfo}
+    <div class="overlay" on:click={() => toggleInfo(null)} on:keydown={null}></div>
+    <div class="loan-info" id="loan-info-id">
+        <h1>"{selectedLoan.artwork.title}"</h1>
+        <h2><span style="font-size:1rem;">BY</span> {selectedLoan.artwork.author}</h2>
+        <img class="image"
+        src="{selectedLoan.artwork.imageLink}"
+        alt="{selectedLoan.artwork.description}"
+        on:error={imageNotFound}
+        >
+        <p>Created on {selectedLoan.artwork.creationDate}</p>
+        <p>{selectedLoan.artwork.description}</p>
+        <h2>{selectedLoan.price}<span style="font-size: .75rem;">$/DAY</span></h2>
+        <h1>Loan Info</h1>
+        <p>Start: {selectedLoan.startDate}, Finish: {selectedLoan.endDate}</p>
+        <p>Customer: {selectedLoan.customer.firstName} {selectedLoan.customer.lastName}</p>
+        {#if selectedLoan.validator != null}
+            <p>Validator: {selectedLoan.validator.firstName} {selectedLoan.validator.lastName}</p>
+        {/if}
+    </div>
+{/if}
 
 <div id="loan-page">
     <h1>Loan</h1>
@@ -41,9 +72,8 @@
                         <p>No accepted loans</p>
                     {:else}
                     {#each accepted as loan}
-                        {artwork=loan.artwork}
-                        <div id=accepted-loan>
-                            <Artwork artwork={loan.artwork} expandable={false}/>
+                        <div id=accepted-loan  on:click={() => toggleInfo(loan)} on:keydown={null}>
+                            <Artwork artwork={loan.artwork} expandable={true}/>
                         </div>
                     {/each}
                     {/if}
@@ -59,8 +89,8 @@
                         <p>No accepted loans</p>
                     {:else}
                     {#each pending as loan}
-                        <div id=pending-loan>
-                            <Artwork artwork={loan.artwork} expandable={false}/>
+                        <div id=pending-loan on:click={() => toggleInfo(loan)} on:keydown={null}>
+                            <Artwork artwork={loan.artwork} expandable={true}/>
                         </div>
                     {/each}
                     {/if}
@@ -70,7 +100,18 @@
         <div id="denied-loans" class="panel-side">
             <h2>Denied</h2>
             <div id="denied-container">
-                
+                <!-- Loans -->
+                <div class="loans">
+                    {#if loans.length === 0}
+                        <p>No accepted loans</p>
+                    {:else}
+                    {#each denied as loan}
+                        <div id=pending-loan on:click={() => toggleInfo(loan)} on:keydown={null}>
+                            <Artwork artwork={loan.artwork} expandable={true}/>
+                        </div>
+                    {/each}
+                    {/if}
+                </div>
             </div>
         </div>
         {/await}
@@ -146,4 +187,23 @@
         justify-content: Left;
         align-items: center;
     }
+    .loan-info {
+        border-radius: 14px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        background-color: white;
+        transform: translate(-50%, -50%);
+        padding: 1rem 3rem;
+    }
+    .overlay {
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.2);
+        z-index: 0;
+    }
+
 </style>
