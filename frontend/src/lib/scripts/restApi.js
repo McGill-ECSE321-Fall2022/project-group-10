@@ -25,7 +25,7 @@ async function apiCall(method="GET", endpoint="", data={}) {
         headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
         // Create and send the request
-        if (method === "GET") {
+        if (method === "GET" || method === "DELETE") {
             fetch(URL + endpoint, {
                 method: method,
                 headers: headers

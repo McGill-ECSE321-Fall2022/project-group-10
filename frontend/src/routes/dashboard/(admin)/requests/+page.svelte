@@ -6,7 +6,7 @@
     import PendingLoan from '$lib/components/dashboard/(admin)/requests/PendingLoan.svelte';
 
     $:pendingDonations=[];
-    const loadDonation = async () => {
+    const loadDonations = async () => {
         const donationsRes = await apiCall('GET','donations');
         pendingDonations = [];
 
@@ -15,13 +15,11 @@
                 pendingDonations.push(donation);
             }
         }
-
-        pendingDonations = pendingDonations;
-        console.log(pendingDonations)
     };
     $:pendingLoans = [];
     const loadLoans = async () => {
         const loanRes = await apiCall('GET','loans');
+        pendingLoans = [];
         for (let i =0; i<loanRes.data.length; i++){
             if (loanRes.data[i].status == 'PENDING') {
                 pendingLoans.push(loanRes.data[i])
@@ -47,10 +45,33 @@
         if (!/^.{1,200}$/.test(document.getElementById('art-description').value)) return;
         if (!document.getElementById('art-created').checkValidity()) return;
         if (!document.getElementById('art-price').checkValidity()) return;
-        if (!document.getElementById('art-available').checkValidity()) return;
         showDonation = true;
     }
     const imageNotFound = (e) => e.target.src = notFound;
+
+    const denyDonation = async (donation) => {
+        await apiCall("DELETE", `donations/${donation.id}`).then(response => {
+            loadDonations();
+        }).catch(async err => {
+            loadDonations();
+        });
+    }
+
+    const denyLoan = async (loan) => {
+        await apiCall("PUT", `loans/reject/${loan.id}`).then(response => {
+            console.log(response);
+            if (response.error == null) {
+                loadLoans();
+            } else {
+                alert("Unable to validate the request.");
+                loadLoans();
+            }
+        }).catch(async err => {
+            console.log(err);
+            alert("Unable to validate the request.");
+            loadLoans();
+        });
+    }
 
     const onValidateDonationClick = async (donation) => {
         let formdata = {
@@ -65,14 +86,14 @@
         await apiCall("PUT", `donations/validate/${donation.id}`, formdata).then(response => {
             toggleForm('donation', donation);
             if (response.error == null) {
-                loadLoans();
+                loadDonations();
             } else {
                 alert("Unable to validate the request.");
-                loadLoans();
+                loadDonations();
             }
         }).catch(err => {
             alert("Unable to validate the request.");
-            loadLoans();
+            loadDonations();
         });
     }
     const onValidateLoanClick = async (loan) => {
@@ -80,14 +101,14 @@
         apiCall("PUT", `loans/validate/${loan.id}`).then(response => {
             toggleForm('loan', loan);
             if (response.error == null) {
-                loadDonation();
+                loadLoans();
             } else {
                 alert("Unable to validate the request.");
-                loadDonation();
+                loadLoans();
             }
         }).catch(async err => {
             alert("Unable to validate the request.");
-            loadDonation();
+            loadLoans();
         });
     }
 
@@ -142,6 +163,7 @@
             <h2>{selectedData.price}<span style="font-size: .75rem;">$/DAY</span></h2>
             <p>Start: {selectedData.startDate}, Finish: {selectedData.endDate}</p>
             <p>Customer: {selectedData.customer.firstName} {selectedData.customer.lastName}</p>
+            <button on:click={() => onValidateLoanClick(selectedData)}>Submit</button>
         {/if}
     </div>
 {/if}
@@ -156,14 +178,14 @@
         <div id="pending-donation-side"class="panel-side">
             <h2>Pending Donations</h2>
             <div id="donation-forms">
-                {#await loadDonation()}
+                {#await loadDonations()}
                     <p>Loading</p>
                 {:then data}
                     {#if pendingDonations.length == 0}
                         <p>No Pending Donations</p>
                     {:else}
                         {#each pendingDonations as donation}
-                            <PendingDonation donation={donation} on:validate={() => toggleForm('donation', donation)}></PendingDonation>
+                            <PendingDonation donation={donation} on:validate={() => toggleForm('donation', donation)} on:deny={() => denyDonation(donation)}></PendingDonation>
                         {/each}
 
                     {/if}
@@ -187,7 +209,7 @@
                         <p>No Pending Loans</p>
                     {:else}
                         {#each pendingLoans as loan}
-                            <PendingLoan loan={loan} on:validate={() => toggleForm('loan', loan)}></PendingLoan>
+                            <PendingLoan loan={loan} on:validate={() => toggleForm('loan', loan)} on:deny={() => denyLoan(loan)}></PendingLoan>
                         {/each}
 
                     {/if}

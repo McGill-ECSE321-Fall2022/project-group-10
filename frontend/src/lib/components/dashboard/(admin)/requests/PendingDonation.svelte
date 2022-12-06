@@ -9,6 +9,9 @@
     function onValidateClick() {
         dispatch("validate", donation);
     }
+    function onDenyClick() {
+        dispatch("deny");
+    }
 
 </script>
 
@@ -17,7 +20,10 @@
         <span id="description-field">{donation.description}</span>
         <span id="author-field" style="flex: 1;">By {donation.donor.firstName + " " + donation.donor.lastName}</span>
     {/if}
-    <button on:click={onValidateClick}>Validate</button>
+    <div style="display:flex;justify-content:center;align-items:center">
+        <button on:click={onValidateClick}>Validate</button>
+        <button on:click={onDenyClick}>Deny</button>
+    </div>
 </div>
 
 <style>
@@ -41,6 +47,7 @@
 
     #pending-donation-card button {
         padding: 10px;
+        margin-right:10px;
         border-radius: 15px;
         border: none;
         background-color: #4E36FC;

@@ -96,7 +96,7 @@ public class LoanResponseDto {
         loanDto.customer = VisitorResponseDto.createDto(loan.getCustomer());
 
         if (loan.getValidator() == null) loanDto.validator = null;
-        else if (loan.getValidator().getClass() == Administrator.class)
+        else if (loan.getValidator().getClass() == Owner.class)
             loanDto.validator = OwnerResponseDto.createDto((Owner) loan.getValidator());
         else loanDto.validator = EmployeeResponseDto.createDto((Employee) loan.getValidator());
 

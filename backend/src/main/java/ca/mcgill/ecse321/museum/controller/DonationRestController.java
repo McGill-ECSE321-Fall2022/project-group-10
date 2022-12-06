@@ -87,7 +87,7 @@ public class DonationRestController {
         float price = body.getPrice();
         String title = body.getTitle();
         String author = body.getAuthor();
-        String imageLink = body.getimageLink();
+        String imageLink = body.getImageLink();
         Date creationDate = body.getDate();
         Boolean isAvailable = body.getisAvailable();
 
@@ -120,38 +120,8 @@ public class DonationRestController {
     }
 
     @DeleteMapping(value = {"/donations/{donationId}"})
-    @PreAuthorize("hasRole('VISITOR')")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<DonationResponseDto> deleteDonation(@PathVariable Long donationId) {
-
-        Long donorId;
-        try {
-            // Get the donation owner id
-            Donation donation = donationService.getDonation(donationId);
-            donorId = donation.getDonor().getId();
-
-        } catch (Exception e) {
-            return new ResponseEntity<DonationResponseDto>(HttpStatus.NOT_FOUND);
-        }
-
-        // Check if the authenticated user is the donor
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        // Get the email of the authenticated user
-        String authEmail;
-        if (principal instanceof UserDetails) {
-            authEmail = ((UserDetails) principal).getUsername();
-        } else {
-            authEmail = principal.toString();
-        }
-
-        // Get the id of the authenticated user
-        List<Visitor> person = visitorRepository.findByEmail(authEmail);
-
-        // Check if the authenticated user is the donor
-        if (donorId != person.get(0).getId()) {
-            return new ResponseEntity<DonationResponseDto>(HttpStatus.UNAUTHORIZED);
-        }
-
         donationService.deleteDonation(donationId);
         return new ResponseEntity<DonationResponseDto>(HttpStatus.OK);
     }
