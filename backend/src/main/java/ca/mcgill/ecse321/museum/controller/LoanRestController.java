@@ -6,7 +6,9 @@ import ca.mcgill.ecse321.museum.dto.Response.LoanResponseDto;
 import ca.mcgill.ecse321.museum.model.Loan;
 import ca.mcgill.ecse321.museum.model.Person;
 import ca.mcgill.ecse321.museum.model.Visitor;
+import ca.mcgill.ecse321.museum.model.Administrator;
 import ca.mcgill.ecse321.museum.repository.PersonRepository;
+import ca.mcgill.ecse321.museum.repository.AdministratorRepository;
 import ca.mcgill.ecse321.museum.service.LoanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +37,7 @@ public class LoanRestController {
     @Autowired private LoanService loanService;
 
     @Autowired private PersonRepository personRepository;
+    @Autowired private AdministratorRepository administratorRepository;
 
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Create loan")
@@ -156,7 +159,7 @@ public class LoanRestController {
     public ResponseEntity<LoanResponseDto> validateLoan(
             @PathVariable Long loanId, @PathVariable Long validatorId) {
 
-        // Check if the authenticated user is the validator
+        // Check if the authenticated user is the donor
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         // Get the email of the authenticated user
@@ -166,6 +169,9 @@ public class LoanRestController {
         } else {
             authEmail = principal.toString();
         }
+
+        // Get the id of the authenticated user
+        List<Administrator> admins = administratorRepository.findByEmail(authEmail);
 
         // Get the user id of the authenticated user
         Person person = personRepository.findByEmail(authEmail);
@@ -178,7 +184,7 @@ public class LoanRestController {
             return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
         }
 
-        Loan loan = loanService.validateLoan(loanId, validatorId);
+        Loan loan = loanService.validateLoan(loanId, admins.get(0).getId());
         return new ResponseEntity<LoanResponseDto>(LoanResponseDto.createDto(loan), HttpStatus.OK);
     }
 
@@ -200,6 +206,9 @@ public class LoanRestController {
             authEmail = principal.toString();
         }
 
+        // Get the id of the authenticated user
+        List<Administrator> admins = administratorRepository.findByEmail(authEmail);
+
         // Get the user id of the authenticated user
         Person person = personRepository.findByEmail(authEmail);
         if (person == null || person.getId() != validatorId) {
@@ -211,7 +220,7 @@ public class LoanRestController {
             return new ResponseEntity<LoanResponseDto>(HttpStatus.UNAUTHORIZED);
         }
 
-        Loan loan = loanService.rejectLoan(loanId, validatorId);
+        Loan loan = loanService.rejectLoan(loanId, admins.get(0).getId());
         return new ResponseEntity<LoanResponseDto>(LoanResponseDto.createDto(loan), HttpStatus.OK);
     }
 
