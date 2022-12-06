@@ -200,7 +200,7 @@
 
 <div id="event-desc" style="">
 	{#if currScheduleBlock != null}
-		<h2>{currScheduleBlock.event}</h2>
+		<h2>{currScheduleBlock.event === "MUSEUM_OPEN" ? "Regular Schedule" : "Special Event"}</h2>
 		<div>Starts: {currScheduleBlock.startDate}</div>
 		<div>Ends: {currScheduleBlock.endDate}</div>
     <div>Assigned Employees:</div>
