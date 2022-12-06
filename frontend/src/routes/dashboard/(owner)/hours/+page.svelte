@@ -170,29 +170,20 @@
 		}
 	}
 
-  let event,startDate,endDate,visitCapacity,visitFees;
+  let event,startDate,visitCapacity,visitFees;
   const date = new Date();
   $: firstOfMonth = new Date(date.getFullYear(), date.getMonth(),1);
   $: lastOfMonth = new Date(date.getFullYear(), date.getMonth()+1, 0);
 
-  const addScheduleBlock = () => {
-    let newSchedule = apiCall('POST', 'scheduleBlock', {event,startDate,endDate,visitCapacity,visitFees});
-    items.push(newSchedule);
-    items = items;
-  }
-
-  const getSundayOfWeek = (date) => {
-    let day = date.getDay();
-    let diff = date.getDate() - day + (day == 0 ? -6:1);
-    return new Date(date.setDate(diff));
-  }
-
-  const getSaturdayOfWeek = (date) => {
-    let day = date.getDay();
-    let diff = date.getDate() - day + (day == 0 ? 0:6);
-    console.log("date: ")
-    console.log(new Date(date.setDate(diff)))
-    return new Date(date.setDate(diff));
+  const addScheduleBlock = async () => {
+    let endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate()+1);
+    await apiCall('POST', 'scheduleBlock', {event,startDate,endDate,visitCapacity,visitFees});
+    await initMonthItems();
+    event = null;
+    startDate = null;
+    visitCapacity = null;
+    visitFees = null;
   }
 </script>
 
@@ -206,12 +197,8 @@
       </select>
     </div>
     <div class="link">
-      <label for="start">Start Date</label>
-      <input type="date" name="start" id="start" required bind:value={startDate} min={firstOfMonth} max={() => getSaturdayOfWeek(startDate)}>
-    </div>
-    <div class="link">
-      <label for="end">End Date</label>
-      <input type="date" name="end" id="end" required bind:value={endDate} min={() => getSundayOfWeek(endDate)} max={lastOfMonth}>
+      <label for="start">Date</label>
+      <input type="date" name="start" id="start" required bind:value={startDate} min={firstOfMonth} max={lastOfMonth}>
     </div>
     <div class="link">
       <label for="capacity">Capacity</label>
