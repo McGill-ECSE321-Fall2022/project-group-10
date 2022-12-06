@@ -8,6 +8,7 @@
     $:pendingDonations=[];
     const loadDonation = async () => {
         const donationsRes = await apiCall('GET','donations');
+        pendingDonations = [];
 
         for(let donation of donationsRes.data){
             if (!donation.validated) {
@@ -63,16 +64,30 @@
         
         await apiCall("PUT", `donations/validate/${donation.id}`, formdata).then(response => {
             toggleForm('donation', donation);
+            if (response.error == null) {
+                loadLoans();
+            } else {
+                alert("Unable to validate the request.");
+                loadLoans();
+            }
         }).catch(err => {
+            alert("Unable to validate the request.");
+            loadLoans();
         });
     }
-    async function onValidateLoanClick(event) {
-        const loan = event.detail;
-        toggleForm('loan', loan);
+    const onValidateLoanClick = async (loan) => {
         
         apiCall("PUT", `loans/validate/${loan.id}`).then(response => {
-        }).catch(err => {
-            
+            toggleForm('loan', loan);
+            if (response.error == null) {
+                loadDonation();
+            } else {
+                alert("Unable to validate the request.");
+                loadDonation();
+            }
+        }).catch(async err => {
+            alert("Unable to validate the request.");
+            loadDonation();
         });
     }
 
@@ -138,7 +153,7 @@
         
 
         
-        <div id="invalid-donation-side"class="panel-side">
+        <div id="pending-donation-side"class="panel-side">
             <h2>Pending Donations</h2>
             <div id="donation-forms">
                 {#await loadDonation()}

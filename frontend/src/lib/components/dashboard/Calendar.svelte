@@ -131,6 +131,7 @@
     align-self: center;
     z-index:2;
     border-radius: 15px;
+    cursor: pointer;
   }
   .task--warning {
     border-left-color: #fdb44d;
