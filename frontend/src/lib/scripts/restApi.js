@@ -16,7 +16,7 @@ async function apiCall(method="GET", endpoint="", data={}) {
         let headers = new Headers();
         headers.set("Content-Type", "application/json");
         // Exception for the POST "/visitor" endpoint
-        if (method != "POST" && endpoint != "visitor") {
+        if (!(method == "POST" && endpoint == "visitor")) {
             headers.set('Authorization', 'Basic ' + btoa(email + ":" + password));
             headers.set('Access-Control-Allow-Credentials', 'true');
         }
