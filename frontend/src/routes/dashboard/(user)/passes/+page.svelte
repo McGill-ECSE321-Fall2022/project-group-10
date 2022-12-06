@@ -1,5 +1,8 @@
 <script>
+	// This ap
 	import Calendar from '$lib/components/dashboard/Calendar.svelte';
+	import {apiCall} from '$lib/scripts/restApi.js'
+	import {onMount} from 'svelte';
 
 	var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -16,31 +19,56 @@
 		return Math.floor(Math.random()*max)+1;
 	}
 
-	const getScheduleBlocks = async() => {
-		const res = await fetch('/api/schedule');
-		const data = await res.json();
-		return data;
-	}
-	
+	const registerVisitor = async (id) => {
+		const res = await apiCall('POST',`scheduleBlock/${id}/add/self`);
+		if (res.status == 200) {
+			goto('/dashboard/user/schedule');
+			alert("Booked pass!");
+		} else {
+			//	Failure
+			//	Display error message
+			alert("Error: " + res.status);
+		}
+	} 
+
 	//	The Calendar Component just displays stuff in a row & column. It has no knowledge of dates.
 	//	The items[] below are placed (by you) in a specified row & column of the calendar.
 	//	You need to call findRowCol() to calc the row/col based on each items start date. Each date box has a Date() property.
 	//	And, if an item overlaps rows, then you need to add a 2nd item on the subsequent row.
-	var items = [];
+	$: items = [];
+	$: currScheduleBlock = null;
 
-	function initMonthItems() {
+	const initMonthItems = async () => {
 		let y = year;
 		let m = month;
 		let d1=new Date(y,m,15);
-		items=[
-			{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,1),len:2, vlen:1},
-			{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,6),len:3, vlen:1},
-			{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,13),len:5, vlen:1},
-			{title:"7:30 Van Gogh expedition",className:"task--warning",date:d1,len:randInt(4)+2},
 
-			{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,21),len:2, vlen:1},
-			{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,23),len:2, vlen:1},
-		];
+		const scheduleBlocksRes = await apiCall('GET', 'scheduleBlock');
+		const scheduleBlocks = scheduleBlocksRes.data;
+
+		items = scheduleBlocks.map(block => { 
+			return {
+				id: block.id,
+				title: block.event,
+				className: ((block.event === "MUSEUM_OPEN")? "task--primary" : "task--warning"),
+				date:new Date(block.startDate),
+				len:(new Date(block.endDate) - new Date(block.startDate)) / (1000 * 60 * 60 * 24),
+			}
+		});
+
+		items = items
+
+		console.log(items);
+
+		// items=[
+		// 	{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,1),len:2, vlen:1},
+		// 	{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,6),len:3, vlen:1},
+		// 	{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,13),len:5, vlen:1},
+		// 	{title:"7:30 Van Gogh expedition",className:"task--warning",date:d1,len:randInt(4)+2},
+
+		// 	{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,21),len:2, vlen:1},
+		// 	{title:"11:00 Museum Open",className:"task--primary",date:new Date(y,m,23),len:2, vlen:1},
+		// ];
 
 		//This is where you calc the row/col to put each dated item
 		for (let i of items) {
@@ -57,13 +85,19 @@
 		}
 	}
 
-	$: month,year,initContent();
+	$: month,year
+
+	onMount(async () => {
+		await initContent();
+	});
+
+	// await initContent();
 
 	// choose what date/day gets displayed in each date box.
-	function initContent() {
+	const initContent = async () => {
 		headers = dayNames;
 		initMonth();
-		initMonthItems();
+		await initMonthItems();
 	}
 
 	function initMonth() {
@@ -108,8 +142,11 @@
 		return null;	
 	}
 
-	function itemClick(e) {
-		eventText='itemClick '+JSON.stringify(e) + ' localtime='+e.date.toString();
+	async function itemClick(e) {
+		let scheduleBlockRes = await apiCall('GET', `scheduleBlock/${e.id}`);
+		let scheduleBlock = scheduleBlockRes.data;
+		currScheduleBlock = scheduleBlock;
+		console.log(scheduleBlock);
 	}
 	function dayClick(e) {
 		eventText='onDayClick '+JSON.stringify(e) + ' localtime='+e.date.toString();
@@ -159,10 +196,13 @@
 </div>
 
 <div id="event-desc" style="">
-	<h2>Legend</h2>
-	<div class="task--primary">Museum Open</div>
-	<div class="task--warning">Van Gogh Expedition</div>
-	<div class="task--danger">Museum Closed</div>
+	{#if currScheduleBlock != null}
+		<h2>{currScheduleBlock.event}</h2>
+		<div>Starts: {currScheduleBlock.startDate}</div>
+		<div>Ends: {currScheduleBlock.endDate}</div>
+		<h3>{currScheduleBlock.visitFees}$</h3>
+		<button on:click={registerVisitor(currScheduleBlock.id)}>Book</button>
+	{/if}
 </div>
 
 <style>
@@ -173,7 +213,7 @@
 	background-color: #EEEEFF;
 	border-radius: 10px;
 	margin-top: 1rem;
-	padding: .1rem 2rem;
+	padding: .1rem 2rem 2rem 2rem;
 	box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -204,6 +244,15 @@
   cursor: pointer;
   outline: 0;
 }
+
+button {
+    background-color: #4E36FC;
+    color: white;
+    border-style: none;
+    padding: 0.5rem 1rem;
+    border-radius: 14px; 
+    cursor: pointer;
+  }
 </style>
 
 
