@@ -1,6 +1,15 @@
 <script>
 
-    function onDonate(){
+    function onDonate(title=null,author=null,descpription=null,imagelink=null){
+        //get the title,author,description,imagelink
+
+        if(title==null || author==null || descpription==null || imagelink==null)
+        {
+            title= document.getElementById("title").value;
+            author= document.getElementById("author").value;
+            descpription= document.getElementById("descpription").value;
+            imagelink= document.getElementById("imagelink").value;
+        }
         alert("Donate button clicked");
     }
 </script>
@@ -13,6 +22,7 @@
                 <h2 class="prompt">Please enter the artwork details below</h2>
                 <input id="title" type="text" placeholder="Title" required/>
                 <input id="author" type="text" placeholder="Author" required/>
+                <input id="date" type="text" placeholder="Date - dd/mm/yyyy" required/>
                 <input id="descpription" type="text" placeholder="Description" required/>
                 <input id="imagelink" type="text" placeholder="Image-Link" required/>
                 <button id="Donate-button" on:click={onDonate}><strong>Donate</strong></button>
