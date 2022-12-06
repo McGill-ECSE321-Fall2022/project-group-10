@@ -19,7 +19,7 @@ The team will analyze and translate the clients requirements into a working requ
 
 [Deliverable 2 Project Report](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Deliverable-2-Project-Report)
 
-[Deliverable 3 Project Report](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Deliverable-2-Project-Report)
+[Deliverable 3 Project Report](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Deliverable-3-Project-Report)
 
 [Architecture Diagram](https://github.com/McGill-ECSE321-Fall2022/project-group-10/wiki/Architecture-Diagram)
 
