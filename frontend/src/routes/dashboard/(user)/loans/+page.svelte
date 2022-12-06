@@ -1,7 +1,6 @@
 <script>
     import {apiCall} from '$lib/scripts/restApi.js'
     import Artwork from "$lib/components/dashboard/(user)/gallery/Artwork.svelte";
-    import InfoModal from "../../../../lib/components/dashboard/(user)/gallery/InfoModal.svelte";
 
     let loans, artwork;
     let accepted = [];
@@ -46,8 +45,8 @@
         >
         <p>Created on {selectedLoan.artwork.creationDate}</p>
         <p>{selectedLoan.artwork.description}</p>
-        <h2>{selectedLoan.price}<span style="font-size: .75rem;">$/DAY</span></h2>
         <h1>Loan Info</h1>
+        <h2>{selectedLoan.price}<span style="font-size: .75rem;">$/DAY</span></h2>
         <p>Start: {selectedLoan.startDate}, Finish: {selectedLoan.endDate}</p>
         <p>Customer: {selectedLoan.customer.firstName} {selectedLoan.customer.lastName}</p>
         {#if selectedLoan.validator != null}
