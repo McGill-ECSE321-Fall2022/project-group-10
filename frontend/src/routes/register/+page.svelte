@@ -1,7 +1,7 @@
 <script>
     import backgroundImg from '$lib/assets/images/blue-painting.jpg';
     import registerImg from '$lib/assets/images/landscape-painting.png';
-    import { apiCall, isLoggedIn, setCredentials } from '$lib/scripts/restApi';
+    import { apiCall, isLoggedIn, setCredentials, clearCredentials } from '$lib/scripts/restApi';
     import { onMount } from 'svelte';
     
     function onRegister() {

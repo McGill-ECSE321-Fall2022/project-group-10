@@ -27,8 +27,8 @@ public class SecurityConfig {
                 .authorizeRequests(
                         auth -> {
                             auth.antMatchers("/").permitAll();
-                            auth.antMatchers("/visitor")
-                                    .permitAll(); // Anyone can create a visitor account
+                            // auth.antMatchers("/visitor")
+                            //         .permitAll(); // Anyone can create a visitor account
                             auth.antMatchers("/swagger-ui/**").permitAll();
                             // ... other rules
                         })

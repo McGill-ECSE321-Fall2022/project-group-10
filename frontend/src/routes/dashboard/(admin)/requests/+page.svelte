@@ -1,36 +1,70 @@
+<script>
 
+    import {apiCall} from '$lib/scripts/restApi.js'
+    import Artwork from "$lib/components/dashboard/(user)/gallery/Artwork.svelte";
+    import PendingDonation from '$lib/components/dashboard/(admin)/requests/PendingDonation.svelte';
+
+    $:pendingDonations=[];
+    const loadDonation = async () => {
+        const donationsRes = await apiCall('GET','donations');
+
+        for(let donation of donationsRes.data){
+            if (!donation.validated) {
+                pendingDonations.push(donation);
+            }
+        }
+
+        pendingDonations = pendingDonations;
+        console.log(pendingDonations)
+    };
+
+    async function onValidateClick(event) {
+        const donation = event.detail;
+        
+        apiCall("PUT", `donations/validate/${donation.id}/${validatorId}`).then(response => {
+
+        }).catch(err => {
+            
+        });
+    }
+
+
+</script>
 
 <div id="request-page">
     <h1>Requests</h1>
 
     <div id="request-panel" >
         
+
         
-        <div id="loan-side"class="panel-side">
-            <h2>Loans</h2>
-            <div id="loan-forms">
+        <div id="invalid-donation-side"class="panel-side">
+            <h2>Pending Donations</h2>
+            <div id="donation-forms">
+                {#await loadDonation()}
+                    <p>Loading</p>
+                {:then data}
+                    {#if pendingDonations.length == 0}
+                        <p>No Pending Donations</p>
+                    {:else}
+                        {#each pendingDonations as donation}
+                            <PendingDonation donation={donation} on:validate={onValidateClick}></PendingDonation>
+                        {/each}
+
+                    {/if}
+
+                {/await}
+                
 
 
 
             </div>
 
         </div>
-        
-        <div id="donation-side" class="panel-side">
-            <h2>Donations</h2>
-            <div id="donation-forms">
-
-
-           </div>
-
-        </div>
-            
     </div>
-
+</div>
     
-            
-    </div>
-
+        
 
 
 <style>
@@ -64,10 +98,13 @@
         border-radius: 20px;
         display: flex;
         flex-direction: row;
+        align-content: flex-start;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        padding: 15px;
     }
 
-    #loan-forms {
-
+    /* .donation-containter {
         min-width: 200px;
         min-height: 200px;
         width: 90%;
@@ -76,7 +113,7 @@
         border-radius: 20px;
         display: flex;
         flex-direction: row;
-    }
+    } */
 
     .panel-side{
         flex-grow: 3;
@@ -90,9 +127,4 @@
         align-items: center;
     }
     
-
-   
-
-
-
 </style>
