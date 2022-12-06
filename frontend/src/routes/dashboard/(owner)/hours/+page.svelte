@@ -12,6 +12,8 @@
 	let year = now.getFullYear();		//	this is the month & year displayed
 	let month = now.getMonth();
 	let eventText="Click an item or date";
+  let assignedEmployees = [];
+  let allEmployees = false;
 
 	var days = [];	//	The days to display in each box
 
@@ -185,6 +187,30 @@
     visitCapacity = null;
     visitFees = null;
   }
+
+  const loadEmployees = async (scheduleBlockId) => {
+    let res = await apiCall('GET', `scheduleBlock/${scheduleBlockId}/staff`);
+    let employees = res.data;
+    if (allEmployees == false) {
+      allEmployees = await apiCall('GET', 'administrator/employee');
+      allEmployees = allEmployees.data;
+    }
+    assignedEmployees = employees;
+  }
+
+  const toggleInStatus = async (employee, currScheduleBlock) => {
+    console.log(currScheduleBlock.adminIds);
+    if (!currScheduleBlock.adminIds.includes(employee.id)) {
+      await apiCall('POST', `scheduleBlock/${currScheduleBlock.id}/staff/${employee.id}`);
+      currScheduleBlock.adminIds.push(employee.id);
+    } else {
+      await apiCall('DELETE', `scheduleBlock/${currScheduleBlock.id}/staff/${employee.id}`);
+      currScheduleBlock.adminIds = currScheduleBlock.adminIds.filter(e => e != employee.id);
+    }
+    currScheduleBlock = currScheduleBlock
+    console.log(currScheduleBlock.adminIds);
+  }
+	
 </script>
 
 <div class="container">
@@ -229,18 +255,44 @@
         />
     </div>
     
-    <div id="event-desc" style="">
+    <div id="event-desc">
       {#if currScheduleBlock != null}
-        <h2>{currScheduleBlock.event === "MUSEUM_OPEN" ? "Regular Schedule" : "Special Event"}</h2>
-        <div>Starts: {currScheduleBlock.startDate}</div>
-        <div>Ends: {currScheduleBlock.endDate}</div>
-        <h3>{currScheduleBlock.visitFees}$</h3>
+        <div class="info">
+          <h2>{currScheduleBlock.event === "MUSEUM_OPEN" ? "Regular Schedule" : "Special Event"}</h2>
+          <div>Starts: {currScheduleBlock.startDate}</div>
+          <div>Ends: {currScheduleBlock.endDate}</div>
+          <h3>{currScheduleBlock.visitFees}$</h3>
+        </div>
+        <div class="employees">
+          <h2>Employees</h2>
+        {#await loadEmployees(currScheduleBlock.id)}
+          <div>Loading...</div>
+        {:then}
+          {#each allEmployees as employee}
+            <div><input type="checkbox" on:click={() => toggleInStatus(employee, currScheduleBlock)} checked="{currScheduleBlock.adminIds.includes(employee.id) ? true : false}">{employee.firstName} {employee.lastName}</div>
+          {/each}
+        {/await}
+        </div>
       {/if}
     </div>
   </div>
 </div>
 
 <style>
+  #event-desc {
+    margin: auto;
+    width: 70%;
+    background-color: white;
+    border-radius: 14px;
+    padding: 3rem;
+    margin-bottom: 1rem;
+    display: flex;
+  }
+
+  .employees {
+    margin-left: auto;
+  }
+
   select {
     border-radius: 14px;
     border: solid;
