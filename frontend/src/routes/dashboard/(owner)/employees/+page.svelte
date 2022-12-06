@@ -3,12 +3,11 @@
     import EmployeeModal from "../../../../lib/components/dashboard/(owner)/employees/EmployeeModal.svelte";
     import CreateEmployeeModal from "../../../../lib/components/dashboard/(owner)/employees/CreateEmployeeModal.svelte";
     import {apiCall} from '$lib/scripts/restApi.js'
-    import {goto} from '$app/navigation';
 
     $:employees = [];
     $:selectedEmployee = null;
-    let showEmployeeModal = false;
-    let showCreateEmployeeModal = false;
+    $:showEmployeeModal = false;
+    $:showCreateEmployeeModal = false;
 
     const loadEmployees = async () => {
         //setCredentials('admin@mail.museum.com', 'admin')
@@ -24,14 +23,14 @@
         showEmployeeModal = true;
     };
 
-    const handleCloseEmployeeModal = () => {
+    const handleCloseEmployeeModal = async () => {
       showEmployeeModal = false;
-      location.reload();
+      await loadEmployees();
     };
 
-    const handleCloseCreateEmployeeModal = () => {
+    const handleCloseCreateEmployeeModal = async () => {
       showCreateEmployeeModal = false;
-      location.reload();
+      await loadEmployees();
     };
 
     const createEmployee = async () => {
@@ -50,7 +49,7 @@
 {#if showCreateEmployeeModal}
     <div class="overlay" on:click={handleCloseCreateEmployeeModal} on:keydown={null}>
     </div>
-    <CreateEmployeeModal />
+    <CreateEmployeeModal on:exit={handleCloseCreateEmployeeModal}/>
 {/if}
 
 <button on:click={createEmployee}>Create Employee</button>

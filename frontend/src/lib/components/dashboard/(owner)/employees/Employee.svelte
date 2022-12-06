@@ -3,7 +3,6 @@
 	import { createEventDispatcher } from 'svelte';
   export let employee;
   export let expandable = false;
-  console.log(employee);
 
   $:firstName = employee.firstName;
   $:lastName = employee.lastName;

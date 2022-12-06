@@ -1,6 +1,7 @@
 <script>
   //export let selectedEmployee;
   import {apiCall} from '$lib/scripts/restApi.js'
+  import { createEventDispatcher } from 'svelte';
 
   /*$:firstName = selectedEmployee.firstName;
   $:lastName = selectedEmployee.lastName;
@@ -10,6 +11,8 @@
   //import notFound from '$lib/assets/images/not-found.jpg';
 
   //const imageNotFound = (e) => e.target.src = notFound;
+
+  const dispatch = createEventDispatcher();
 
   const createEmployee = async () => {
     //const res = await apiCall('PUT', `administrator/employee/edit/${selectedEmployee.id}`);
@@ -35,6 +38,8 @@
       password: password,
       salary: salary,
     });
+
+    dispatch('exit', {});
   }
 
     function isValidName(name) {
@@ -42,7 +47,7 @@
     }
 
     function isValidEmail(email) {
-        return email.length != 0 && email.includes('@');
+        return email.length != 0 && email.includes('@mail.museum.com');
     }
 
 
@@ -120,16 +125,11 @@
         return password.length >= 8 && password.length <= 32 && password.match(/[a-z]/) && password.match(/[A-Z]/) && password.match(/[0-9]/);
     }
 
-    //console.log(employee);
-  
-
-  
 </script>
 
 
 <div class="container">
 
-  <hr>
   <h2>Create</h2>
   <div style="margin-bottom: 2rem; width:13rem">
     <input id="firstname-field" type="text" placeholder="First name" on:input={onFirstNameChange} />
@@ -160,5 +160,22 @@
     padding: 0.5rem 1rem;
     border-radius: 14px; 
   }
+
+  input[type=text], input[type=password] {
+        padding: 6px 5px;
+        margin: 8px 0;
+        display: inline-block;
+        /* Bottom border only */
+        border: none;
+        border-bottom: 2px solid #ccc;
+        box-sizing: border-box;
+        /* Fade transition when focused */
+        transition: border-bottom 0.3s;
+    }
+
+    input[type=text]:focus, input[type=password]:focus {
+        outline: 0;
+        border-bottom: 2px solid #555;
+    }
 
 </style>
