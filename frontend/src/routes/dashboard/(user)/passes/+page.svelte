@@ -49,9 +49,9 @@
 		items = scheduleBlocks.map(block => { 
 			return {
 				id: block.id,
-				title: block.event,
+				title: block.event === "MUSEUM_MEETING"? "Event pass" : "Regular pass",
 				className: ((block.event === "MUSEUM_OPEN")? "task--primary" : "task--warning"),
-				date:new Date(block.startDate),
+				date:new Date((new Date(block.startDate)).setDate((new Date(block.startDate)).getDate() + 1)),
 				len:(new Date(block.endDate) - new Date(block.startDate)) / (1000 * 60 * 60 * 24),
 			}
 		});
@@ -177,11 +177,7 @@
 <div class="calendar-container">
   <div class="calendar-header">
     <h1>
-      <button on:click={()=>year--}>&Lt;</button>
-      <button on:click={()=>prev()}>&lt;</button>
        {monthNames[month]} {year}
-      <button on:click={()=>next()}>&gt;</button>
-      <button on:click={()=>year++}>&Gt;</button>
     </h1>
 	</div>
 
