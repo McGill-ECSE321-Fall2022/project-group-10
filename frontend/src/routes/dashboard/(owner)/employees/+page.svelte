@@ -1,12 +1,14 @@
 <script>
     import Employee from "../../../../lib/components/dashboard/(owner)/employees/Employee.svelte";
     import EmployeeModal from "../../../../lib/components/dashboard/(owner)/employees/EmployeeModal.svelte";
+    import CreateEmployeeModal from "../../../../lib/components/dashboard/(owner)/employees/CreateEmployeeModal.svelte";
     import {apiCall} from '$lib/scripts/restApi.js'
     import {goto} from '$app/navigation';
 
     $:employees = [];
     $:selectedEmployee = null;
     let showEmployeeModal = false;
+    let showCreateEmployeeModal = false;
 
     const loadEmployees = async () => {
         //setCredentials('admin@mail.museum.com', 'admin')
@@ -27,16 +29,14 @@
       location.reload();
     };
 
+    const handleCloseCreateEmployeeModal = () => {
+      showCreateEmployeeModal = false;
+      location.reload();
+    };
+
     const createEmployee = async () => {
-        const res = await apiCall('POST', 'administrator/employee',
-        {
-            email: document.getElementById('email-field').value,
-            firstName: document.getElementById('firstname-field').value,
-            lastName: document.getElementById('lastname-field').value,
-            password: document.getElementById('password-field').value,
-            salary: document.getElementById('salary-field').value,
-        });
-      };
+        showCreateEmployeeModal = true;
+    };
 
 </script>
 
@@ -45,6 +45,12 @@
     <div class="overlay" on:click={handleCloseEmployeeModal} on:keydown={null}>
     </div>
     <EmployeeModal {selectedEmployee} />
+{/if}
+
+{#if showCreateEmployeeModal}
+    <div class="overlay" on:click={handleCloseCreateEmployeeModal} on:keydown={null}>
+    </div>
+    <CreateEmployeeModal />
 {/if}
 
 <button on:click={createEmployee}>Create Employee</button>
@@ -84,7 +90,7 @@
   .employees {
     display: flex;
     flex-wrap: wrap;
-    gap: 8rem;
+    gap: 4rem;
     }
 
   .employees {
